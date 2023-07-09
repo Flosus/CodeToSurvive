@@ -1,0 +1,28 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "CodeToSurviveApp", "CodeToSurviveApp\CodeToSurviveApp.fsproj", "{178CD343-A609-42FD-A67C-87FD4706132C}"
+EndProject
+Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "CodeToSurviveLib", "CodeToSurviveLib\CodeToSurviveLib.fsproj", "{BC539AC4-76F4-4F37-9459-C3F38DCB8740}"
+EndProject
+Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "CodeToSurviveTest", "CodeToSurviveTest\CodeToSurviveTest.fsproj", "{9CF4BEBF-0D29-4521-ABA7-1E1B3E309CA5}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{178CD343-A609-42FD-A67C-87FD4706132C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{178CD343-A609-42FD-A67C-87FD4706132C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{178CD343-A609-42FD-A67C-87FD4706132C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{178CD343-A609-42FD-A67C-87FD4706132C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BC539AC4-76F4-4F37-9459-C3F38DCB8740}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BC539AC4-76F4-4F37-9459-C3F38DCB8740}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BC539AC4-76F4-4F37-9459-C3F38DCB8740}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BC539AC4-76F4-4F37-9459-C3F38DCB8740}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9CF4BEBF-0D29-4521-ABA7-1E1B3E309CA5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9CF4BEBF-0D29-4521-ABA7-1E1B3E309CA5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9CF4BEBF-0D29-4521-ABA7-1E1B3E309CA5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9CF4BEBF-0D29-4521-ABA7-1E1B3E309CA5}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+EndGlobal

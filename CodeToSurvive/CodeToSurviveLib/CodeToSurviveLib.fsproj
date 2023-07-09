@@ -1,0 +1,20 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFramework>net6.0</TargetFramework>
+        <GenerateDocumentationFile>true</GenerateDocumentationFile>
+        <RootNamespace>CodeToSurviveLib</RootNamespace>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <Compile Include="Core\Item.fs" />
+        <Compile Include="Core\Entity.fs" />
+        <Compile Include="Core\Player.fs" />
+        <Compile Include="Core\World.fs" />
+        <Compile Include="Core\Job.fs" />
+        <Compile Include="Core\Tick.fs" />
+        <Compile Include="PlayerScript\ScriptInfo.fs" />
+        <Compile Include="PlayerScript\ScriptRunner.fs" />
+    </ItemGroup>
+
+</Project>
