@@ -28,12 +28,11 @@ module Tick =
           PostTickUpdate: StateUpdate }
 
     let rec doWithStateUpdate (players: PlayerState[]) (state: State) (act: PlayerState * State -> State) : State =
-        let currentPlayer = players[0]
-        let newState = act (currentPlayer, state)
-
         match players.Length with
-        | 1 -> newState
+        | 0 -> newState
         | _ ->
+            let currentPlayer = players[0]
+            let newState = act (currentPlayer, state)
             let remainingPlayers = players[1..]
             doWithStateUpdate remainingPlayers newState act
 
