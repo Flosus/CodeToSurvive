@@ -6,10 +6,8 @@ open CodeToSurvive.Lib.Core.World
 
 module Tick =
 
-    type PlayerState = {
-        Player:Player
-    }
-    
+    type PlayerState = { Player: Player }
+
     type State =
         { Players: PlayerState[]
           Tasks: PlayerTask[]
@@ -29,7 +27,7 @@ module Tick =
 
     let rec doWithStateUpdate (players: PlayerState[]) (state: State) (act: PlayerState * State -> State) : State =
         match players.Length with
-        | 0 -> newState
+        | 0 -> state
         | _ ->
             let currentPlayer = players[0]
             let newState = act (currentPlayer, state)
@@ -38,7 +36,9 @@ module Tick =
 
     let updateMap (players: PlayerState[]) (state: State) (act: GenerateChunk) : State =
         let mapUpdate (player: PlayerState, state: State) : State =
-            let newMap = act state.Map player.Player.WorldMapPositionX player.Player.WorldMapPositionY
+            let newMap =
+                act state.Map player.Player.WorldMapPositionX player.Player.WorldMapPositionY
+
             { state with Map = newMap }
 
         doWithStateUpdate players state mapUpdate

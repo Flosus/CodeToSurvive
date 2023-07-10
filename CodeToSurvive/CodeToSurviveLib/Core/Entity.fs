@@ -3,11 +3,11 @@ namespace CodeToSurvive.Lib.Core
 open CodeToSurvive.Lib.Core.Item
 
 module Entity =
-    
+
     type Intelligence = int
     type Strength = int
     type Agility = int
-    
+
     type Stats =
         | Intelligence
         | Strength
@@ -35,4 +35,3 @@ module Entity =
           RightHand: ItemEntity
           // Rings? Amulet? Glasses?
           Other: ItemEntity }
-

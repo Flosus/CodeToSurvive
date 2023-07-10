@@ -1,8 +1,5 @@
 namespace CodeToSurvive.Lib.Script
 
-open System
-open System.Threading
-open System.Threading.Tasks
 open CodeToSurvive.Lib.Core.Job
 open CodeToSurvive.Lib.Core.Tick
 
