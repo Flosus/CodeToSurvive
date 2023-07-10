@@ -1,23 +1,33 @@
 <Project Sdk="Microsoft.NET.Sdk.Web">
 
     <PropertyGroup>
-        <TargetFramework>net6.0</TargetFramework>
-        <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
+        <TargetFramework>net7.0</TargetFramework>
+        <AssemblyName>CodeToSurviveApp.App</AssemblyName>
+        <EnableDefaultContentItems>false</EnableDefaultContentItems>
     </PropertyGroup>
 
     <ItemGroup>
+        <PackageReference Include="BCrypt.Net-Next" Version="4.0.3" />
+        <PackageReference Include="Giraffe" Version="5.0.0-rc-6" />
+        <PackageReference Include="Giraffe.Htmx" Version="1.9.2" />
+        <PackageReference Include="Giraffe.ViewEngine" Version="1.3.*" />
+        <PackageReference Include="Giraffe.ViewEngine.Htmx" Version="1.9.2" />
+        <PackageReference Include="Ply" Version="0.3.*" />
+    </ItemGroup>
+
+    <ItemGroup>
         <Compile Include="Program.fs" />
+        <Compile Include="Security.fs" />
     </ItemGroup>
 
     <ItemGroup>
-      <Content Include="..\.dockerignore">
-        <Link>.dockerignore</Link>
-      </Content>
-      <Content Include="Dockerfile" />
+        <None Include="web.config" CopyToOutputDirectory="PreserveNewest" />
+        <Content Include="WebRoot\**\*">
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </Content>
     </ItemGroup>
 
     <ItemGroup>
-      <PackageReference Include="Htmx" Version="1.1.3" />
+      <ProjectReference Include="..\CodeToSurviveLib\CodeToSurviveLib.fsproj" />
     </ItemGroup>
-
 </Project>
