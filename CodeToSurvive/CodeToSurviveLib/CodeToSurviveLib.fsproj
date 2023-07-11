@@ -15,6 +15,7 @@
         <Compile Include="Core\Tick.fs"/>
         <Compile Include="PlayerScript\ScriptInfo.fs"/>
         <Compile Include="PlayerScript\ScriptRunner.fs"/>
+        <Compile Include="Storage.fs" />
     </ItemGroup>
 
 </Project>

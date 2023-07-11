@@ -83,16 +83,10 @@ let loginHandler =
     let model = { ID = Guid.Empty; IsLoggedIn = false }
     let view = Views.loginView model
     htmlView view
-
-let loginRequestHandler httpFunc (httpContext: HttpContext) =
-    task {
-        let! reqData = httpContext.ReadBodyFromRequestAsync()
-        printfn $"{reqData}"
-        let response = setStatusCode 200 >=> text ("Data: " + reqData)
-        return! response httpFunc httpContext
-    }
     
-let logoutHandler = signOut "Cookie" >=> redirectTo false "/"
+let logoutHandler httpFunc (httpContext: HttpContext) =
+    let sO = signOut "Cookie" >=> redirectTo false "/"
+    sO httpFunc httpContext
 
 let challengeHandler httpFunc httpContext =
     task {
@@ -104,6 +98,18 @@ let challengeHandler httpFunc httpContext =
             let redirect = redirectTo false "/login" httpFunc httpContext
             return! redirect
         | _ -> return challengeResult
+    }
+
+let loginRequestHandler httpFunc (httpContext: HttpContext) =
+    task {
+        let authService = httpContext.GetService<IAuthenticationService>() :?> CTSAuthenticationService
+        let! reqData = httpContext.Request.ReadFormAsync()
+        let username = reqData["username"]
+        let password = reqData["password"]
+        authService.Login username password
+        // TODO replace this stuff?!?
+        let sSC = setStatusCode 404 >=> text "Not Found"
+        return! sSC httpFunc httpContext
     }
 
 let webApp =
