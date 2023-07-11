@@ -11,6 +11,6 @@ module ScriptInfo =
         | Error
         | Timeout
 
-    type RunPlayerScript = PlayerState * State -> Async<PlayerState * ScriptResult>
-    type GetScriptByPlayer = PlayerState -> RunPlayerScript
+    type RunPlayerScript = CharacterState * State -> Async<CharacterState * ScriptResult>
+    type GetScriptByPlayer = CharacterState -> RunPlayerScript
     type GetJob = ScriptResult -> Job

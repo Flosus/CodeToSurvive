@@ -9,16 +9,16 @@ open CodeToSurvive.Lib.Script.ScriptInfo
 
 module ScriptRunner =
 
-    let handleTimeout (states: PlayerState * State) : PlayerState * ScriptResult =
+    let handleTimeout (states: CharacterState * State) : CharacterState * ScriptResult =
         let playerState, _ = states
         // TODO write messages, etc
         (playerState, Timeout)
 
     let runScript
-        (state: PlayerState * State)
+        (state: CharacterState * State)
         (playScript: RunPlayerScript)
         (cancellationTime: TimeSpan)
-        : Async<PlayerState * ScriptResult> =
+        : Async<CharacterState * ScriptResult> =
         use cancellationTokenSource: CancellationTokenSource = new CancellationTokenSource()
 
         try
@@ -55,7 +55,7 @@ module ScriptRunner =
                 (let job = getJobByName scriptResult
 
                  (playerState,
-                  { Player = playerState.Player
+                  { Character = playerState.Character
                     Job = job })))
 
         let playerStates = newStateData |> Array.map fst

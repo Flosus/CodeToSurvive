@@ -1,7 +1,7 @@
 namespace CodeToSurvive.Lib.Core
 
 open System
-open CodeToSurvive.Lib.Core.Player
+open CodeToSurvive.Lib.Core.Character
 
 module Job =
 
@@ -25,5 +25,5 @@ module Job =
         TimeSpan.FromSeconds(job.Duration) - TimeSpan.FromSeconds(job.CurrentProgress)
         <= TimeSpan.Zero
 
-    type PlayerTask = { Player: Player; Job: Job }
+    type PlayerTask = { Character: Character; Job: Job }
     let isPlayerTaskOpen = fun pJob -> IsJobFinished pJob.Job |> not

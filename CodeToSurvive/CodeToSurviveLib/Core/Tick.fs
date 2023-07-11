@@ -1,60 +1,60 @@
 namespace CodeToSurvive.Lib.Core
 
 open CodeToSurvive.Lib.Core.Job
-open CodeToSurvive.Lib.Core.Player
+open CodeToSurvive.Lib.Core.Character
 open CodeToSurvive.Lib.Core.World
 
 module Tick =
 
-    type PlayerState = { Player: Player }
+    type CharacterState = { Character: Character }
 
     type State =
-        { Players: PlayerState[]
+        { Players: CharacterState[]
           Tasks: PlayerTask[]
           Map: WorldMap }
 
-    type RunPlayerScripts = State -> State
+    type RunCharacterScripts = State -> State
     type DoJobProgress = PlayerTask * State -> State
     type GenerateChunk = WorldMap -> int -> int -> WorldMap
     type StateUpdate = State -> State
 
     type WorldContext =
         { ProgressJob: DoJobProgress
-          RunPlayerScripts: RunPlayerScripts
+          RunCharacterScripts: RunCharacterScripts
           GenerateChunk: GenerateChunk
           PreTickUpdate: StateUpdate
           PostTickUpdate: StateUpdate }
 
-    let rec doWithStateUpdate (players: PlayerState[]) (state: State) (act: PlayerState * State -> State) : State =
-        match players.Length with
+    let rec doWithStateUpdate (char: CharacterState[]) (state: State) (act: CharacterState * State -> State) : State =
+        match char.Length with
         | 0 -> state
         | _ ->
-            let currentPlayer = players[0]
+            let currentPlayer = char[0]
             let newState = act (currentPlayer, state)
-            let remainingPlayers = players[1..]
-            doWithStateUpdate remainingPlayers newState act
+            let remainingChars = char[1..]
+            doWithStateUpdate remainingChars newState act
 
-    let updateMap (players: PlayerState[]) (state: State) (act: GenerateChunk) : State =
-        let mapUpdate (player: PlayerState, state: State) : State =
+    let updateMap (players: CharacterState[]) (state: State) (act: GenerateChunk) : State =
+        let mapUpdate (player: CharacterState, state: State) : State =
             let newMap =
-                act state.Map player.Player.WorldMapPositionX player.Player.WorldMapPositionY
+                act state.Map player.Character.WorldMapPositionX player.Character.WorldMapPositionY
 
             { state with Map = newMap }
 
         doWithStateUpdate players state mapUpdate
 
-    let doJobProgress (players: PlayerState[]) (state: State) (act: DoJobProgress) : State =
-        let dJP (player: PlayerState, state: State) : State =
-            let findPlayerTask = fun (cur: PlayerTask) -> player.Player.Id = cur.Player.Id
+    let doJobProgress (character: CharacterState[]) (state: State) (act: DoJobProgress) : State =
+        let dJP (cha: CharacterState, state: State) : State =
+            let findPlayerTask = fun (cur: PlayerTask) -> cha.Character.Id = cur.Character.Id
             let currentTask = state.Tasks |> Array.find findPlayerTask
             act (currentTask, state)
 
-        doWithStateUpdate players state dJP
+        doWithStateUpdate character state dJP
 
     let getPlayersWithoutJob (state: State) =
-        let filterPlayerHasNoJob (playEntry: PlayerState) =
+        let filterPlayerHasNoJob (entry: CharacterState) =
             state.Tasks
-            |> Array.filter (fun pt -> pt.Player = playEntry.Player && not pt.Job.IsCancelable)
+            |> Array.filter (fun pt -> pt.Character = entry.Character && not pt.Job.IsCancelable)
             |> Array.isEmpty
 
         state.Players |> Array.filter filterPlayerHasNoJob
@@ -76,7 +76,7 @@ module Tick =
         // Pre tick work
         |> context.PreTickUpdate
         // Run player scripts on what to do
-        |> context.RunPlayerScripts
+        |> context.RunCharacterScripts
         // Execute the Jobs the player want to do
         |> progressJobs
         // Find not finished tasks

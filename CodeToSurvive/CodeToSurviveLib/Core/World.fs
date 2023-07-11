@@ -3,6 +3,12 @@ namespace CodeToSurvive.Lib.Core
 open System
 
 module World =
+    
+    type Tile =
+        {
+         tileType: string
+         canViewOver: bool
+         }
 
     type Chunk =
         { Name: String
@@ -13,6 +19,9 @@ module World =
           NorthType: String
           SouthType: String
           EastType: String
-          WestType: String }
+          WestType: String
+          // Size 64x64
+          Tiles: Tile[][]
+          }
 
     type WorldMap = Chunk[][]

@@ -3,24 +3,24 @@ namespace CodeToSurvive.Lib.Core
 open System
 open CodeToSurvive.Lib.Core.Item
 
-module Player =
+module Character =
 
-    type PlayerStats =
+    type CharacterStats =
         { Hunger: int
           Thirst: int
           Fatigue: int }
 
-    type Player =
+    type Character =
         { Id: Guid
           Name: String
-          PlayerStats: PlayerStats
+          PlayerStats: CharacterStats
           WorldMapPositionX: int
           WorldMapPositionY: int
           Inventory: ItemEntity[] }
 
     let NewPlayerStats = { Hunger = 0; Thirst = 0; Fatigue = 0 }
 
-    let NewPlayer name =
+    let newCharacter name =
         { Id = Guid.NewGuid()
           Name = name
           WorldMapPositionX = 0

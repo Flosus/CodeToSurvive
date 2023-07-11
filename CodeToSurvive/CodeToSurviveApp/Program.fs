@@ -18,7 +18,10 @@ open Giraffe
 // Models
 // ---------------------------------
 
-type Message = { Text: string }
+type LoginModel = {
+    ID: Guid
+    IsLoggedIn: bool
+}
 
 // ---------------------------------
 // Views
@@ -28,7 +31,16 @@ module Views =
     open Giraffe.ViewEngine
     open Giraffe.Htmx
 
-    let layout (content: XmlNode list) =
+    let header (model: LoginModel) =
+        let logBtn = match model.IsLoggedIn with
+                     | true  -> button [] [ encodedText "Logout" ]
+                     | false -> button [] [ encodedText "Login" ]
+        div [] [
+            img [ _src "favicon.ico" ]
+            button [ ] [ encodedText "Wiki" ]
+            logBtn ]
+
+    let layout (model: LoginModel) (content: XmlNode list) =
         html
             []
             [ head
@@ -36,42 +48,50 @@ module Views =
                   [ title [] [ encodedText "CodeToSurvive" ]
                     link [ _rel "stylesheet"; _type "text/css"; _href "/main.css" ]
                     script [ _src "htmx.org@1.9.2.min.js" ] [] ]
-              body [] content ]
+              body [] [
+                  div [  ] [
+                      header(model)
+                      div [] content
+                  ]
+              ] ]
 
-    let partial () =
-        h1 [] [ encodedText "CodeToSurviveApp" ]
+    let index (model: LoginModel) =
+        [ p [] [ ] ] |> layout model
 
-    let index (model: Message) =
-        [ partial (); p [] [ encodedText model.Text ] ] |> layout
-
-    let loginView () =
-        [ partial ()
-          form
-              [ attr "hx-post" "/login" ]
+    let loginView (model: LoginModel) =
+        [ form
+              [ attr "hx-post" "/login"; attr "hx-swap" "outerHTML" ]
               [ div
                     []
                     [ p [] [ encodedText "Username" ]
-                      input [ _id "username" ]
+                      input [  _type "text"; _name "username"; _id "username-login-input" ]
                       p [] [ encodedText "Password" ]
-                      input [ _id "password" ]
+                      input [  _type "password"; _name "password"; _id "password-login-input" ]
                       button [ _id "submit" ] [ encodedText "Login" ] ] ] ]
-        |> layout
+        |> layout model
 
 // ---------------------------------
 // Web app
 // ---------------------------------
 
 let indexHandler (name: string) =
-    let greetings = sprintf "Hello %s, from Giraffe!" name
-    let model = { Text = greetings }
+    let model = { ID = Guid.Empty; IsLoggedIn = false }
     let view = Views.index model
     htmlView view
 
 let loginHandler =
-    let view = Views.loginView ()
+    let model = { ID = Guid.Empty; IsLoggedIn = false }
+    let view = Views.loginView model
     htmlView view
 
-let loginRequestHandler = setStatusCode 200 >=> text "Jeay"
+let loginRequestHandler httpFunc (httpContext: HttpContext) =
+    task {
+        let! reqData = httpContext.ReadBodyFromRequestAsync()
+        printfn $"{reqData}"
+        let response = setStatusCode 200 >=> text ("Data: " + reqData)
+        return! response httpFunc httpContext
+    }
+    
 let logoutHandler = signOut "Cookie" >=> redirectTo false "/"
 
 let challengeHandler httpFunc httpContext =
@@ -93,7 +113,7 @@ let webApp =
               [ route "/" >=> indexHandler "world"
                 route "/login" >=> loginHandler
                 route "/logout" >=> logoutHandler
-                requiresAuthentication (challengeHandler)
+                requiresAuthentication challengeHandler
                 >=> choose
                     [ route "/admin" >=> indexHandler "world"
                       route "/survive" >=> indexHandler "world" ]
