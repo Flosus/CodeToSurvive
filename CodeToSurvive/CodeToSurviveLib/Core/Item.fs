@@ -7,7 +7,7 @@ module Item =
 
     type ItemType = TODO
 
-    type Item(name: String) =
+    type Item(name: string) =
         member this.Name = name
         member this.Type = ""
         member this.DefaultWeight = 0.0
@@ -19,4 +19,4 @@ module Item =
           Weight: double
           StackSize: int
           // TODO how to save metadata
-          Metadata: Dictionary<String, String> }
+          Metadata: Dictionary<string, string> }

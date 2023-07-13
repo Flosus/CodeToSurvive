@@ -3,6 +3,7 @@ namespace CodeToSurvive.Lib.Core
 open CodeToSurvive.Lib.Core.Job
 open CodeToSurvive.Lib.Core.Character
 open CodeToSurvive.Lib.Core.World
+open CodeToSurvive.Lib.Core.Position
 
 module Tick =
 
@@ -20,7 +21,7 @@ module Tick =
     type WorldContext =
         { ProgressJob: DoJobProgress
           RunCharacterScripts: RunCharacterScripts
-          GenerateChunk: GenerateChunk
+          UpdateWorldMap: UpdateWorldMap
           PreTickUpdate: StateUpdate
           PostTickUpdate: StateUpdate }
 
@@ -33,7 +34,7 @@ module Tick =
             let remainingChars = char[1..]
             doWithStateUpdate remainingChars newState act
 
-    let updateMap (players: CharacterState[]) (state: State) (act: GenerateChunk) : State =
+    let updateMap (players: CharacterState[]) (state: State) (act: UpdateWorldMap) : State =
         let mapUpdate (player: CharacterState, state: State) : State =
             let chunkPosition = getChunkPosition player.Character.PlayerPosition
             let newMap = act state.Map chunkPosition
@@ -68,7 +69,7 @@ module Tick =
                 Tasks = curState.Tasks |> Array.filter isPlayerTaskOpen }
 
         let generateNewMapChunks (curState: State) : State =
-            updateMap curState.Players curState context.GenerateChunk
+            updateMap curState.Players curState context.UpdateWorldMap
 
         state
         // Pre tick work

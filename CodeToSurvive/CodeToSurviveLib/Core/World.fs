@@ -1,117 +1,66 @@
 namespace CodeToSurvive.Lib.Core
 
-open System
+open System.Runtime.Serialization.Json
+open System.Threading
+open CodeToSurvive.Lib.Core.Position
 
 module World =
-    let chunkSize = 64
 
-    type WorldEntity = { entityName: string }
-
-    [<Struct>]
-    type TilePosition = { X: int; Y: int }
-
-    [<Struct>]
-    type ChunkPosition = { X: int; Y: int }
-
-    [<Struct>]
-    type AbsoluteTilePosition = { X: int; Y: int }
+    exception WorldGenError of string
+    let private worldMapLock = obj ()
+    
+    type ChunkFeature = string
+    type ChunkType = string * ChunkFeature[]
 
     type Tile =
-        { tileType: string
-          canViewOver: bool
-          walkable: bool
-          entity: WorldEntity[]
-          position: TilePosition }
+        { TileType: string
+          CanViewOver: bool
+          Walkable: bool
+          EntitiesAllowed: bool
+          Position: TilePosition }
 
     type Chunk =
-        { Name: String
+        { Name: string
+          Description: string
           Location: ChunkPosition
-          Description: String
-          MainType: String
-          NorthType: String
-          SouthType: String
-          EastType: String
-          WestType: String
+          MainType: ChunkType
+          NorthType: ChunkType
+          SouthType: ChunkType
+          EastType: ChunkType
+          WestType: ChunkType
           // Size 64x64
           Tiles: Tile[][] }
 
-    (*
-    negPos | posPos
-    _______________
-    negNeg | posNeg
-    *)
-    type WorldMap =
-        { posPosChunks: Chunk[][]
-          posNegChunks: Chunk[][]
-          negPosChunks: Chunk[][]
-          negNegChunks: Chunk[][] }
+    type WorldMap = { Chunks: ResizeArray<Chunk> }
 
-    type GenerateTiles = Chunk -> Chunk
     type GenerateChunk = WorldMap -> ChunkPosition -> Chunk
-
-    let private getWorldPart worldMap chunkPosition =
-        match chunkPosition with
-        | { ChunkPosition.X = x
-            ChunkPosition.Y = y } when x >= 0 && y >= 0 -> worldMap.posPosChunks
-        | { ChunkPosition.X = x
-            ChunkPosition.Y = y } when x >= 0 && y < 0 -> worldMap.posNegChunks
-        | { ChunkPosition.X = x
-            ChunkPosition.Y = y } when x < 0 && y >= 0 -> worldMap.negPosChunks
-        | { ChunkPosition.X = x
-            ChunkPosition.Y = y } -> worldMap.negNegChunks
-
-    let private appendWorldMap (worldMap: WorldMap) (chunkPosition: ChunkPosition) (chunk: Chunk) : WorldMap =
-        let appendMap (part: Chunk[][]) =
-            let xAbs = abs chunkPosition.X
-            let yAbs = abs chunkPosition.Y
-            part
-
-        match chunkPosition with
-        | { ChunkPosition.X = x
-            ChunkPosition.Y = y } when x >= 0 && y >= 0 ->
-            { worldMap with
-                posPosChunks = appendMap worldMap.posPosChunks }
-        | { ChunkPosition.X = x
-            ChunkPosition.Y = y } when x >= 0 && y < 0 ->
-            { worldMap with
-                posNegChunks = appendMap worldMap.posNegChunks }
-        | { ChunkPosition.X = x
-            ChunkPosition.Y = y } when x < 0 && y >= 0 ->
-            { worldMap with
-                negPosChunks = appendMap worldMap.negPosChunks }
-        | { ChunkPosition.X = x
-            ChunkPosition.Y = y } ->
-            { worldMap with
-                negNegChunks = appendMap worldMap.negNegChunks }
-
-    let private tryGetChunk x y (chunkMap: Chunk[][]) =
-        if chunkMap.Length >= x then None
-        else if chunkMap[x].Length >= y then None
-        else Some(chunkMap[x][y])
-
-    let getGenerator (gChunk: GenerateChunk) (gTiles: GenerateTiles) : WorldMap -> ChunkPosition -> WorldMap =
-        let generator worldMap chunkPosition =
-            let chunk = gChunk worldMap chunkPosition
-            let chunkWithTiles = gTiles chunk
-            appendWorldMap worldMap chunkPosition chunkWithTiles
-
-        generator
+    type UpdateWorldMap = WorldMap -> ChunkPosition -> WorldMap
 
     let getChunk worldMap chunkPosition =
-        let worldPart = getWorldPart worldMap chunkPosition
-        tryGetChunk chunkPosition.X chunkPosition.Y worldPart
+        let index = worldMap.Chunks.FindIndex(fun cnk -> cnk.Location = chunkPosition)
 
-    let getChunkPosition (tilePosition: AbsoluteTilePosition) : ChunkPosition =
-        let chunkX = tilePosition.X / chunkSize
-        let chunkY = tilePosition.Y / chunkSize
-        { X = chunkX; Y = chunkY }
+        match index with
+        | -1 -> None
+        | _ -> Some(worldMap.Chunks[index])
 
-    let getPositionInTile (tilePosition: AbsoluteTilePosition) (chunkPosition: ChunkPosition) : TilePosition =
-        let tileX = (abs tilePosition.X) - chunkPosition.X * chunkSize
-        let tileY = (abs tilePosition.Y) - chunkPosition.Y * chunkSize
-        { X = tileX; Y = tileY }
+    let private appendWorldMap (worldMap: WorldMap) (chunk: Chunk) : WorldMap =
+        Monitor.Enter worldMapLock
+        let existingChunk = getChunk worldMap chunk.Location
 
-    let getAbsolutePosition (tilePosition: TilePosition) (chunkPosition: ChunkPosition) : AbsoluteTilePosition =
-        let absoluteX = tilePosition.X * chunkPosition.X
-        let absoluteY = tilePosition.Y * chunkPosition.Y
-        { X = absoluteX; Y = absoluteY }
+        try
+            match existingChunk.IsNone with
+            | true ->
+                printfn $"Duplicate chunk at location {chunk.Location}"
+                raise (WorldGenError($"Duplicate chunk at location {chunk.Location}"))
+            | false ->
+                worldMap.Chunks.Add(chunk)
+                worldMap
+        finally
+            Monitor.Exit worldMapLock
+
+    let getGenerator (gChunk: GenerateChunk): UpdateWorldMap =
+        let generator worldMap chunkPosition =
+            let chunk = gChunk worldMap chunkPosition
+            appendWorldMap worldMap chunk
+
+        generator

@@ -2,7 +2,7 @@ namespace CodeToSurvive.Lib.Core
 
 open System
 open CodeToSurvive.Lib.Core.Item
-open CodeToSurvive.Lib.Core.World
+open CodeToSurvive.Lib.Core.Position
 
 module Character =
 
@@ -13,7 +13,7 @@ module Character =
 
     type Character =
         { Id: Guid
-          Name: String
+          Name: string
           PlayerStats: CharacterStats
           PlayerPosition: AbsoluteTilePosition
           Inventory: ItemEntity[] }
