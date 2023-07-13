@@ -15,7 +15,6 @@ module Tick =
 
     type RunCharacterScripts = State -> State
     type DoJobProgress = PlayerTask * State -> State
-    type GenerateChunk = WorldMap -> int -> int -> WorldMap
     type StateUpdate = State -> State
 
     type WorldContext =
@@ -36,9 +35,8 @@ module Tick =
 
     let updateMap (players: CharacterState[]) (state: State) (act: GenerateChunk) : State =
         let mapUpdate (player: CharacterState, state: State) : State =
-            let newMap =
-                act state.Map player.Character.WorldMapPositionX player.Character.WorldMapPositionY
-
+            let chunkPosition = getChunkPosition player.Character.PlayerPosition
+            let newMap = act state.Map chunkPosition
             { state with Map = newMap }
 
         doWithStateUpdate players state mapUpdate

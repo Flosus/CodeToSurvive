@@ -2,6 +2,7 @@ namespace CodeToSurvive.Lib.Core
 
 open System
 open CodeToSurvive.Lib.Core.Item
+open CodeToSurvive.Lib.Core.World
 
 module Character =
 
@@ -14,8 +15,7 @@ module Character =
         { Id: Guid
           Name: String
           PlayerStats: CharacterStats
-          WorldMapPositionX: int
-          WorldMapPositionY: int
+          PlayerPosition: AbsoluteTilePosition
           Inventory: ItemEntity[] }
 
     let NewPlayerStats = { Hunger = 0; Thirst = 0; Fatigue = 0 }
@@ -23,7 +23,6 @@ module Character =
     let newCharacter name =
         { Id = Guid.NewGuid()
           Name = name
-          WorldMapPositionX = 0
-          WorldMapPositionY = 0
+          PlayerPosition = { X = 0; Y = 0 }
           PlayerStats = NewPlayerStats
           Inventory = [||] }

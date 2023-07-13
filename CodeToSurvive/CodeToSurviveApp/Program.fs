@@ -1,9 +1,12 @@
-module CodeToSurviveApp.App
+module CodeToSurvive.App.Program
 
 open System
 open System.IO
-open CodeToSurvive.App
-open CodeToSurvive.App.AppSecurity
+open CodeToSurvive.App.AuthenticationService
+open CodeToSurvive.App.Public.PublicHandler
+open CodeToSurvive.App.Public.PublicRouter
+open CodeToSurvive.App.Private.PrivateRouter
+open CodeToSurvive.App.Admin.AdminRouter
 open Microsoft.AspNetCore.Authentication
 open Microsoft.AspNetCore.Builder
 open Microsoft.AspNetCore.Cors.Infrastructure
@@ -15,84 +18,15 @@ open Microsoft.Extensions.DependencyInjection
 open Giraffe
 
 // ---------------------------------
-// Models
-// ---------------------------------
-
-type LoginModel = {
-    ID: Guid
-    IsLoggedIn: bool
-}
-
-// ---------------------------------
-// Views
-// ---------------------------------
-
-module Views =
-    open Giraffe.ViewEngine
-    open Giraffe.Htmx
-
-    let header (model: LoginModel) =
-        let logBtn = match model.IsLoggedIn with
-                     | true  -> button [] [ encodedText "Logout" ]
-                     | false -> button [] [ encodedText "Login" ]
-        div [] [
-            img [ _src "favicon.ico" ]
-            button [ ] [ encodedText "Wiki" ]
-            logBtn ]
-
-    let layout (model: LoginModel) (content: XmlNode list) =
-        html
-            []
-            [ head
-                  []
-                  [ title [] [ encodedText "CodeToSurvive" ]
-                    link [ _rel "stylesheet"; _type "text/css"; _href "/main.css" ]
-                    script [ _src "htmx.org@1.9.2.min.js" ] [] ]
-              body [] [
-                  div [  ] [
-                      header(model)
-                      div [] content
-                  ]
-              ] ]
-
-    let index (model: LoginModel) =
-        [ p [] [ ] ] |> layout model
-
-    let loginView (model: LoginModel) =
-        [ form
-              [ attr "hx-post" "/login"; attr "hx-swap" "outerHTML" ]
-              [ div
-                    []
-                    [ p [] [ encodedText "Username" ]
-                      input [  _type "text"; _name "username"; _id "username-login-input" ]
-                      p [] [ encodedText "Password" ]
-                      input [  _type "password"; _name "password"; _id "password-login-input" ]
-                      button [ _id "submit" ] [ encodedText "Login" ] ] ] ]
-        |> layout model
-
-// ---------------------------------
 // Web app
 // ---------------------------------
-
-let indexHandler (name: string) =
-    let model = { ID = Guid.Empty; IsLoggedIn = false }
-    let view = Views.index model
-    htmlView view
-
-let loginHandler =
-    let model = { ID = Guid.Empty; IsLoggedIn = false }
-    let view = Views.loginView model
-    htmlView view
-    
-let logoutHandler httpFunc (httpContext: HttpContext) =
-    let sO = signOut "Cookie" >=> redirectTo false "/"
-    sO httpFunc httpContext
 
 let challengeHandler httpFunc httpContext =
     task {
         let! challengeResult = challenge "Cookie" httpFunc httpContext
         let challengeResultValue = challengeResult.Value
 
+        // TODO fix redirect with HTMX 
         match challengeResultValue.Response.StatusCode with
         | 401 ->
             let redirect = redirectTo false "/login" httpFunc httpContext
@@ -100,41 +34,25 @@ let challengeHandler httpFunc httpContext =
         | _ -> return challengeResult
     }
 
-let loginRequestHandler httpFunc (httpContext: HttpContext) =
-    task {
-        let authService = httpContext.GetService<IAuthenticationService>() :?> CTSAuthenticationService
-        let! reqData = httpContext.Request.ReadFormAsync()
-        let username = reqData["username"]
-        let password = reqData["password"]
-        authService.Login username password
-        // TODO replace this stuff?!?
-        let sSC = setStatusCode 404 >=> text "Not Found"
-        return! sSC httpFunc httpContext
-    }
+// GET-Routes are Public + Authenticated (Private + Admin)
+let getRoutes =
+    publicGetRoutesHandler
+    |> List.append
+        [ requiresAuthentication challengeHandler
+          >=> choose (privateGetRoutes |> List.append adminGetRoutes) ]
+
+// POST-Routes are Public + Authenticated (Private + Admin)
+let postRoutes =
+    publicPostRoutesHandler
+    |> List.append
+        [ requiresAuthentication challengeHandler
+          >=> choose (privatePostRoutes |> List.append adminPostRoutes) ]
 
 let webApp =
     choose
-        [ GET
-          >=> choose
-              [ route "/" >=> indexHandler "world"
-                route "/login" >=> loginHandler
-                route "/logout" >=> logoutHandler
-                requiresAuthentication challengeHandler
-                >=> choose
-                    [ route "/admin" >=> indexHandler "world"
-                      route "/survive" >=> indexHandler "world" ]
-
-                ]
-          POST >=> choose [ route "/login" >=> loginRequestHandler ]
+        [ GET >=> choose getRoutes
+          POST >=> choose postRoutes
           setStatusCode 404 >=> text "Not Found" ]
-
-// ---------------------------------
-// Error handler
-// ---------------------------------
-
-let errorHandler (ex: Exception) (logger: ILogger) =
-    logger.LogError(ex, "An unhandled exception has occurred while executing the request.")
-    clearResponse >=> setStatusCode 500 >=> text ex.Message
 
 // ---------------------------------
 // Config and Main

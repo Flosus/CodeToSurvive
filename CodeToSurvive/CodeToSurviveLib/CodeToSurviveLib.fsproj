@@ -9,13 +9,14 @@
     <ItemGroup>
         <Compile Include="Core\Item.fs"/>
         <Compile Include="Core\Entity.fs"/>
-        <Compile Include="Core\Character.fs" />
         <Compile Include="Core\World.fs"/>
+        <Compile Include="Core\Character.fs" />
         <Compile Include="Core\Job.fs"/>
         <Compile Include="Core\Tick.fs"/>
         <Compile Include="PlayerScript\ScriptInfo.fs"/>
         <Compile Include="PlayerScript\ScriptRunner.fs"/>
         <Compile Include="Storage.fs" />
+        <Compile Include="GameLoop.fs" />
     </ItemGroup>
 
 </Project>

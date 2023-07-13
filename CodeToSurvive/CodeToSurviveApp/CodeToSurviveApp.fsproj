@@ -8,17 +8,11 @@
 
     <ItemGroup>
         <PackageReference Include="BCrypt.Net-Next" Version="4.0.3"/>
-        <PackageReference Include="Giraffe" Version="5.0.0-rc-6"/>
+        <PackageReference Include="Giraffe" Version="5.0.0"/>
         <PackageReference Include="Giraffe.Htmx" Version="1.9.2"/>
-        <PackageReference Include="Giraffe.ViewEngine" Version="1.3.*"/>
+        <PackageReference Include="Giraffe.ViewEngine" Version="1.4.*"/>
         <PackageReference Include="Giraffe.ViewEngine.Htmx" Version="1.9.2"/>
         <PackageReference Include="Ply" Version="0.3.*"/>
-    </ItemGroup>
-
-    <ItemGroup>
-        <Compile Include="Config.fs" />
-        <Compile Include="Security.fs"/>
-        <Compile Include="Program.fs"/>
     </ItemGroup>
 
     <ItemGroup>
@@ -30,5 +24,27 @@
 
     <ItemGroup>
         <ProjectReference Include="..\CodeToSurviveLib\CodeToSurviveLib.fsproj"/>
+    </ItemGroup>
+
+    <ItemGroup>
+        <Compile Include="Config.fs"/>
+        <Compile Include="LoginManagement.fs" />
+        <Compile Include="Security.fs"/>
+        <Compile Include="Public\PublicModel.fs"/>
+        <Compile Include="Public\PublicViews.fs"/>
+        <Compile Include="Public\PublicHandler.fs" />
+        <Compile Include="Public\PublicRouter.fs" />
+        <Compile Include="Private\PrivateModel.fs"/>
+        <Compile Include="Private\PrivateViews.fs"/>
+        <Compile Include="Private\PrivateHandler.fs" />
+        <Compile Include="Private\PrivateRouter.fs" />
+        <Compile Include="Admin\AdminViews.fs"/>
+        <Compile Include="Admin\AdminModel.fs"/>
+        <Compile Include="Admin\AdminHandler.fs" />
+        <Compile Include="Admin\AdminRouter.fs" />
+        <Compile Include="Program.fs"/>
+    </ItemGroup>
+
+    <ItemGroup>
     </ItemGroup>
 </Project>
