@@ -34,7 +34,7 @@ module PublicViews =
             []
             [
                 if buttons.Length > 0 then div [] buttons else ()
-                div [ _class "privatePanel" ] content
+                div [ _class "subPanel" ] content
             ]]
         
     
