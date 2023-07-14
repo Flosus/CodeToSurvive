@@ -25,6 +25,7 @@ let challengeHandler httpFunc httpContext =
     task {
         let! challengeResult = challenge "Cookie" httpFunc httpContext
         let challengeResultValue = challengeResult.Value
+        printf $"challengeHandler called {httpContext.Request.Path.Value}"
 
         // TODO fix redirect with HTMX 
         match challengeResultValue.Response.StatusCode with
@@ -36,17 +37,15 @@ let challengeHandler httpFunc httpContext =
 
 // GET-Routes are Public + Authenticated (Private + Admin)
 let getRoutes =
-    publicGetRoutesHandler
-    |> List.append
-        [ requiresAuthentication challengeHandler
-          >=> choose (privateGetRoutes |> List.append adminGetRoutes) ]
+     [ requiresAuthentication challengeHandler
+       >=> choose (privateGetRoutes |> List.append adminGetRoutes) ]
+     |> List.append publicGetRoutesHandler
 
 // POST-Routes are Public + Authenticated (Private + Admin)
 let postRoutes =
-    publicPostRoutesHandler
-    |> List.append
-        [ requiresAuthentication challengeHandler
-          >=> choose (privatePostRoutes |> List.append adminPostRoutes) ]
+    [ requiresAuthentication challengeHandler
+      >=> choose (privatePostRoutes |> List.append adminPostRoutes) ]
+    |> List.append publicPostRoutesHandler
 
 let webApp =
     choose

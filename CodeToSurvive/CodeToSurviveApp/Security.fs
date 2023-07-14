@@ -66,6 +66,7 @@ module AuthenticationService =
 
             member this.ChallengeAsync(context, scheme, properties) : Task =
                 task {
+                    printfn "ChallengeAsync called"
                     let secCookie = context.Request.Cookies["x-cts-secure"]
                     let mutable guid = Guid.Empty
                     let isGuid = Guid.TryParse(secCookie, &guid)
@@ -105,9 +106,9 @@ module AuthenticationService =
                     ()
                 }
 
-        member this.Login username password =
-
-            ()
+        member this.Login username password: Option<ActiveLogin> =
+            
+            None
 
         member this.GetUserRole userId : AccountRole =
             let usrById =

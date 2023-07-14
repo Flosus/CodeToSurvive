@@ -7,11 +7,12 @@ module PublicRouter =
     open Giraffe
     // GET
     let indexRoute = route "/" >=> indexHandler
+    let scoreboardRoute = route "/scoreboard" >=> scoreboardHandler
     let loginRoute = route "/login" >=> loginHandler
     let logoutRoute = route "/logout" >=> logoutHandler
 
     let publicGetRoutesHandler: (HttpFunc -> HttpContext -> HttpFuncResult) list =
-        [ indexRoute; loginRoute; logoutRoute ]
+        [ indexRoute; scoreboardRoute; loginRoute; logoutRoute ]
 
     // POST
     let postLoginRoute = route "/login" >=> loginRequestHandler

@@ -4,41 +4,62 @@ open System
 open CodeToSurvive.App.AuthenticationService
 open CodeToSurvive.App.Public.PublicModel
 open CodeToSurvive.App.Public.PublicViews
+open Giraffe.ViewEngine.HtmlElements
 open Microsoft.AspNetCore.Authentication
 open Microsoft.AspNetCore.Http
 open Microsoft.Extensions.Logging
 
 module PublicHandler =
     open Giraffe
+    open Giraffe.Htmx
 
-    let indexHandler: HttpFunc -> HttpContext -> HttpFuncResult =
-        let model = { ID = Guid.Empty; IsLoggedIn = false }
-        let view = index model
-        htmlView view
+    let getAuthService (ctx: HttpContext) =
+        ctx.GetService<IAuthenticationService>() :?> CTSAuthenticationService
 
-    let loginHandler: HttpFunc -> HttpContext -> HttpFuncResult =
-        let model = { ID = Guid.Empty; IsLoggedIn = false }
-        let view = loginView model
-        htmlView view
+    let builderModelView (model:LoginModel) (viewFunc:LoginModel -> XmlNode list) httpFunc (ctx: HttpContext) =
+        let view = viewFunc model
+        let viewRes = match ctx.Request.IsHtmx with
+                        | true  -> view |> (div [])
+                        | false -> view |> layout model
+        let viewResult = htmlView viewRes
+        viewResult httpFunc ctx
 
-    let logoutHandler httpFunc (httpContext: HttpContext) =
-        let sO = signOut "Cookie" >=> redirectTo false "/"
-        sO httpFunc httpContext
+    let indexHandler httpFunc (ctx: HttpContext) =
+        let logger = ctx.GetLogger("logoutHandler")
+        logger.LogTrace "indexHandler called"
+        let model = LoginModel.AnonymousAccess
+        builderModelView model indexView httpFunc ctx
 
-    let getAuthService (httpContext: HttpContext) =
-        httpContext.GetService<IAuthenticationService>() :?> CTSAuthenticationService
+    let scoreboardHandler httpFunc (ctx: HttpContext) =
+        let logger = ctx.GetLogger("logoutHandler")
+        logger.LogTrace "scoreboardHandler called"
+        let model = LoginModel.AnonymousAccess
+        builderModelView model scoreboardView httpFunc ctx
 
+    let loginHandler httpFunc (ctx: HttpContext) =
+        let logger = ctx.GetLogger("logoutHandler")
+        logger.LogTrace "loginHandler called"
+        let model = LoginModel.AnonymousAccess
+        builderModelView model loginView httpFunc ctx
 
-    let loginRequestHandler httpFunc (httpContext: HttpContext) =
+    let logoutHandler httpFunc (ctx: HttpContext) =
+        let logger = ctx.GetLogger("logoutHandler")
+        logger.LogTrace "logoutHandler called"
+        let signOutView = signOut "Cookie" >=> builderModelView LoginModel.AnonymousAccess logoutView 
+        signOutView httpFunc ctx
+      
+    let loginRequestHandler httpFunc (ctx: HttpContext) =
+        let logger = ctx.GetLogger("loginRequestHandler")
+        logger.LogTrace "loginRequestHandler called"
         task {
-            let! reqData = httpContext.Request.ReadFormAsync()
+            let! reqData = ctx.Request.ReadFormAsync()
             let username = reqData["username"]
             let password = reqData["password"]
-            let authService = getAuthService httpContext
-            authService.Login username password
+            let authService = getAuthService ctx
+            let result = authService.Login username password
             // TODO replace this stuff?!?
-            let sSC = setStatusCode 404 >=> text "Not Found"
-            return! sSC httpFunc httpContext
+            let loginModel = if result.IsSome then ActiveLogin(DUMMY_USER) else InvalidLogin
+            return! builderModelView loginModel loginView httpFunc ctx
         }
 
     // ---------------------------------
