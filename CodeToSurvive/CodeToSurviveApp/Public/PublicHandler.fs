@@ -16,11 +16,14 @@ module PublicHandler =
     let getAuthService (ctx: HttpContext) =
         ctx.GetService<IAuthenticationService>() :?> CTSAuthenticationService
 
-    let builderModelView (model:LoginModel) (viewFunc:LoginModel -> XmlNode list) httpFunc (ctx: HttpContext) =
+    let builderModelView (model: LoginModel) (viewFunc: LoginModel -> XmlNode list) httpFunc (ctx: HttpContext) =
         let view = viewFunc model
-        let viewRes = match ctx.Request.IsHtmx with
-                        | true  -> view |> (div [])
-                        | false -> view |> layout model
+
+        let viewRes =
+            match ctx.Request.IsHtmx with
+            | true -> view |> (div [])
+            | false -> view |> layout model
+
         let viewResult = htmlView viewRes
         viewResult httpFunc ctx
 
@@ -45,12 +48,16 @@ module PublicHandler =
     let logoutHandler httpFunc (ctx: HttpContext) =
         let logger = ctx.GetLogger("logoutHandler")
         logger.LogTrace "logoutHandler called"
-        let signOutView = signOut "Cookie" >=> builderModelView LoginModel.AnonymousAccess logoutView 
+
+        let signOutView =
+            signOut "Cookie" >=> builderModelView LoginModel.AnonymousAccess logoutView
+
         signOutView httpFunc ctx
-      
+
     let loginRequestHandler httpFunc (ctx: HttpContext) =
         let logger = ctx.GetLogger("loginRequestHandler")
         logger.LogTrace "loginRequestHandler called"
+
         task {
             let! reqData = ctx.Request.ReadFormAsync()
             let username = reqData["username"]
@@ -58,7 +65,12 @@ module PublicHandler =
             let authService = getAuthService ctx
             let result = authService.Login username password
             // TODO replace this stuff?!?
-            let loginModel = if result.IsSome then ActiveLogin(DUMMY_USER) else InvalidLogin
+            let loginModel =
+                if result.IsSome then
+                    ActiveLogin(DUMMY_USER)
+                else
+                    InvalidLogin
+
             return! builderModelView loginModel loginView httpFunc ctx
         }
 

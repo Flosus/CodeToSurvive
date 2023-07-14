@@ -5,7 +5,7 @@ module Position =
 
     let chunkSize = 64
 
-    
+
     [<Struct>]
     type TilePosition =
         { X: int
@@ -53,7 +53,7 @@ module Position =
         { X: int
           Y: int }
 
-        static member minusX offset position : AbsoluteTilePosition=
+        static member minusX offset position : AbsoluteTilePosition =
             { position with
                 X = position.X - offset }
 
@@ -61,7 +61,7 @@ module Position =
             { position with
                 Y = position.Y - offset }
 
-        static member plusX offset position : AbsoluteTilePosition=
+        static member plusX offset position : AbsoluteTilePosition =
             { position with
                 X = position.X + offset }
 

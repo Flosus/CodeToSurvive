@@ -60,7 +60,7 @@ module WorldGen =
           WestType = template.WestType
           Tiles = template.TileGenerator() }
 
-    let generateChunk isAllowedAdjacent getAllTemplates map position   =
+    let generateChunk isAllowedAdjacent getAllTemplates map position =
         let northChunk = position |> ChunkPosition.plusY 1 |> getChunk map
         let southChunk = position |> ChunkPosition.plusY 1 |> getChunk map
         let westChunk = position |> ChunkPosition.plusX -1 |> getChunk map
@@ -82,6 +82,3 @@ module WorldGen =
             let randomIndex = randomNumberGen.Next(0, possibleTemplatesLength - 1)
             let template = possibleTemplates[randomIndex]
             createChunkFromTemplate position template
-
-    
-    

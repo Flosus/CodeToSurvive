@@ -106,8 +106,8 @@ module AuthenticationService =
                     ()
                 }
 
-        member this.Login username password: Option<ActiveLogin> =
-            
+        member this.Login username password : Option<ActiveLogin> =
+
             None
 
         member this.GetUserRole userId : AccountRole =

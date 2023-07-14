@@ -27,7 +27,7 @@ let challengeHandler httpFunc httpContext =
         let challengeResultValue = challengeResult.Value
         printf $"challengeHandler called {httpContext.Request.Path.Value}"
 
-        // TODO fix redirect with HTMX 
+        // TODO fix redirect with HTMX
         match challengeResultValue.Response.StatusCode with
         | 401 ->
             let redirect = redirectTo false "/login" httpFunc httpContext
@@ -37,9 +37,9 @@ let challengeHandler httpFunc httpContext =
 
 // GET-Routes are Public + Authenticated (Private + Admin)
 let getRoutes =
-     [ requiresAuthentication challengeHandler
-       >=> choose (privateGetRoutes |> List.append adminGetRoutes) ]
-     |> List.append publicGetRoutesHandler
+    [ requiresAuthentication challengeHandler
+      >=> choose (privateGetRoutes |> List.append adminGetRoutes) ]
+    |> List.append publicGetRoutesHandler
 
 // POST-Routes are Public + Authenticated (Private + Admin)
 let postRoutes =

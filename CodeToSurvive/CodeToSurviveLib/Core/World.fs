@@ -8,7 +8,7 @@ module World =
 
     exception WorldGenError of string
     let private worldMapLock = obj ()
-    
+
     type ChunkFeature = string
     type ChunkType = string * ChunkFeature[]
 
@@ -58,7 +58,7 @@ module World =
         finally
             Monitor.Exit worldMapLock
 
-    let getGenerator (gChunk: GenerateChunk): UpdateWorldMap =
+    let getGenerator (gChunk: GenerateChunk) : UpdateWorldMap =
         let generator worldMap chunkPosition =
             let chunk = gChunk worldMap chunkPosition
             appendWorldMap worldMap chunk
