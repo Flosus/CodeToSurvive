@@ -20,6 +20,7 @@
         <Compile Include="Storage.fs" />
         <Compile Include="GameLoop.fs" />
         <Compile Include="DevImpl\DevWorldGen.fs" />
+        <Compile Include="DevImpl\DevState.fs" />
     </ItemGroup>
 
 </Project>

@@ -43,6 +43,7 @@
         <Compile Include="Admin\AdminHandler.fs" />
         <Compile Include="Admin\AdminRouter.fs" />
         <Compile Include="Program.fs"/>
+        <Content Include="settings.json" />
     </ItemGroup>
 
     <ItemGroup>

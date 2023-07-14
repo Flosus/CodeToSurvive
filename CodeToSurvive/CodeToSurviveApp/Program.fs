@@ -7,6 +7,7 @@ open CodeToSurvive.App.Public.PublicHandler
 open CodeToSurvive.App.Public.PublicRouter
 open CodeToSurvive.App.Private.PrivateRouter
 open CodeToSurvive.App.Admin.AdminRouter
+open CodeToSurvive.Lib.Storage
 open Microsoft.AspNetCore.Authentication
 open Microsoft.AspNetCore.Builder
 open Microsoft.AspNetCore.Cors.Infrastructure
@@ -21,16 +22,18 @@ open Giraffe
 // Web app
 // ---------------------------------
 
-let challengeHandler httpFunc httpContext =
+let challengeHandler httpFunc (ctx: HttpContext) =
+    let logger = ctx.GetLogger("challengeHandler")
+
     task {
-        let! challengeResult = challenge "Cookie" httpFunc httpContext
+        let! challengeResult = challenge "Cookie" httpFunc ctx
         let challengeResultValue = challengeResult.Value
-        printf $"challengeHandler called {httpContext.Request.Path.Value}"
+        logger.LogTrace $"challengeHandler called {ctx.Request.Path.Value}"
 
         // TODO fix redirect with HTMX
         match challengeResultValue.Response.StatusCode with
         | 401 ->
-            let redirect = redirectTo false "/login" httpFunc httpContext
+            let redirect = redirectTo false "/login" httpFunc ctx
             return! redirect
         | _ -> return challengeResult
     }
@@ -75,9 +78,16 @@ let configureApp (app: IApplicationBuilder) =
         .UseGiraffe(webApp)
 
 let configureServices (services: IServiceCollection) =
+    let baseStoragePath = Config.getBasePath ()
+    let storage = Storage(baseStoragePath)
+    LoginManagement.ensureDefaultAdminUser storage
+    let storageFactory (_: IServiceProvider) : obj = storage
+    let authService = CTSAuthenticationService(storage)
+    let authFactory (_: IServiceProvider) : obj = authService
     services.AddCors() |> ignore
     services.AddGiraffe() |> ignore
-    services.AddScoped<IAuthenticationService, CTSAuthenticationService>() |> ignore
+    services.AddScoped(typedefof<IStorage>, storageFactory) |> ignore
+    services.AddScoped(typedefof<IAuthenticationService>, authFactory) |> ignore
     ()
 
 let configureLogging (builder: ILoggingBuilder) =

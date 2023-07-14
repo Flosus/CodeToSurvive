@@ -1,6 +1,7 @@
 namespace CodeToSurvive.App
 
 open System
+open System.IO
 open CodeToSurvive.Lib.Storage
 open BCrypt.Net
 
@@ -26,61 +27,104 @@ module LoginManagement =
           LastLoginTime: DateTime
           Username: string }
 
+    let private defaultAdminName = "admin"
+    let private randomAdminPassword = "admin" // Guid.NewGuid().ToString()
+
     let loginFileLock = obj ()
 
     let parseAccountEntry (str: string) =
         let parts = str.Split "|"
         let userId = Guid.Parse parts[0]
+        let passwordHash = parts[1]
+        let role = parts[2]
         let lastLogin = DateTime.Parse parts[3]
+        let username = parts[4]
 
         let role =
-            match parts[2] with
+            match role with
             | "Admin" -> AccountRole.Admin
             | _ -> AccountRole.User
 
         { UserId = userId
-          Password = parts[1]
+          Password = passwordHash
           Role = role
           LastLoginTime = lastLogin
-          Username = parts[5] }
+          Username = username }
 
-    let updatePassword (id: Guid) (newPassword: string) (storage: Storage) : AccountResult =
+    let loadAllUsers storage =
+        lock loginFileLock (fun () ->
+            let secFile = getSecFile storage
+            let lines = File.ReadAllLines secFile
+
+            lines
+            |> Array.filter (fun line -> line.Trim().Length <> 0)
+            |> Array.map parseAccountEntry)
+
+    let updateUserFile storage entries =
+        lock loginFileLock (fun () ->
+            (let secFile = getSecFile storage
+
+             entries
+             |> Array.map (fun ent -> $"{ent.UserId}|{ent.Password}|{ent.Role}|{ent.LastLoginTime}|{ent.Username}")
+             |> (fun entArr -> File.WriteAllLines(secFile, entArr))))
+
+
+    let updatePassword storage id newPassword =
         let passwordHash = BCrypt.HashPassword(newPassword)
-        // TODO read file
-        // TODO replace user entry
-        // TODO write file
-        Error("Not yet implemented")
 
-    let private login (username: string) (password: string) (storage: Storage) : AccountResult =
-        // TODO read file
-        // Error("Unavailable")
-        // TODO find user in file
-        // Error("Not logged in")
-        // TODO check password
-        let passwordHash = "hashFromFile"
+        let mapUsers =
+            fun usr ->
+                match usr.UserId = id with
+                | true -> { usr with Password = passwordHash }
+                | false -> usr
 
-        match BCrypt.Verify(password, passwordHash) with
-        | true -> Error("Success")
-        // TODO build success
-        | false -> Error("Not logged in")
+        loadAllUsers storage |> Array.map mapUsers |> updateUserFile storage
+
+    let mapAccount entry =
+        { ID = entry.UserId
+          Username = entry.Username
+          Role = entry.Role }
+
+    let login storage username password : AccountResult =
+        let allUsers = loadAllUsers storage
+
+        let userIndex =
+            allUsers
+            |> Array.tryFind (fun ent -> ent.Username = username && BCrypt.Verify(password, ent.Password))
+
+        match userIndex with
+        | None -> Error("Not logged in")
+        | Some usr -> Success(mapAccount usr)
 
 
-    let createNewUser (username: string) (tempPassword: string) (role: AccountRole) (storage: Storage) : AccountResult =
+    let createNewUser storage (username: string) tempPassword role =
         if username.Contains("|") then
-            Error("")
+            // TODO escape | instead?
+            Error("Invalid Username. | is not allowed")
         else
             printf $"Creating new user '{username}'"
-            let newUserGuid = Guid.NewGuid()
-            let passwordHash = BCrypt.HashPassword(tempPassword)
-            let lastLogin = DateTime.Now.ToLocalTime()
-            let fileEntry = $"{newUserGuid}|{passwordHash}|{role}|{lastLogin}|{username}"
-            // TODO read file
-            // TODO check for existing username
-            // TODO add user entry
-            // TODO write file
-            let newAccount =
-                { ID = newUserGuid
-                  Username = username
-                  Role = role }
+
+            let newUser =
+                { UserId = Guid.NewGuid()
+                  Password = BCrypt.HashPassword(tempPassword)
+                  Role = role
+                  LastLoginTime = DateTime.UnixEpoch.ToLocalTime()
+                  Username = username }
+
+            loadAllUsers storage |> Array.append [| newUser |] |> updateUserFile storage
+
+            let newAccount = mapAccount newUser
 
             Success(newAccount)
+
+    let ensureDefaultAdminUser storage =
+        let adminNotFound =
+            loadAllUsers storage
+            |> Array.filter (fun en -> en.Username = defaultAdminName)
+            |> Array.isEmpty
+
+        match adminNotFound with
+        | true ->
+            createNewUser storage defaultAdminName randomAdminPassword AccountRole.Admin
+            |> ignore
+        | false -> ()

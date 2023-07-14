@@ -13,5 +13,4 @@ module Config =
             .AddJsonFile(settingsFile)
             .Build()
 
-    let getStoragePath () = configuration["StoragePath"]
-    let getAdminPassword () = configuration["AdminPassword"]
+    let getBasePath () = configuration["StoragePath"]

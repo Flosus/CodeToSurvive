@@ -1,8 +1,7 @@
 namespace CodeToSurvive.App.Public
 
-open CodeToSurvive.App
+open CodeToSurvive.App.AuthenticationService
 open CodeToSurvive.App.LoginManagement
-open CodeToSurvive.App.Public.PublicModel
 
 module PublicViews =
     open Giraffe.ViewEngine
@@ -62,7 +61,7 @@ module PublicViews =
         [ p [] [ encodedText "A scoreboard will be placed here" ] ]
 
     let loginView (model: LoginModel) =
-        let invalidLoginNode = p [] [ encodedText "Invalid Login" ]
+        let invalidLoginNode = p [ _class "error-message" ] [ encodedText "Invalid Login" ]
 
         let loginForm =
             [ form

@@ -2,7 +2,6 @@ namespace CodeToSurvive.App.Public
 
 open System
 open CodeToSurvive.App.AuthenticationService
-open CodeToSurvive.App.Public.PublicModel
 open CodeToSurvive.App.Public.PublicViews
 open Giraffe.ViewEngine.HtmlElements
 open Microsoft.AspNetCore.Authentication
@@ -15,6 +14,10 @@ module PublicHandler =
 
     let getAuthService (ctx: HttpContext) =
         ctx.GetService<IAuthenticationService>() :?> CTSAuthenticationService
+
+    let tryGetCurrentUser (ctx: HttpContext) =
+        let auth = getAuthService ctx
+        auth.GetCurrentUser ctx
 
     let builderModelView (model: LoginModel) (viewFunc: LoginModel -> XmlNode list) httpFunc (ctx: HttpContext) =
         let view = viewFunc model
@@ -30,27 +33,27 @@ module PublicHandler =
     let indexHandler httpFunc (ctx: HttpContext) =
         let logger = ctx.GetLogger("logoutHandler")
         logger.LogTrace "indexHandler called"
-        let model = LoginModel.AnonymousAccess
+        let model = tryGetCurrentUser ctx
         builderModelView model indexView httpFunc ctx
 
     let scoreboardHandler httpFunc (ctx: HttpContext) =
         let logger = ctx.GetLogger("logoutHandler")
         logger.LogTrace "scoreboardHandler called"
-        let model = LoginModel.AnonymousAccess
+        let model = tryGetCurrentUser ctx
         builderModelView model scoreboardView httpFunc ctx
 
     let loginHandler httpFunc (ctx: HttpContext) =
         let logger = ctx.GetLogger("logoutHandler")
         logger.LogTrace "loginHandler called"
-        let model = LoginModel.AnonymousAccess
+        let model = tryGetCurrentUser ctx
         builderModelView model loginView httpFunc ctx
 
     let logoutHandler httpFunc (ctx: HttpContext) =
         let logger = ctx.GetLogger("logoutHandler")
         logger.LogTrace "logoutHandler called"
 
-        let signOutView =
-            signOut "Cookie" >=> builderModelView LoginModel.AnonymousAccess logoutView
+        let model = tryGetCurrentUser ctx
+        let signOutView = signOut "Cookie" >=> builderModelView model logoutView
 
         signOutView httpFunc ctx
 
@@ -63,15 +66,15 @@ module PublicHandler =
             let username = reqData["username"]
             let password = reqData["password"]
             let authService = getAuthService ctx
-            let result = authService.Login username password
-            // TODO replace this stuff?!?
-            let loginModel =
-                if result.IsSome then
-                    ActiveLogin(DUMMY_USER)
-                else
-                    InvalidLogin
+            let result = authService.Login (string username) (string password)
 
-            return! builderModelView loginModel loginView httpFunc ctx
+            match result with
+            | Some login ->
+                let _ = ActiveLogin(login)
+                ctx.Response.Cookies.Append(secCookieName, result.Value.CookieId.ToString())
+                let redirect = withHxRedirect "/private"
+                return! redirect httpFunc ctx
+            | None -> return! builderModelView InvalidLogin loginView httpFunc ctx
         }
 
     // ---------------------------------

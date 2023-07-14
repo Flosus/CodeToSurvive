@@ -1,39 +1,51 @@
 namespace CodeToSurvive.App
 
 open System
-open System.Collections.Generic
+open Microsoft.Extensions.Logging
 open System.Net
 open System.Security.Claims
 open System.Threading.Tasks
 open CodeToSurvive.App.LoginManagement
+open CodeToSurvive.Lib.Storage
 open Microsoft.AspNetCore.Authentication
 open Microsoft.AspNetCore.Http
+open Giraffe
 
 module AuthenticationService =
-
     type ActiveLogin =
         { UserId: Guid
           CookieId: Guid
           LastLoginTime: DateTime
           Role: AccountRole }
 
-    type LoginState = { activeLogins: ActiveLogin[] }
+    type LoginModel =
+        | ActiveLogin of ActiveLogin
+        | AnonymousAccess
+        | InvalidLogin
 
-    type CTSAuthenticationService() =
-        let mutable activeLogins = ref { activeLogins = [||] }
+    type LoginState = { activeLogins: ActiveLogin[] }
+    let secCookieName = "x-cts-secure"
+
+    let getLogin model : Option<ActiveLogin> =
+        match model with
+        | AnonymousAccess -> None
+        | InvalidLogin -> None
+        | ActiveLogin login -> Some login
+
+    type CTSAuthenticationService(serviceCol: IStorage) =
+        let storage = serviceCol
+        let activeLogins = ResizeArray<ActiveLogin>()
         let lockObj = obj ()
 
-        let getActiveLogins () =
-            lock lockObj (fun () -> activeLogins.Value)
+        let getActiveLogins () = lock lockObj (fun () -> activeLogins)
 
         let getLoginsBy (filter: ActiveLogin -> bool) =
-            lock lockObj (fun () -> activeLogins.Value.activeLogins |> Array.filter filter)
+            lock lockObj (fun () -> activeLogins.FindAll filter)
 
         let removeLogins (shouldRemove: ActiveLogin -> bool) =
-            lock lockObj (fun () ->
-                activeLogins.Value = { activeLogins =
-                                         activeLogins.Value.activeLogins
-                                         |> Array.filter (fun lI -> shouldRemove lI |> not) })
+            printfn "Removing cookies"
+            lock lockObj (fun () -> activeLogins.RemoveAll(fun lI -> shouldRemove lI |> not) |> ignore)
+            ()
 
         let removeLoginsByAge (age: TimeSpan) =
             removeLogins (fun lI -> lI.LastLoginTime.Add(age) < DateTime.Now)
@@ -46,14 +58,9 @@ module AuthenticationService =
 
         let addOrReplaceLogin (newLogin: ActiveLogin) =
             lock lockObj (fun () ->
-                let otherLogins =
-                    activeLogins.Value.activeLogins
-                    |> Array.filter (fun lI -> lI.UserId = newLogin.UserId)
-
-                let newContent = Array.concat [| otherLogins; [| newLogin |] |]
-                activeLogins.Value = { activeLogins = newContent })
-
-
+                removeLogins (fun lI -> lI.UserId = newLogin.UserId)
+                printfn $"NewLoginCookie={newLogin.CookieId}"
+                activeLogins.Add newLogin)
 
         interface IAuthenticationService with
             member this.AuthenticateAsync(context: HttpContext, scheme: string) : Task<AuthenticateResult> =
@@ -61,13 +68,12 @@ module AuthenticationService =
                     printfn $"AuthenticateAsync: scheme: {scheme}; context={context}"
                     let ticket = AuthenticationTicket(ClaimsPrincipal(), scheme)
                     return AuthenticateResult.Success(ticket)
-                // return AuthenticateResult.Fail("NYI")
                 }
 
-            member this.ChallengeAsync(context, scheme, properties) : Task =
+            member this.ChallengeAsync(context, _, _) : Task =
                 task {
                     printfn "ChallengeAsync called"
-                    let secCookie = context.Request.Cookies["x-cts-secure"]
+                    let secCookie = context.Request.Cookies[secCookieName]
                     let mutable guid = Guid.Empty
                     let isGuid = Guid.TryParse(secCookie, &guid)
 
@@ -76,14 +82,9 @@ module AuthenticationService =
                         context.Response.StatusCode <- int HttpStatusCode.Unauthorized
                         ()
                     | true ->
-                        try
-                            getActiveLogins().activeLogins
-                            |> Array.find (fun aL -> aL.CookieId = guid)
-                            |> ignore
-                        with :? KeyNotFoundException ->
-                            context.Response.StatusCode <- int HttpStatusCode.Unauthorized
-
-                        ()
+                        match getActiveLogins () |> Seq.tryFind (fun aL -> aL.CookieId = guid) with
+                        | Some _ -> ()
+                        | None -> context.Response.StatusCode <- int HttpStatusCode.Unauthorized
                 }
 
             member this.ForbidAsync(context, scheme, properties) : Task =
@@ -107,15 +108,50 @@ module AuthenticationService =
                 }
 
         member this.Login username password : Option<ActiveLogin> =
+            let loginResult = login storage username password
 
-            None
+            match loginResult with
+            | Error msg ->
+                printfn $"Error while logging in {msg}"
+                None
+            | Success res ->
+                let activeLogin =
+                    { UserId = res.ID
+                      CookieId = Guid.NewGuid()
+                      LastLoginTime = DateTime.Now
+                      Role = res.Role }
+
+                addOrReplaceLogin activeLogin
+                Some(activeLogin)
 
         member this.GetUserRole userId : AccountRole =
             let usrById =
-                getLoginsBy (fun usr -> usr.UserId = userId) |> Array.findBack (fun _ -> true)
+                getLoginsBy (fun usr -> usr.UserId = userId) |> Seq.findBack (fun _ -> true)
 
             usrById.Role
 
-        member this.LogoutUser(userId: Guid) = removeLoginsByUser userId |> ignore
+        member this.LogoutUser(userId: Guid) = removeLoginsByUser userId
 
-        member this.LogoutSession(cookie: Guid) = removeLoginsByCookie cookie |> ignore
+        member this.LogoutSession(cookie: Guid) = removeLoginsByCookie cookie
+
+        member this.GetCurrentUser(ctx: HttpContext) : LoginModel =
+            let logger = ctx.GetLogger("GetCurrentUser")
+            logger.LogTrace "ChallengeAsync called"
+            let secCookie = ctx.Request.Cookies[secCookieName]
+            let mutable guid = Guid.Empty
+            let isGuid = Guid.TryParse(secCookie, &guid)
+
+            match isGuid with
+            | false -> LoginModel.AnonymousAccess
+            | true ->
+                let activeLogins = getActiveLogins ()
+                let loginOpt = activeLogins |> Seq.tryFind (fun aL -> aL.CookieId = guid)
+
+                match loginOpt with
+                | None ->
+                    logger.LogWarning $"Invalid cookie found: {secCookie}"
+                    ctx.Response.Cookies.Delete secCookieName
+                    LoginModel.InvalidLogin
+                | Some login ->
+                    logger.LogTrace "Cookie found"
+                    LoginModel.ActiveLogin login

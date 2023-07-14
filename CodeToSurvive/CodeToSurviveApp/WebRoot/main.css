@@ -8,3 +8,7 @@ body {
 h1 {
     font-size: 1.5em;
 }
+
+.error-message {
+    color: red;
+}

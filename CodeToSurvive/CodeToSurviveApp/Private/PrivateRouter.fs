@@ -7,7 +7,7 @@ module PrivateRouter =
     open Giraffe
 
     // GET
-    let playRoute = route "/survive" >=> indexHandler
+    let playRoute = route "/private" >=> indexHandler
 
     let privateGetRoutes: (HttpFunc -> HttpContext -> HttpFuncResult) list =
         [ playRoute ]
