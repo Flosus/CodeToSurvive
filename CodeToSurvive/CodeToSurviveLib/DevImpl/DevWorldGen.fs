@@ -19,6 +19,7 @@ module DevWorldGen =
         // check type
         let isSameType = typeName1 = typeName2
         // Check feature
+        // TODO remove exclusive features before comparison
         let feature1Set = Set.ofArray features1
         let feature2Set = Set.ofArray features2
         let intersection = Set.intersect feature1Set feature2Set
