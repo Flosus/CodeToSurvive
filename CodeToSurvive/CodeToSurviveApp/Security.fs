@@ -1,6 +1,7 @@
 namespace CodeToSurvive.App
 
 open System
+open System.Security.Principal
 open Microsoft.Extensions.Logging
 open System.Net
 open System.Security.Claims
@@ -17,7 +18,6 @@ module AuthenticationService =
           CookieId: Guid
           LastLoginTime: DateTime
           Role: AccountRole }
-
     type LoginModel =
         | ActiveLogin of ActiveLogin
         | AnonymousAccess
@@ -70,20 +70,25 @@ module AuthenticationService =
                     return AuthenticateResult.Success(ticket)
                 }
 
-            member this.ChallengeAsync(context, _, _) : Task =
+            member this.ChallengeAsync(context, a, b) : Task =
                 task {
+                    let a1 = a
+                    let b1 = b
                     printfn "ChallengeAsync called"
                     let secCookie = context.Request.Cookies[secCookieName]
                     let mutable guid = Guid.Empty
                     let isGuid = Guid.TryParse(secCookie, &guid)
-
                     match isGuid with
                     | false ->
                         context.Response.StatusCode <- int HttpStatusCode.Unauthorized
                         ()
                     | true ->
                         match getActiveLogins () |> Seq.tryFind (fun aL -> aL.CookieId = guid) with
-                        | Some _ -> ()
+                        | Some _ ->
+                            let identity = ClaimsIdentity("cookie")
+                            let usr: ClaimsPrincipal = ClaimsPrincipal(identity)
+                            context.User <- usr
+                            printfn "hmm"
                         | None -> context.Response.StatusCode <- int HttpStatusCode.Unauthorized
                 }
 
@@ -136,7 +141,7 @@ module AuthenticationService =
 
         member this.GetCurrentUser(ctx: HttpContext) : LoginModel =
             let logger = ctx.GetLogger("GetCurrentUser")
-            logger.LogTrace "ChallengeAsync called"
+            logger.LogTrace "GetCurrentUser called"
             let secCookie = ctx.Request.Cookies[secCookieName]
             let mutable guid = Guid.Empty
             let isGuid = Guid.TryParse(secCookie, &guid)

@@ -11,11 +11,10 @@ module PublicRouter =
     let loginRoute = route "/login" >=> loginHandler
     let logoutRoute = route "/logout" >=> logoutHandler
 
-    let publicGetRoutesHandler: (HttpFunc -> HttpContext -> HttpFuncResult) list =
-        [ indexRoute; scoreboardRoute; loginRoute; logoutRoute ]
-
     // POST
     let postLoginRoute = route "/login" >=> loginRequestHandler
 
-    let publicPostRoutesHandler: (HttpFunc -> HttpContext -> HttpFuncResult) list =
-        [ postLoginRoute ]
+    let publicRoutes: HttpHandler =
+        choose
+            [ GET >=> choose [ indexRoute; scoreboardRoute; loginRoute; logoutRoute ]
+              POST >=> choose [ postLoginRoute ] ]

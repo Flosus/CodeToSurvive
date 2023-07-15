@@ -2,10 +2,12 @@ namespace CodeToSurvive.App.Public
 
 open System
 open CodeToSurvive.App.AuthenticationService
+open CodeToSurvive.App.Public.PublicModel
 open CodeToSurvive.App.Public.PublicViews
 open Giraffe.ViewEngine.HtmlElements
 open Microsoft.AspNetCore.Authentication
 open Microsoft.AspNetCore.Http
+open Microsoft.AspNetCore.Identity
 open Microsoft.Extensions.Logging
 
 module PublicHandler =
@@ -65,14 +67,25 @@ module PublicHandler =
             let! reqData = ctx.Request.ReadFormAsync()
             let username = reqData["username"]
             let password = reqData["password"]
+            
+            let! model = ctx.TryBindFormAsync<LoginRequest>()
+            let userManager = ctx.GetService<UserManager<IdentityUser>>()
+            let signInManager = ctx.GetService<SignInManager<IdentityUser>>()
+            
+            
+            //
             let authService = getAuthService ctx
             let result = authService.Login (string username) (string password)
 
             match result with
             | Some login ->
                 let _ = ActiveLogin(login)
-                ctx.Response.Cookies.Append(secCookieName, result.Value.CookieId.ToString())
-                let redirect = withHxRedirect "/private"
+                let cookieOpt = CookieOptions()
+                cookieOpt.Secure <- true
+                cookieOpt.IsEssential <- true
+                cookieOpt.MaxAge <- TimeSpan(72, 0, 0)
+                ctx.Response.Cookies.Append(secCookieName, result.Value.CookieId.ToString(), cookieOpt)
+                let redirect = withHxRedirect "/secured/private"
                 return! redirect httpFunc ctx
             | None -> return! builderModelView InvalidLogin loginView httpFunc ctx
         }

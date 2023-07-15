@@ -15,7 +15,7 @@ module PublicViews =
 
         div
             [ _class "headPanel" ]
-            [ a [ _href "/" ] [ img [ _class "headPanelLogo"; _src "favicon.ico" ] ]
+            [ a [ _href "/" ] [ img [ _class "headPanelLogo"; _src "/android-chrome-192x192.png" ] ]
               a [ _href "/scoreboard" ] [ button [ _class "scoreboardBtn" ] [ encodedText "Scoreboard" ] ]
               a
                   [ _href "https://github.com/Flosus/CodeToSurvive/wiki"; _target "_blank" ]

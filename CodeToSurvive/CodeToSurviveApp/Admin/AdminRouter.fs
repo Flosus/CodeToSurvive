@@ -6,14 +6,14 @@ open Microsoft.AspNetCore.Http
 module AdminRouter =
     open Giraffe
 
-
     // GET
-    let adminRoute = route "/admin" >=> indexHandler
+    let adminRoute = route "/secured/admin" >=> indexHandler
 
-    let adminGetRoutes: (HttpFunc -> HttpContext -> HttpFuncResult) list =
-        [ adminRoute ]
     // POST
-    let adminPostRoutes: (HttpFunc -> HttpContext -> HttpFuncResult) list =
-        [
 
-        ]
+    let adminRoutes: HttpHandler =
+        let notLoggedIn = setStatusCode 401 >=> redirectTo false "/" 
+        subRoute
+            "/admin"
+            (requiresAuthentication notLoggedIn
+             >=> choose [ GET >=> choose [ adminRoute ]; POST >=> choose [adminRoute] ])

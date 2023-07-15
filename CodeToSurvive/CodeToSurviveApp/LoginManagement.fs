@@ -102,7 +102,7 @@ module LoginManagement =
             // TODO escape | instead?
             Error("Invalid Username. | is not allowed")
         else
-            printf $"Creating new user '{username}'"
+            printfn $"Creating new user '{username}'"
 
             let newUser =
                 { UserId = Guid.NewGuid()
@@ -125,6 +125,9 @@ module LoginManagement =
 
         match adminNotFound with
         | true ->
-            createNewUser storage defaultAdminName randomAdminPassword AccountRole.Admin
-            |> ignore
+            let password = randomAdminPassword
+            let username = defaultAdminName
+            printfn "Creating default admin user. Please remember to change the Password."
+            printfn $"Username='{username}' Password='{password}'"
+            createNewUser storage username password AccountRole.Admin |> ignore
         | false -> ()

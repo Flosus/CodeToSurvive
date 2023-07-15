@@ -11,6 +11,7 @@ open CodeToSurvive.Lib.Storage
 open Microsoft.AspNetCore.Authentication
 open Microsoft.AspNetCore.Builder
 open Microsoft.AspNetCore.Cors.Infrastructure
+open Microsoft.Extensions.DependencyInjection
 open Microsoft.AspNetCore.Hosting
 open Microsoft.AspNetCore.Http
 open Microsoft.Extensions.Hosting
@@ -21,40 +22,13 @@ open Giraffe
 // ---------------------------------
 // Web app
 // ---------------------------------
-
-let challengeHandler httpFunc (ctx: HttpContext) =
-    let logger = ctx.GetLogger("challengeHandler")
-
-    task {
-        let! challengeResult = challenge "Cookie" httpFunc ctx
-        let challengeResultValue = challengeResult.Value
-        logger.LogTrace $"challengeHandler called {ctx.Request.Path.Value}"
-
-        // TODO fix redirect with HTMX
-        match challengeResultValue.Response.StatusCode with
-        | 401 ->
-            let redirect = redirectTo false "/login" httpFunc ctx
-            return! redirect
-        | _ -> return challengeResult
-    }
-
-// GET-Routes are Public + Authenticated (Private + Admin)
-let getRoutes =
-    [ requiresAuthentication challengeHandler
-      >=> choose (privateGetRoutes |> List.append adminGetRoutes) ]
-    |> List.append publicGetRoutesHandler
-
-// POST-Routes are Public + Authenticated (Private + Admin)
-let postRoutes =
-    [ requiresAuthentication challengeHandler
-      >=> choose (privatePostRoutes |> List.append adminPostRoutes) ]
-    |> List.append publicPostRoutesHandler
-
 let webApp =
     choose
-        [ GET >=> choose getRoutes
-          POST >=> choose postRoutes
-          setStatusCode 404 >=> text "Not Found" ]
+        [ publicRoutes
+          privateRoutes
+          adminRoutes
+          setStatusCode 404 >=> redirectTo false "/" ]
+        
 
 // ---------------------------------
 // Config and Main
