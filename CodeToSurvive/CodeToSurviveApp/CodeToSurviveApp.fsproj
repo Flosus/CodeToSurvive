@@ -8,7 +8,7 @@
 
     <ItemGroup>
         <PackageReference Include="BCrypt.Net-Next" Version="4.0.3"/>
-        <PackageReference Include="Giraffe" Version="5.0.0"/>
+        <PackageReference Include="Giraffe" Version="6.1.0"/>
         <PackageReference Include="Giraffe.Htmx" Version="1.9.2"/>
         <PackageReference Include="Giraffe.ViewEngine" Version="1.4.*"/>
         <PackageReference Include="Giraffe.ViewEngine.Htmx" Version="1.9.2"/>
@@ -28,8 +28,11 @@
 
     <ItemGroup>
         <Compile Include="Config.fs"/>
-        <Compile Include="LoginManagement.fs" />
-        <Compile Include="Security.fs"/>
+        <Compile Include="Security\SecurityModel.fs" />
+        <Compile Include="Security\UserStore.fs" />
+        <Compile Include="Security\UserManager.fs" />
+        <Compile Include="Security\PasswordHasher.fs" />
+        <Compile Include="Security\RoleStore.fs" />
         <Compile Include="Public\PublicModel.fs"/>
         <Compile Include="Public\PublicViews.fs"/>
         <Compile Include="Public\PublicHandler.fs" />
@@ -44,8 +47,5 @@
         <Compile Include="Admin\AdminRouter.fs" />
         <Compile Include="Program.fs"/>
         <Content Include="settings.json" />
-    </ItemGroup>
-
-    <ItemGroup>
     </ItemGroup>
 </Project>

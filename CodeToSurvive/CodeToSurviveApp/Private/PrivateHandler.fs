@@ -1,7 +1,7 @@
 namespace CodeToSurvive.App.Private
 
 open System
-open CodeToSurvive.App.AuthenticationService
+open CodeToSurvive.App.Security.SecurityModel
 open CodeToSurvive.App.Public.PublicViews
 open Giraffe.ViewEngine.HtmlElements
 open Microsoft.AspNetCore.Authentication
@@ -17,6 +17,6 @@ module PrivateHandler =
         let logger = ctx.GetLogger("logoutHandler")
         logger.LogTrace "privateHandler called"
 
-        let model = tryGetCurrentUser ctx
+        let model = InvalidLogin //tryGetCurrentUser ctx
         
         builderModelView model overviewView httpFunc ctx

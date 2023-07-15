@@ -1,7 +1,8 @@
 namespace CodeToSurvive.App.Public
 
-open CodeToSurvive.App.AuthenticationService
-open CodeToSurvive.App.LoginManagement
+open CodeToSurvive.App.Security.SecurityModel
+open Microsoft.AspNetCore.Http
+open Microsoft.Extensions.Options
 
 module PublicViews =
     open Giraffe.ViewEngine
@@ -25,15 +26,16 @@ module PublicViews =
     let adminButton = button [] [ encodedText "Admin" ]
     let overviewButton = button [] [ encodedText "Overview" ]
 
-    let panels model content =
-        let login = getLogin model
-
+    let panels (model: LoginModel) (content: XmlNode list) =
         let buttons =
-            [ if login.IsSome && login.Value.Role = AccountRole.Admin then
-                  adminButton
-              else
-                  ()
-              if login.IsSome then overviewButton else () ]
+            [ match model with
+              | ActiveLogin usrModel ->
+                  match usrModel.Role with
+                  | Admin -> adminButton
+                  | User -> ()
+
+                  overviewButton
+              | _ -> () ]
 
         [ div
               []
@@ -48,7 +50,7 @@ module PublicViews =
                   []
                   [ title [] [ encodedText "CodeToSurvive" ]
                     link [ _rel "stylesheet"; _type "text/css"; _href "/main.css" ]
-                    script [ _src "htmx.org@1.9.2.min.js" ] [] ]
+                    script [ _src "/htmx.org@1.9.2.min.js" ] [] ]
               body [] [ div [] [ mainPanel model; div [] (panels model content) ] ] ]
 
     let indexView (model: LoginModel) =
@@ -75,7 +77,8 @@ module PublicViews =
                           p [] [ encodedText "Username" ]
                           input [ _type "text"; _name "username"; _id "username-login-input" ]
                           p [] [ encodedText "Password" ]
-                          input [ _type "password"; _name "password"; _id "password-login-input" ]
+                          // Change this to _type "password"
+                          input [ _type "text"; _name "password"; _id "password-login-input" ]
                           button [ _id "submit" ] [ encodedText "Login" ] ] ] ]
 
         loginForm

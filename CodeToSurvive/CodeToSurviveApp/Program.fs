@@ -2,22 +2,25 @@ module CodeToSurvive.App.Program
 
 open System
 open System.IO
-open CodeToSurvive.App.AuthenticationService
+open CodeToSurvive.App.Security
+open CodeToSurvive.App.Security.SecurityModel
 open CodeToSurvive.App.Public.PublicHandler
 open CodeToSurvive.App.Public.PublicRouter
 open CodeToSurvive.App.Private.PrivateRouter
 open CodeToSurvive.App.Admin.AdminRouter
 open CodeToSurvive.Lib.Storage
-open Microsoft.AspNetCore.Authentication
+open CodeToSurviveApp.Security
 open Microsoft.AspNetCore.Builder
 open Microsoft.AspNetCore.Cors.Infrastructure
+open Microsoft.AspNetCore.Http
+open Microsoft.AspNetCore.Identity
 open Microsoft.Extensions.DependencyInjection
 open Microsoft.AspNetCore.Hosting
-open Microsoft.AspNetCore.Http
 open Microsoft.Extensions.Hosting
 open Microsoft.Extensions.Logging
-open Microsoft.Extensions.DependencyInjection
 open Giraffe
+open Microsoft.Extensions.Options
+
 
 // ---------------------------------
 // Web app
@@ -28,7 +31,7 @@ let webApp =
           privateRoutes
           adminRoutes
           setStatusCode 404 >=> redirectTo false "/" ]
-        
+
 
 // ---------------------------------
 // Config and Main
@@ -49,19 +52,33 @@ let configureApp (app: IApplicationBuilder) =
      | false -> app.UseGiraffeErrorHandler(errorHandler).UseHttpsRedirection())
         .UseCors(configureCors)
         .UseStaticFiles()
+        .UseAuthorization()
+        .UseAuthentication()
         .UseGiraffe(webApp)
 
 let configureServices (services: IServiceCollection) =
-    let baseStoragePath = Config.getBasePath ()
-    let storage = Storage(baseStoragePath)
-    LoginManagement.ensureDefaultAdminUser storage
-    let storageFactory (_: IServiceProvider) : obj = storage
-    let authService = CTSAuthenticationService(storage)
-    let authFactory (_: IServiceProvider) : obj = authService
     services.AddCors() |> ignore
     services.AddGiraffe() |> ignore
-    services.AddScoped(typedefof<IStorage>, storageFactory) |> ignore
-    services.AddScoped(typedefof<IAuthenticationService>, authFactory) |> ignore
+    services.AddHttpContextAccessor() |> ignore
+    // Storage
+    let storage = Storage(Config.getBasePath ())
+    services.AddSingleton<IStorage>(storage) |> ignore
+    // User store
+    services.AddIdentity<ApplicationUser, IdentityRole>().AddDefaultTokenProviders()
+    |> ignore
+
+    let userStore = new UserStore(storage)
+    services.AddSingleton<IUserPasswordStore<ApplicationUser>>(userStore) |> ignore
+    let userManager = new UserManager(userStore, PasswordHasher())
+    let loggerFactory = services.BuildServiceProvider().GetService<ILoggerFactory>()
+    userManager.Logger <- loggerFactory.CreateLogger(typeof<UserManager<ApplicationUser>>)
+    services.AddSingleton<UserManager<ApplicationUser>>(userManager) |> ignore
+    services.AddScoped<SignInManager<ApplicationUser>>() |> ignore
+    let roleStore = new RoleStore()
+    services.AddSingleton<IRoleStore<IdentityRole>>(roleStore) |> ignore
+    
+    services.AddAuthorization() |> ignore
+
     ()
 
 let configureLogging (builder: ILoggingBuilder) =
@@ -79,8 +96,8 @@ let main args =
                 .UseContentRoot(contentRoot)
                 .UseWebRoot(webRoot)
                 .Configure(Action<IApplicationBuilder> configureApp)
-                .ConfigureServices(configureServices)
                 .ConfigureLogging(configureLogging)
+                .ConfigureServices(configureServices)
             |> ignore)
         .Build()
         .Run()

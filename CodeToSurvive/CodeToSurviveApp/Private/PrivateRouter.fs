@@ -1,8 +1,6 @@
 namespace CodeToSurvive.App.Private
 
-open CodeToSurvive.App.Public.PublicHandler
 open CodeToSurvive.App.Private.PrivateHandler
-open Microsoft.AspNetCore.Http
 
 module PrivateRouter =
     open Giraffe

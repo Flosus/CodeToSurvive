@@ -1,11 +1,11 @@
 namespace CodeToSurvive.App.Public
 
 open System
-open CodeToSurvive.App.AuthenticationService
-open CodeToSurvive.App.Public.PublicModel
+open System.Threading
+open System.Threading.Tasks
+open CodeToSurvive.App.Security.SecurityModel
 open CodeToSurvive.App.Public.PublicViews
 open Giraffe.ViewEngine.HtmlElements
-open Microsoft.AspNetCore.Authentication
 open Microsoft.AspNetCore.Http
 open Microsoft.AspNetCore.Identity
 open Microsoft.Extensions.Logging
@@ -14,12 +14,22 @@ module PublicHandler =
     open Giraffe
     open Giraffe.Htmx
 
-    let getAuthService (ctx: HttpContext) =
-        ctx.GetService<IAuthenticationService>() :?> CTSAuthenticationService
-
     let tryGetCurrentUser (ctx: HttpContext) =
-        let auth = getAuthService ctx
-        auth.GetCurrentUser ctx
+        task {
+            let auth = ctx.User
+
+            let loginModel =
+                match auth.Identity.IsAuthenticated with
+                | true ->
+                    task {
+                        let usrManager = ctx.GetService<IUserPasswordStore<ApplicationUser>>()
+                        let! user = usrManager.FindByNameAsync(auth.Identity.Name, CancellationToken())
+                        return LoginModel.ActiveLogin user
+                    }
+                | false -> Task.FromResult(AnonymousAccess)
+
+            return! loginModel
+        }
 
     let builderModelView (model: LoginModel) (viewFunc: LoginModel -> XmlNode list) httpFunc (ctx: HttpContext) =
         let view = viewFunc model
@@ -32,63 +42,69 @@ module PublicHandler =
         let viewResult = htmlView viewRes
         viewResult httpFunc ctx
 
-    let indexHandler httpFunc (ctx: HttpContext) =
-        let logger = ctx.GetLogger("logoutHandler")
-        logger.LogTrace "indexHandler called"
-        let model = tryGetCurrentUser ctx
-        builderModelView model indexView httpFunc ctx
+    let indexHandler: HttpHandler =
+        fun (next: HttpFunc) (ctx: HttpContext) ->
+            task {
+                let logger = ctx.GetLogger("logoutHandler")
+                logger.LogTrace "indexHandler called"
+                let! currentUser = tryGetCurrentUser ctx
+                let model = currentUser
+                return! builderModelView model indexView next ctx
+            }
 
-    let scoreboardHandler httpFunc (ctx: HttpContext) =
-        let logger = ctx.GetLogger("logoutHandler")
-        logger.LogTrace "scoreboardHandler called"
-        let model = tryGetCurrentUser ctx
-        builderModelView model scoreboardView httpFunc ctx
+    let scoreboardHandler: HttpHandler =
+        fun (next: HttpFunc) (ctx: HttpContext) ->
+            task {
+                let logger = ctx.GetLogger("logoutHandler")
+                logger.LogTrace "scoreboardHandler called"
+                let! currentUser = tryGetCurrentUser ctx
+                let model = currentUser
+                return! builderModelView model scoreboardView next ctx
+            }
 
-    let loginHandler httpFunc (ctx: HttpContext) =
-        let logger = ctx.GetLogger("logoutHandler")
-        logger.LogTrace "loginHandler called"
-        let model = tryGetCurrentUser ctx
-        builderModelView model loginView httpFunc ctx
+    let loginHandler: HttpHandler =
+        fun (next: HttpFunc) (ctx: HttpContext) ->
+            task {
+                let logger = ctx.GetLogger("logoutHandler")
+                logger.LogTrace "loginHandler called"
+                let! currentUser = tryGetCurrentUser ctx
+                let model = currentUser
+                return! builderModelView model loginView next ctx
+            }
 
-    let logoutHandler httpFunc (ctx: HttpContext) =
-        let logger = ctx.GetLogger("logoutHandler")
-        logger.LogTrace "logoutHandler called"
+    let logoutHandler =
+        fun (next: HttpFunc) (ctx: HttpContext) ->
+            task {
+                let logger = ctx.GetLogger("logoutHandler")
+                logger.LogTrace "logoutHandler called"
+                let! currentUser = tryGetCurrentUser ctx
 
-        let model = tryGetCurrentUser ctx
-        let signOutView = signOut "Cookie" >=> builderModelView model logoutView
+                let signOutView =
+                    signOut "Identity.Application" >=> builderModelView currentUser logoutView
 
-        signOutView httpFunc ctx
+                return! signOutView next ctx
+            }
 
-    let loginRequestHandler httpFunc (ctx: HttpContext) =
-        let logger = ctx.GetLogger("loginRequestHandler")
-        logger.LogTrace "loginRequestHandler called"
+    let loginRequestHandler =
+        fun (next: HttpFunc) (ctx: HttpContext) ->
+            task {
+                let logger = ctx.GetLogger("loginRequestHandler")
+                logger.LogTrace "loginRequestHandler called"
+                let! reqData = ctx.Request.ReadFormAsync()
+                let username = reqData["username"]
+                let password = reqData["password"]
+                let signInManager = ctx.GetService<SignInManager<ApplicationUser>>()
 
-        task {
-            let! reqData = ctx.Request.ReadFormAsync()
-            let username = reqData["username"]
-            let password = reqData["password"]
-            
-            let! model = ctx.TryBindFormAsync<LoginRequest>()
-            let userManager = ctx.GetService<UserManager<IdentityUser>>()
-            let signInManager = ctx.GetService<SignInManager<IdentityUser>>()
-            
-            
-            //
-            let authService = getAuthService ctx
-            let result = authService.Login (string username) (string password)
+                let! signInResult =
+                    signInManager
+                    |> fun manager -> manager.PasswordSignInAsync(username, password, true, false)
 
-            match result with
-            | Some login ->
-                let _ = ActiveLogin(login)
-                let cookieOpt = CookieOptions()
-                cookieOpt.Secure <- true
-                cookieOpt.IsEssential <- true
-                cookieOpt.MaxAge <- TimeSpan(72, 0, 0)
-                ctx.Response.Cookies.Append(secCookieName, result.Value.CookieId.ToString(), cookieOpt)
-                let redirect = withHxRedirect "/secured/private"
-                return! redirect httpFunc ctx
-            | None -> return! builderModelView InvalidLogin loginView httpFunc ctx
-        }
+                if signInResult = SignInResult.Success then
+                    let redirect = withHxRedirect "/secured/private"
+                    return! redirect next ctx
+                else
+                    return! builderModelView LoginModel.InvalidLogin loginView next ctx
+            }
 
     // ---------------------------------
     // Error handler
