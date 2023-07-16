@@ -33,15 +33,15 @@ type UserStore(storage: IStorage) =
         usr.Id <- parts[0]
         usr.PasswordHash <- parts[1]
         usr.NormalizedUserName <- usr.UserName.ToLower()
-        
+
         usr
-    
-    
+
+
     let defaultAdminName = "admin"
     let randomAdminPassword = "admin" // Guid.NewGuid().ToString()
 
 
-    
+
     interface IUserPasswordStore<ApplicationUser> with
         member this.CreateAsync(user: ApplicationUser, _: CancellationToken) =
             File.WriteAllText(GetUserFilePath user.Id, SerializeUser user)
@@ -57,6 +57,7 @@ type UserStore(storage: IStorage) =
 
         member this.FindByIdAsync(userId: string, _: CancellationToken) =
             let userFilePath = GetUserFilePath userId
+
             if File.Exists(userFilePath) then
                 let userString = File.ReadAllText(userFilePath)
                 let user = DeserializeUser userString
@@ -84,22 +85,24 @@ type UserStore(storage: IStorage) =
             | None -> Task.FromResult<ApplicationUser>(null)
 
         member this.Dispose() = ()
-        
+
         // TODO username normalisation?
 
-        member this.GetNormalizedUserNameAsync(user, _) = Task.FromResult(user.UserName.ToLower())
+        member this.GetNormalizedUserNameAsync(user, _) =
+            Task.FromResult(user.UserName.ToLower())
+
         member this.GetUserIdAsync(user, _) = Task.FromResult(user.Id)
-        member this.GetUserNameAsync(user, _) =  Task.FromResult(user.UserName)
+        member this.GetUserNameAsync(user, _) = Task.FromResult(user.UserName)
+
         member this.SetNormalizedUserNameAsync(user, normalizedName, _) =
-            task {
-                user.NormalizedUserName <- normalizedName.ToLower()
-            }
-        member this.SetUserNameAsync(user, userName, _) = 
-            task {
-                user.UserName <- userName
-            }
+            task { user.NormalizedUserName <- normalizedName.ToLower() }
+
+        member this.SetUserNameAsync(user, userName, _) = task { user.UserName <- userName }
         member this.GetPasswordHashAsync(user, _) = Task.FromResult(user.PasswordHash)
-        member this.HasPasswordAsync(user, _) = Task.FromResult(user.PasswordHash <> null && user.PasswordHash.Length > 0)
+
+        member this.HasPasswordAsync(user, _) =
+            Task.FromResult(user.PasswordHash <> null && user.PasswordHash.Length > 0)
+
         member this.SetPasswordHashAsync(user, passwordHash, cancellationToken) =
             user.PasswordHash <- passwordHash
             // TODO save password
@@ -107,8 +110,10 @@ type UserStore(storage: IStorage) =
 
     member this.ensureDefaultAdminUser =
         let dis = this :> IUserPasswordStore<ApplicationUser>
+
         task {
-            let! byName = dis.FindByNameAsync (defaultAdminName, CancellationToken())
+            let! byName = dis.FindByNameAsync(defaultAdminName, CancellationToken())
+
             if byName <> null then
                 ()
             else
@@ -119,6 +124,6 @@ type UserStore(storage: IStorage) =
                 let applicationUser = ApplicationUser(username, Admin)
                 applicationUser.Id <- Guid.NewGuid().ToString()
                 applicationUser.PasswordHash <- BCrypt.HashPassword randomAdminPassword
-                dis.CreateAsync (applicationUser, CancellationToken()) |> ignore
-                
+                dis.CreateAsync(applicationUser, CancellationToken()) |> ignore
+
         }

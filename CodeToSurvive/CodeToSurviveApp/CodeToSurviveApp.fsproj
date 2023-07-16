@@ -33,7 +33,7 @@
         <Compile Include="Security\UserManager.fs" />
         <Compile Include="Security\PasswordHasher.fs" />
         <Compile Include="Security\RoleStore.fs" />
-        <Compile Include="Public\PublicModel.fs"/>
+        <Compile Include="Public\PublicModels.fs" />
         <Compile Include="Public\PublicViews.fs"/>
         <Compile Include="Public\PublicHandler.fs" />
         <Compile Include="Public\PublicRouter.fs" />

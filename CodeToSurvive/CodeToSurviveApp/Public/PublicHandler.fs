@@ -8,11 +8,12 @@ open CodeToSurvive.App.Public.PublicViews
 open Giraffe.ViewEngine.HtmlElements
 open Microsoft.AspNetCore.Http
 open Microsoft.AspNetCore.Identity
+open CodeToSurvive.App.Public.PublicModels
 open Microsoft.Extensions.Logging
+open Giraffe
+open Giraffe.Htmx
 
 module PublicHandler =
-    open Giraffe
-    open Giraffe.Htmx
 
     let tryGetCurrentUser (ctx: HttpContext) =
         task {
@@ -31,7 +32,18 @@ module PublicHandler =
             return! loginModel
         }
 
-    let builderModelView (model: LoginModel) (viewFunc: LoginModel -> XmlNode list) httpFunc (ctx: HttpContext) =
+    let buildPublicModel ctx =
+        task {
+            let! currentUser = tryGetCurrentUser ctx
+
+            let model =
+                { loginModel = currentUser
+                  isHtmxRequest = ctx.Request.IsHtmx }
+
+            return model
+        }
+
+    let builderModelView (model: PublicModel) (viewFunc: PublicModel -> XmlNode list) httpFunc (ctx: HttpContext) =
         let view = viewFunc model
 
         let viewRes =
@@ -47,8 +59,7 @@ module PublicHandler =
             task {
                 let logger = ctx.GetLogger("logoutHandler")
                 logger.LogTrace "indexHandler called"
-                let! currentUser = tryGetCurrentUser ctx
-                let model = currentUser
+                let! model = buildPublicModel ctx
                 return! builderModelView model indexView next ctx
             }
 
@@ -57,8 +68,7 @@ module PublicHandler =
             task {
                 let logger = ctx.GetLogger("logoutHandler")
                 logger.LogTrace "scoreboardHandler called"
-                let! currentUser = tryGetCurrentUser ctx
-                let model = currentUser
+                let! model = buildPublicModel ctx
                 return! builderModelView model scoreboardView next ctx
             }
 
@@ -67,8 +77,7 @@ module PublicHandler =
             task {
                 let logger = ctx.GetLogger("logoutHandler")
                 logger.LogTrace "loginHandler called"
-                let! currentUser = tryGetCurrentUser ctx
-                let model = currentUser
+                let! model = buildPublicModel ctx
                 return! builderModelView model loginView next ctx
             }
 
@@ -77,12 +86,21 @@ module PublicHandler =
             task {
                 let logger = ctx.GetLogger("logoutHandler")
                 logger.LogTrace "logoutHandler called"
-                let! currentUser = tryGetCurrentUser ctx
+                let! model = buildPublicModel ctx
 
                 let signOutView =
-                    signOut "Identity.Application" >=> builderModelView currentUser logoutView
+                    signOut "Identity.Application" >=> builderModelView model logoutView
 
                 return! signOutView next ctx
+            }
+
+    let notFoundHandler =
+        fun (next: HttpFunc) (ctx: HttpContext) ->
+            task {
+                let logger = ctx.GetLogger("notFoundHandler")
+                logger.LogTrace "notFoundHandler called"
+                let! model = buildPublicModel ctx
+                return! builderModelView model notFoundView next ctx
             }
 
     let loginRequestHandler =
@@ -103,7 +121,11 @@ module PublicHandler =
                     let redirect = withHxRedirect "/secured/private"
                     return! redirect next ctx
                 else
-                    return! builderModelView LoginModel.InvalidLogin loginView next ctx
+                    let publicModel =
+                        { loginModel = LoginModel.InvalidLogin
+                          isHtmxRequest = true }
+
+                    return! builderModelView publicModel loginView next ctx
             }
 
     // ---------------------------------

@@ -12,14 +12,12 @@ open CodeToSurvive.Lib.Storage
 open CodeToSurviveApp.Security
 open Microsoft.AspNetCore.Builder
 open Microsoft.AspNetCore.Cors.Infrastructure
-open Microsoft.AspNetCore.Http
 open Microsoft.AspNetCore.Identity
 open Microsoft.Extensions.DependencyInjection
 open Microsoft.AspNetCore.Hosting
 open Microsoft.Extensions.Hosting
 open Microsoft.Extensions.Logging
 open Giraffe
-open Microsoft.Extensions.Options
 
 
 // ---------------------------------
@@ -30,7 +28,7 @@ let webApp =
         [ publicRoutes
           privateRoutes
           adminRoutes
-          setStatusCode 404 >=> redirectTo false "/" ]
+          setStatusCode 404 >=> redirectTo false "/404" ]
 
 
 // ---------------------------------
@@ -76,7 +74,7 @@ let configureServices (services: IServiceCollection) =
     services.AddScoped<SignInManager<ApplicationUser>>() |> ignore
     let roleStore = new RoleStore()
     services.AddSingleton<IRoleStore<IdentityRole>>(roleStore) |> ignore
-    
+
     services.AddAuthorization() |> ignore
 
     ()

@@ -1,11 +1,9 @@
 namespace CodeToSurvive.App.Private
 
-open CodeToSurvive.App.Security.SecurityModel
+open CodeToSurvive.App.Public.PublicModels
 open Giraffe.ViewEngine
-open Giraffe.ViewEngine.Htmx
+
 module PrivateViews =
-    
-    let overviewView (model: LoginModel) =
+
+    let overviewView (model: PublicModel) =
         [ p [] [ encodedText "Here will be the overview" ] ]
-        
-        

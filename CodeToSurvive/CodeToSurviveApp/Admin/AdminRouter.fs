@@ -12,8 +12,9 @@ module AdminRouter =
     // POST
 
     let adminRoutes: HttpHandler =
-        let notLoggedIn = setStatusCode 401 >=> redirectTo false "/" 
+        let notLoggedIn = setStatusCode 401 >=> redirectTo false "/"
+
         subRoute
             "/admin"
             (requiresAuthentication notLoggedIn
-             >=> choose [ GET >=> choose [ adminRoute ]; POST >=> choose [adminRoute] ])
+             >=> choose [ GET >=> choose [ adminRoute ]; POST >=> choose [ adminRoute ] ])

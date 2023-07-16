@@ -1,18 +1,28 @@
 namespace CodeToSurvive.App.Private
 
 open CodeToSurvive.App.Private.PrivateHandler
+open Microsoft.AspNetCore.Http
+open Giraffe
+open Microsoft.Extensions.Logging
 
 module PrivateRouter =
-    open Giraffe
+
+
+    let authFailedHandler: HttpHandler =
+        fun (next: HttpFunc) (ctx: HttpContext) ->
+            let logger = ctx.GetLogger("authFailedHandler")
+            logger.LogWarning "User is not authenticated"
+            redirectTo false "/" next ctx
+
 
     // GET
     let privateRoute = route "/private" >=> privateHandler
 
     // POST
-    let privateRoutes: HttpHandler =
-        let notLoggedIn = setStatusCode 401 >=> redirectTo false "/"
 
+
+    let privateRoutes: HttpHandler =
         subRoute
             "/secured"
-            (requiresAuthentication notLoggedIn
+            (requiresAuthentication authFailedHandler
              >=> choose [ GET >=> choose [ privateRoute ]; POST >=> choose [ privateRoute ] ])

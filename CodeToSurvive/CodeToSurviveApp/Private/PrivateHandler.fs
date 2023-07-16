@@ -13,10 +13,12 @@ open Microsoft.Extensions.Logging
 
 module PrivateHandler =
 
-    let privateHandler httpFunc (ctx: HttpContext) =
-        let logger = ctx.GetLogger("logoutHandler")
-        logger.LogTrace "privateHandler called"
+    let privateHandler =
+        fun (next: HttpFunc) (ctx: HttpContext) ->
+            task {
+                let logger = ctx.GetLogger("logoutHandler")
+                logger.LogTrace "privateHandler called"
+                let! model = buildPublicModel ctx
 
-        let model = InvalidLogin //tryGetCurrentUser ctx
-        
-        builderModelView model overviewView httpFunc ctx
+                return! builderModelView model overviewView next ctx
+            }
