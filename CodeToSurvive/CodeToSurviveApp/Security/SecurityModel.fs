@@ -12,6 +12,7 @@ module SecurityModel =
     type ApplicationUser(username, role) =
         inherit IdentityUser(username)
         member val Role: AccountRole = role with get, set
+        member val Characters: string[] = [||] with get, set
 
     type LoginModel =
         | ActiveLogin of ApplicationUser

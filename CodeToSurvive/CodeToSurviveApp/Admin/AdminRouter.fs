@@ -1,12 +1,14 @@
 namespace CodeToSurvive.App.Admin
 
 open CodeToSurvive.App.Public.PublicHandler
+open CodeToSurvive.App.Admin.AdminHandler
 
 module AdminRouter =
     open Giraffe
 
     // GET
-    let adminRoute = route "/secured/admin" >=> indexHandler
+    let adminRoute = route "" >=> redirectTo false "/secured/private"
+    let adminOverviewRoute = route "/overview" >=> adminOverviewHandler
 
     // POST
 
@@ -14,6 +16,6 @@ module AdminRouter =
         let notLoggedIn = setStatusCode 401 >=> redirectTo false "/"
 
         subRoute
-            "/admin"
+            "/secured/admin"
             (requiresAuthentication notLoggedIn
-             >=> choose [ GET >=> choose [ adminRoute ]; POST >=> choose [ adminRoute ] ])
+             >=> choose [ GET >=> choose [ adminRoute; adminOverviewRoute ]; POST >=> choose [ ] ])

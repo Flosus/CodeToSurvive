@@ -34,12 +34,25 @@ module PublicViews =
                         [ button [ _class "panelBtn" ] [ encodedText logBtnTxt ] ] ] ]
 
     let adminButton =
-        a [ _href "/secured/admin"; _class "panelLink" ] [ button [ _class "panelBtn" ] [ encodedText "Admin" ] ]
+        a
+            [ _hxGet "/secured/admin/overview"
+              _hxTarget "#contentTarget"
+              _class "panelLink" ]
+            [ button [ _class "panelBtn" ] [ encodedText "Admin" ] ]
 
     let overviewButton =
         a
-            [ _href "/secured/private/overview"; _class "panelLink" ]
+            [ _hxGet "/secured/private/overview"
+              _hxTarget "#contentTarget"
+              _class "panelLink" ]
             [ button [ _class "panelBtn" ] [ encodedText "Overview" ] ]
+
+    let characterButton characterId characterName =
+        a
+            [ _hxGet $"/secured/private/characters/{characterId}"
+              _hxTarget "#contentTarget"
+              _class "panelLink" ]
+            [ button [ _class "panelBtn" ] [ encodedText $"Character: {characterName}" ] ]
 
     let panels (model: PublicModel) (content: XmlNode list) =
         let buttons =
@@ -58,7 +71,7 @@ module PublicViews =
                     div [ _class "panelMenu" ] buttons
                 else
                     ()
-                div [ _class "subPanel" ] content ] ]
+                div [ _class "contentTarget"; _id "contentTarget" ] content ] ]
 
 
     let layout (model: PublicModel) (content: XmlNode list) =

@@ -16,13 +16,16 @@ module PrivateRouter =
 
 
     // GET
-    let privateRoute = route "/private" >=> privateHandler
+    let privateRoute = route "" >=> privateHandler
+    let overviewRoute = route "/overview" >=> overviewHandler
 
     // POST
 
 
     let privateRoutes: HttpHandler =
         subRoute
-            "/secured"
+            "/secured/private"
             (requiresAuthentication authFailedHandler
-             >=> choose [ GET >=> choose [ privateRoute ]; POST >=> choose [ privateRoute ] ])
+             >=> choose
+                 [ GET >=> choose [ privateRoute; overviewRoute ]
+                   POST >=> choose [  ] ])
