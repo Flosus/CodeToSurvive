@@ -1,7 +1,6 @@
 namespace CodeToSurvive.App.Admin
 
 open CodeToSurvive.App.Public.PublicHandler
-open Microsoft.AspNetCore.Http
 
 module AdminRouter =
     open Giraffe

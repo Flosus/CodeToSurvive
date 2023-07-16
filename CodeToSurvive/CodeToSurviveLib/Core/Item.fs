@@ -1,6 +1,5 @@
 namespace CodeToSurvive.Lib.Core
 
-open System
 open System.Collections.Generic
 
 module Item =

@@ -1,8 +1,6 @@
 namespace CodeToSurviveApp.Security
 
 open System.Threading.Tasks
-open BCrypt.Net
-open CodeToSurvive.App.Security.SecurityModel
 open Microsoft.AspNetCore.Identity
 
 type RoleStore() =

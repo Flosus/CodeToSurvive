@@ -1,6 +1,5 @@
 namespace CodeToSurvive.Lib.Core
 
-open System.Runtime.Serialization.Json
 open System.Threading
 open CodeToSurvive.Lib.Core.Position
 

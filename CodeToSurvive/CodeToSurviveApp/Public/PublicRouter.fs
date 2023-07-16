@@ -1,7 +1,6 @@
 namespace CodeToSurvive.App.Public
 
 open CodeToSurvive.App.Public.PublicHandler
-open Microsoft.AspNetCore.Http
 
 module PublicRouter =
     open Giraffe

@@ -38,7 +38,7 @@ module PublicHandler =
 
             let model =
                 { loginModel = currentUser
-                  isHtmxRequest = ctx.Request.IsHtmx }
+                  isSecureRequest = ctx.Request.Path.Value.Contains "/secured" }
 
             return model
         }
@@ -86,7 +86,10 @@ module PublicHandler =
             task {
                 let logger = ctx.GetLogger("logoutHandler")
                 logger.LogTrace "logoutHandler called"
-                let! model = buildPublicModel ctx
+
+                let model =
+                    { loginModel = LoginModel.AnonymousAccess
+                      isSecureRequest = false }
 
                 let signOutView =
                     signOut "Identity.Application" >=> builderModelView model logoutView
@@ -123,7 +126,7 @@ module PublicHandler =
                 else
                     let publicModel =
                         { loginModel = LoginModel.InvalidLogin
-                          isHtmxRequest = true }
+                          isSecureRequest = false }
 
                     return! builderModelView publicModel loginView next ctx
             }

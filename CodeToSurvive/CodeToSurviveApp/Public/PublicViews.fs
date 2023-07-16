@@ -43,7 +43,7 @@ module PublicViews =
 
     let panels (model: PublicModel) (content: XmlNode list) =
         let buttons =
-            [ match model.loginModel, model.isHtmxRequest with
+            [ match model.loginModel, model.isSecureRequest with
               | ActiveLogin usrModel, isHtmx when isHtmx ->
                   match usrModel.Role with
                   | Admin -> adminButton

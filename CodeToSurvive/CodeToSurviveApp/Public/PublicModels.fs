@@ -12,4 +12,4 @@ module PublicModels =
 
     type PublicModel =
         { loginModel: LoginModel
-          isHtmxRequest: bool }
+          isSecureRequest: bool }

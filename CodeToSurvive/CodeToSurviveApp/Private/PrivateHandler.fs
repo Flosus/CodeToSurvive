@@ -1,10 +1,5 @@
 namespace CodeToSurvive.App.Private
 
-open System
-open CodeToSurvive.App.Security.SecurityModel
-open CodeToSurvive.App.Public.PublicViews
-open Giraffe.ViewEngine.HtmlElements
-open Microsoft.AspNetCore.Authentication
 open CodeToSurvive.App.Public.PublicHandler
 open CodeToSurvive.App.Private.PrivateViews
 open Microsoft.AspNetCore.Http
