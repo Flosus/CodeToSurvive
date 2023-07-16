@@ -6,10 +6,10 @@ open System.Threading
 open System.Threading.Tasks
 open BCrypt.Net
 open CodeToSurvive.App.Security.SecurityModel
-open CodeToSurvive.Lib.Storage
+open CodeToSurvive.Lib.Storage.StoragePreference
 open Microsoft.AspNetCore.Identity
 
-type UserStore(storage: IStorage) =
+type UserStore(storage: IStoragePreference) =
     let _storage = storage
 
     let GetUserFilePath (userId: string) =

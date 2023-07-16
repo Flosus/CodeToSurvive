@@ -47,5 +47,10 @@
         <Compile Include="Admin\AdminRouter.fs" />
         <Compile Include="Program.fs"/>
         <Content Include="settings.json" />
+        <Content Include="..\.dockerignore">
+          <Link>.dockerignore</Link>
+          <DependentUpon>Dockerfile</DependentUpon>
+        </Content>
+        <Content Include="Dockerfile" />
     </ItemGroup>
 </Project>

@@ -1,32 +1,32 @@
-namespace CodeToSurvive.Lib
+namespace CodeToSurvive.Lib.Storage
 
 open System.IO
 
-module Storage =
+module StoragePreference =
 
     let defaultSecurityFile = "security.dat"
 
-    type IStorage =
+    type IStoragePreference =
         abstract BaseFolder: DirectoryInfo
         abstract SecurityFolder: DirectoryInfo
         abstract StateStorageFolder: DirectoryInfo
         abstract PlayerStorageFolder: DirectoryInfo
 
-    type Storage(basePath: string) =
+    type StoragePreference(basePath: string) =
         let baseLoc = DirectoryInfo basePath
         let secLoc = baseLoc.CreateSubdirectory "Security"
         let storageLoc = baseLoc.CreateSubdirectory "Storage"
         let stateLoc = storageLoc.CreateSubdirectory "StateStorage"
         let playerLoc = storageLoc.CreateSubdirectory "PlayerStorage"
 
-        interface IStorage with
+        interface IStoragePreference with
             member this.BaseFolder = baseLoc
             member this.PlayerStorageFolder = playerLoc
             member this.StateStorageFolder = stateLoc
             member this.SecurityFolder = secLoc
 
 
-    let getSecFile (storage: IStorage) =
+    let getSecFile (storage: IStoragePreference) =
         let secFile = Path.Combine(storage.SecurityFolder.FullName, defaultSecurityFile)
 
         if File.Exists secFile then

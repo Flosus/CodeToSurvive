@@ -30,7 +30,9 @@ module World =
           // Size 64x64
           Tiles: Tile[][] }
 
-    type WorldMap = { Chunks: ResizeArray<Chunk> }
+    type WorldMap =
+        { Chunks: ResizeArray<Chunk>
+          SpecialChunks: ResizeArray<Chunk> }
 
     type GenerateChunk = WorldMap -> ChunkPosition -> Chunk
     type UpdateWorldMap = WorldMap -> ChunkPosition -> WorldMap
@@ -58,8 +60,6 @@ module World =
             Monitor.Exit worldMapLock
 
     let getGenerator (gChunk: GenerateChunk) : UpdateWorldMap =
-        let generator worldMap chunkPosition =
+        fun worldMap chunkPosition ->
             let chunk = gChunk worldMap chunkPosition
             appendWorldMap worldMap chunk
-
-        generator

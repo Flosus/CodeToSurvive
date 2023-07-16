@@ -1,5 +1,6 @@
 namespace CodeToSurvive.Lib.Core
 
+open System
 open CodeToSurvive.Lib.Core.Job
 open CodeToSurvive.Lib.Core.Character
 open CodeToSurvive.Lib.Core.World
@@ -10,7 +11,9 @@ module Tick =
     type CharacterState = { Character: Character }
 
     type State =
-        { Players: CharacterState[]
+        {
+          Timestamp: DateTime
+          Players: CharacterState[]
           Tasks: PlayerTask[]
           Map: WorldMap }
 

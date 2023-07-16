@@ -43,7 +43,7 @@ module DevWorldGen =
 
     let private isAllowedDefault = checkDefaultAllowed defaultExclusiveFeatures
 
-    let private buildPlainTiles () : Tile[][] =
+    let buildPlainTiles () : Tile[][] =
         [| for i in 1..64 ->
                [| for j in 1..64 ->
                       { TileType = "Plains"

@@ -26,5 +26,5 @@ module GameLoop =
         provideCurrentState newState
 
         match shouldStop () with
-        | false -> ()
-        | true -> gameLoop newState context provideCurrentState shouldStop
+        | true -> ()
+        | false -> gameLoop newState context provideCurrentState shouldStop

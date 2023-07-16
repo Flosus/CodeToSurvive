@@ -17,10 +17,11 @@
         <Compile Include="Core\WorldGen.fs" />
         <Compile Include="PlayerScript\ScriptInfo.fs"/>
         <Compile Include="PlayerScript\ScriptRunner.fs"/>
-        <Compile Include="Storage.fs" />
         <Compile Include="GameLoop.fs" />
         <Compile Include="DevImpl\DevWorldGen.fs" />
         <Compile Include="DevImpl\DevState.fs" />
+        <Compile Include="Storage\StoragePreference.fs" />
+        <Compile Include="Storage\StorageManagement.fs" />
     </ItemGroup>
 
 </Project>

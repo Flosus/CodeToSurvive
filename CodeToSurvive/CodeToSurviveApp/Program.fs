@@ -8,7 +8,7 @@ open CodeToSurvive.App.Public.PublicHandler
 open CodeToSurvive.App.Public.PublicRouter
 open CodeToSurvive.App.Private.PrivateRouter
 open CodeToSurvive.App.Admin.AdminRouter
-open CodeToSurvive.Lib.Storage
+open CodeToSurvive.Lib.Storage.StoragePreference
 open CodeToSurviveApp.Security
 open Microsoft.AspNetCore.Builder
 open Microsoft.AspNetCore.Cors.Infrastructure
@@ -59,8 +59,8 @@ let configureServices (services: IServiceCollection) =
     services.AddGiraffe() |> ignore
     services.AddHttpContextAccessor() |> ignore
     // Storage
-    let storage = Storage(Config.getBasePath ())
-    services.AddSingleton<IStorage>(storage) |> ignore
+    let storage = StoragePreference(Config.getBasePath ())
+    services.AddSingleton<IStoragePreference>(storage) |> ignore
     // User store
     services.AddIdentity<ApplicationUser, IdentityRole>().AddDefaultTokenProviders()
     |> ignore
