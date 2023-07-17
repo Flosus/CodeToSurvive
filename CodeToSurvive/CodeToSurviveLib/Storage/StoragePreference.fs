@@ -4,7 +4,7 @@ open System.IO
 
 module StoragePreference =
 
-    let defaultSecurityFile = "security.dat"
+    let private defaultSecurityFile = "security.dat"
 
     type IStoragePreference =
         abstract BaseFolder: DirectoryInfo
@@ -24,7 +24,6 @@ module StoragePreference =
             member this.PlayerStorageFolder = playerLoc
             member this.StateStorageFolder = stateLoc
             member this.SecurityFolder = secLoc
-
 
     let getSecFile (storage: IStoragePreference) =
         let secFile = Path.Combine(storage.SecurityFolder.FullName, defaultSecurityFile)

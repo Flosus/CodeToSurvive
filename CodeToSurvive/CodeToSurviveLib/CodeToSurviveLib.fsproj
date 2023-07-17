@@ -7,6 +7,7 @@
     </PropertyGroup>
 
     <ItemGroup>
+        <Compile Include="Statistics.fs" />
         <Compile Include="Core\Position.fs" />
         <Compile Include="Core\Item.fs"/>
         <Compile Include="Core\Entity.fs"/>
@@ -22,6 +23,12 @@
         <Compile Include="DevImpl\DevState.fs" />
         <Compile Include="Storage\StoragePreference.fs" />
         <Compile Include="Storage\StorageManagement.fs" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Reference Include="Microsoft.Extensions.Logging.Abstractions">
+        <HintPath>c:\program files\dotnet\shared\Microsoft.AspNetCore.App\7.0.8\Microsoft.Extensions.Logging.Abstractions.dll</HintPath>
+      </Reference>
     </ItemGroup>
 
 </Project>

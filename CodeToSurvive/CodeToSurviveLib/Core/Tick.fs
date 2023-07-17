@@ -5,6 +5,7 @@ open CodeToSurvive.Lib.Core.Job
 open CodeToSurvive.Lib.Core.Character
 open CodeToSurvive.Lib.Core.World
 open CodeToSurvive.Lib.Core.Position
+open Microsoft.Extensions.Logging
 
 module Tick =
 
@@ -20,13 +21,18 @@ module Tick =
     type RunCharacterScripts = State -> State
     type DoJobProgress = PlayerTask * State -> State
     type StateUpdate = State -> State
-
+    
     type WorldContext =
-        { ProgressJob: DoJobProgress
+        { 
+          CreateLogger: string -> ILogger
+          ProgressJob: DoJobProgress
           RunCharacterScripts: RunCharacterScripts
           UpdateWorldMap: UpdateWorldMap
           PreTickUpdate: StateUpdate
           PostTickUpdate: StateUpdate }
+        
+    let getLogger (factory:ILoggerFactory) category : ILogger =
+        factory.CreateLogger category
 
     let rec doWithStateUpdate (char: CharacterState[]) (state: State) (act: CharacterState * State -> State) : State =
         match char.Length with
@@ -62,8 +68,8 @@ module Tick =
         state.Players |> Array.filter filterPlayerHasNoJob
 
     let tick (state: State) (context: WorldContext) : State =
-        // TODO logging?
-        // TODO time measurement?
+        let log = context.CreateLogger("tick")
+        log.LogDebug "Tick begin"
         let progressJobs (curState: State) : State =
             doJobProgress curState.Players curState context.ProgressJob
 
@@ -73,17 +79,30 @@ module Tick =
 
         let generateNewMapChunks (curState: State) : State =
             updateMap curState.Players curState context.UpdateWorldMap
+        
+        let logStep msg localState =
+            log.LogTrace msg
+            localState
+            
 
         state
         // Pre tick work
         |> context.PreTickUpdate
+        |> logStep "PreTickUpdate finished"
         // Run player scripts on what to do
         |> context.RunCharacterScripts
+        |> logStep "RunCharacterScripts finished"
         // Execute the Jobs the player want to do
         |> progressJobs
+        |> logStep "progressJobs finished"
         // Find not finished tasks
         |> removeFinishedJobs
+        |> logStep "removeFinishedJobs finished"
         // Generate new terrain
         |> generateNewMapChunks
+        |> logStep "generateNewMapChunks finished"
         // Post tick work
         |> context.PostTickUpdate
+        |> logStep "PostTickUpdate finished"
+        |> (fun state -> { state with Timestamp = DateTime.Now })
+        |> logStep "Tick finished"

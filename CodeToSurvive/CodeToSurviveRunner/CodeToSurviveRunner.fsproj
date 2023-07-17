@@ -21,4 +21,20 @@
       <ProjectReference Include="..\CodeToSurviveLib\CodeToSurviveLib.fsproj" />
     </ItemGroup>
 
+    <ItemGroup>
+      <Reference Include="Microsoft.Extensions.Logging">
+        <HintPath>c:\program files\dotnet\shared\Microsoft.AspNetCore.App\7.0.8\Microsoft.Extensions.Logging.dll</HintPath>
+      </Reference>
+      <Reference Include="Microsoft.Extensions.Logging.Abstractions">
+        <HintPath>c:\program files\dotnet\shared\Microsoft.AspNetCore.App\7.0.8\Microsoft.Extensions.Logging.Abstractions.dll</HintPath>
+      </Reference>
+      <Reference Include="Microsoft.Extensions.Logging.Console">
+        <HintPath>c:\program files\dotnet\shared\Microsoft.AspNetCore.App\7.0.8\Microsoft.Extensions.Logging.Console.dll</HintPath>
+      </Reference>
+      <Reference Include="Microsoft.Extensions.Logging.Debug">
+        <HintPath>c:\program files\dotnet\shared\Microsoft.AspNetCore.App\7.0.8\Microsoft.Extensions.Logging.Debug.dll</HintPath>
+      </Reference>
+    </ItemGroup>
+
+
 </Project>

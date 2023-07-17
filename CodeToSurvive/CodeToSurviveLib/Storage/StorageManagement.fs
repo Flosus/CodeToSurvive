@@ -10,19 +10,19 @@ open CodeToSurvive.Lib.Storage.StoragePreference
 
 module StorageManagement =
 
-    let dateTimeFormat = "yyyy-MM-dd_HH:mm:ss"
-    let filePattern = "storage_(\d{4}-\d\d-\d\d_\d\d:\d\d:\d\d).json"
+    let private dateTimeFormat = "yyyy-MM-dd_HH-mm-ss"
+    let private filePattern = "storage_(\d{4}-\d\d-\d\d_\d\d-\d\d-\d\d).json"
     // storage-yyyy-MM-dd.json
-    let storageFileName x = $"storage_{x}.json"
+    let private storageFileName (x:string) = $"storage_{x}.json"
 
-    let serialize (state: 'a) : string =
+    let private serialize (state: 'a) : string =
         let serializer = DataContractJsonSerializer(typeof<'a>)
         let stream = new MemoryStream()
         serializer.WriteObject(stream, state)
         let updateData = stream.ToArray()
         Encoding.UTF8.GetString(updateData)
 
-    let deserialize (json: string) : 'a =
+    let private deserialize (json: string) : 'a =
         let instance = typedefof<'a>
         let ms = new MemoryStream(Encoding.Unicode.GetBytes(json))
 
@@ -32,8 +32,8 @@ module StorageManagement =
 
     let save (storage: IStoragePreference) (state: State) =
         let fileName = DateTime.Now.ToString dateTimeFormat |> storageFileName
-        let content = serialize state
         let savePath = Path.Join(storage.StateStorageFolder.FullName, fileName)
+        let content = serialize state
         File.WriteAllText(savePath, content)
 
     let loadNewest (storage: IStoragePreference) : State =

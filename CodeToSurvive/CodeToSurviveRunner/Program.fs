@@ -1,6 +1,6 @@
-﻿open System.IO
+﻿open System
 open System.Runtime.Serialization.Json
-open System.Text
+open System.Text.RegularExpressions
 open CodeToSurvive.Lib
 open CodeToSurvive.Lib.Core
 open CodeToSurvive.Lib.Core.Job
@@ -8,50 +8,81 @@ open CodeToSurvive.Lib.Core.Position
 open CodeToSurvive.Lib.Core.Tick
 open CodeToSurvive.Lib.Core.World
 open CodeToSurvive.Lib.DevImpl
+open CodeToSurvive.Lib.Storage
 open CodeToSurvive.Lib.Storage.StoragePreference
+open Microsoft.Extensions.Logging
 
 
 
 printfn "Setting up"
-let isSingleTick = true
-let storagePath = "../CodeToSurviveApp/CodeToSurviveStorage"
+let isSingleTick = false
+let storagePath = "./"
 let storage = StoragePreference(storagePath)
 
-let doJobProgress: PlayerTask * State -> State =
-    fun (task, state) ->
-        printfn "doJobProgress"
-        state
-
-let runCharacterScripts: State -> State =
-    fun (state) ->
-        printfn "runCharacterScripts"
-        state
-
-let updateWorldMap: WorldMap -> ChunkPosition -> WorldMap =
-    fun map position ->
-        printfn "updateWorldMap"
-        let gen = getGenerator DevWorldGen.generateChunkDefault
-        gen map position
-
-let preTickUpdate: State -> State =
-    fun (state) ->
-        printfn "preTickUpdate"
-        state
-
-let postTickUpdate: State -> State =
-    fun (state) ->
-        printfn "postTickUpdate"
-        state
-
 let state: State =
-    { Players = [||]
+    { Timestamp = DateTime.Now
+      Players = [||]
       Tasks = [||]
       Map =
         { Chunks = ResizeArray()
           SpecialChunks = ResizeArray() } }
 
+let loggerFactory =
+    let factory =
+        LoggerFactory.Create(fun builder ->
+            builder
+                .AddFilter("Microsoft", LogLevel.Warning)
+                .AddFilter("System", LogLevel.Warning)
+                .AddFilter(fun (cat: String) (lvl: LogLevel) ->
+                    cat.StartsWith "CodeToSurvive" && lvl >= LogLevel.Debug)
+                .AddSimpleConsole(fun opt ->
+                                  opt.SingleLine <- true
+                                  opt.IncludeScopes <- true
+                                  opt.TimestampFormat <- "[yyyy-MM-dd HH:mm:ss]")
+                .AddDebug()
+            |> ignore)
+
+    fun (name: string) -> factory.CreateLogger $"CodeToSurvive.{name}"
+
+let doJobProgress: PlayerTask * State -> State =
+    let log = loggerFactory "doJobProgress"
+
+    fun (task, state) ->
+        log.LogTrace "doJobProgress"
+        state
+
+let runCharacterScripts: State -> State =
+    let log = loggerFactory "runCharacterScripts"
+
+    fun (state) ->
+        log.LogTrace "runCharacterScripts"
+        state
+
+let updateWorldMap: WorldMap -> ChunkPosition -> WorldMap =
+    let log = loggerFactory "updateWorldMap"
+
+    fun map position ->
+        log.LogTrace "updateWorldMap"
+        let gen = getGenerator DevWorldGen.generateChunkDefault
+        gen map position
+
+let preTickUpdate: State -> State =
+    let log = loggerFactory "preTickUpdate"
+
+    fun (state) ->
+        log.LogTrace "preTickUpdate"
+        state
+
+let postTickUpdate: State -> State =
+    let log = loggerFactory "postTickUpdate"
+
+    fun (state) ->
+        log.LogTrace "postTickUpdate"
+        state
+
 let context: WorldContext =
-    { ProgressJob = doJobProgress
+    { CreateLogger = loggerFactory
+      ProgressJob = doJobProgress
       RunCharacterScripts = runCharacterScripts
       UpdateWorldMap = updateWorldMap
       PreTickUpdate = preTickUpdate
@@ -70,17 +101,20 @@ state.Map.Chunks.Add
 
 let serializer = DataContractJsonSerializer(typeof<State>)
 
-let stateCallback state =
-    let stream = new MemoryStream()
-    let data = serializer.WriteObject(stream, state)
-    let updateData = stream.ToArray()
-    let json = (Encoding.UTF8.GetString(updateData))
-    printfn $"provideCurrentState called {state}"
+let stateCallback (state: State) =
+    let log = loggerFactory "stateCallback"
+    let tickSleepAvg = Statistics.printReport (loggerFactory "Statistics")
+
+    match state.Timestamp.Second with
+    | 0 ->
+        log.LogInformation "Creating backup"
+        StorageManagement.save storage state
+    | _ -> log.LogTrace "Skipping backup"
 
 let shouldStop () = isSingleTick
 
 printfn "Run"
 
-GameLoop.gameLoop state context stateCallback shouldStop
+GameLoop.gameLoop state context stateCallback shouldStop |> ignore
 
 printfn "Finished"
