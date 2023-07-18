@@ -7,28 +7,38 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <Compile Include="Statistics.fs" />
-        <Compile Include="Core\Position.fs" />
+        <Compile Include="Statistics.fs"/>
+        <Compile Include="Core\Position.fs"/>
         <Compile Include="Core\Item.fs"/>
         <Compile Include="Core\Entity.fs"/>
         <Compile Include="Core\World.fs"/>
-        <Compile Include="Core\Character.fs" />
+        <Compile Include="Core\Character.fs"/>
         <Compile Include="Core\Job.fs"/>
         <Compile Include="Core\Tick.fs"/>
-        <Compile Include="Core\WorldGen.fs" />
+        <Compile Include="Core\WorldGen.fs"/>
         <Compile Include="PlayerScript\ScriptInfo.fs"/>
         <Compile Include="PlayerScript\ScriptRunner.fs"/>
-        <Compile Include="GameLoop.fs" />
-        <Compile Include="DevImpl\DevWorldGen.fs" />
-        <Compile Include="DevImpl\DevState.fs" />
-        <Compile Include="Storage\StoragePreference.fs" />
-        <Compile Include="Storage\StorageManagement.fs" />
+        <Compile Include="GameLoop.fs"/>
+        <Compile Include="DevImpl\DevWorldGen.fs"/>
+        <Compile Include="DevImpl\DevState.fs"/>
+        <Compile Include="Storage\StoragePreference.fs"/>
+        <Compile Include="Storage\StorageManagement.fs"/>
     </ItemGroup>
 
     <ItemGroup>
-      <Reference Include="Microsoft.Extensions.Logging.Abstractions">
-        <HintPath>c:\program files\dotnet\shared\Microsoft.AspNetCore.App\7.0.8\Microsoft.Extensions.Logging.Abstractions.dll</HintPath>
-      </Reference>
+        <Content Include="World\**\*">
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </Content>
+    </ItemGroup>
+
+    <ItemGroup>
+        <Reference Include="Microsoft.Extensions.Logging.Abstractions">
+            <HintPath>c:\program files\dotnet\shared\Microsoft.AspNetCore.App\7.0.8\Microsoft.Extensions.Logging.Abstractions.dll</HintPath>
+        </Reference>
+    </ItemGroup>
+
+    <ItemGroup>
+        <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="7.0.1"/>
     </ItemGroup>
 
 </Project>

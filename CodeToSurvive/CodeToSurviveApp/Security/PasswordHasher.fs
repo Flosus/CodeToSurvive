@@ -6,9 +6,9 @@ open Microsoft.AspNetCore.Identity
 
 type PasswordHasher() =
     interface IPasswordHasher<ApplicationUser> with
-        member this.HashPassword(user, password) = BCrypt.HashPassword password
+        member this.HashPassword(_, password) = BCrypt.HashPassword password
 
-        member this.VerifyHashedPassword(user, hashedPassword, providedPassword) =
+        member this.VerifyHashedPassword(_, hashedPassword, providedPassword) =
             let result = BCrypt.Verify(providedPassword, hashedPassword)
 
             match result with

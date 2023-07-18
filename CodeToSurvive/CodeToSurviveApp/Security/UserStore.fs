@@ -103,7 +103,7 @@ type UserStore(storage: IStoragePreference) =
         member this.HasPasswordAsync(user, _) =
             Task.FromResult(user.PasswordHash <> null && user.PasswordHash.Length > 0)
 
-        member this.SetPasswordHashAsync(user, passwordHash, cancellationToken) =
+        member this.SetPasswordHashAsync(user, passwordHash, _) =
             user.PasswordHash <- passwordHash
             // TODO save password
             Task.CompletedTask

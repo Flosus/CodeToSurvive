@@ -2,7 +2,6 @@ namespace CodeToSurvive.App.Private
 
 open CodeToSurvive.App.Public.PublicModels
 open Giraffe.ViewEngine
-open Giraffe.ViewEngine.Htmx
 
 module PrivateViews =
 

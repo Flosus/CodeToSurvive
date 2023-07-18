@@ -1,7 +1,6 @@
 namespace CodeToSurvive.App.Admin
 
 
-open CodeToSurvive.App.Public.PublicHandler
 open CodeToSurvive.App.Private.PrivateViews
 open CodeToSurvive.App.Admin.AdminViews
 open Microsoft.AspNetCore.Http

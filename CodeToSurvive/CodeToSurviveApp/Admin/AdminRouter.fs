@@ -1,6 +1,5 @@
 namespace CodeToSurvive.App.Admin
 
-open CodeToSurvive.App.Public.PublicHandler
 open CodeToSurvive.App.Admin.AdminHandler
 
 module AdminRouter =

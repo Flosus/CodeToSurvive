@@ -10,17 +10,18 @@ module PublicViews =
     let mainPanel (model: PublicModel) =
         let logBtnLink, logBtnTxt =
             match model.loginModel with
-            | ActiveLogin _ -> ("/logout", "Logout") // a [ _href "/logout"; _class "headPanelBtn" ] [ button [ _class "loginLogoutBtn" ] [ encodedText "Logout" ] ]
-            | _ -> ("/login", "Login") // a [ _href "/login"; _class "headPanelBtn" ] [ button [ _class "loginLogoutBtn" ] [ encodedText "Login" ] ]
-
+            | ActiveLogin _ -> ("/logout", "Logout")
+            | _ -> ("/login", "Login")
         div
             [ _class "headPanel" ]
             [ a [ _href "/" ] [ img [ _class "headPanelLogo"; _src "/android-chrome-192x192.png" ] ]
               div
                   [ _class "panelMenu" ]
-                  [ a
-                        [ _href "/secured/private"; _class "panelLink" ]
-                        [ button [ _class "panelBtn" ] [ encodedText "Survive" ] ]
+                  [ match model.loginModel with
+                    | ActiveLogin _ -> a
+                                        [ _href "/secured/private"; _class "panelLink" ]
+                                        [ button [ _class "panelBtn" ] [ encodedText "Survive" ] ] 
+                    | _ -> ()
                     a
                         [ _href "/scoreboard"; _class "panelLink" ]
                         [ button [ _class "panelBtn" ] [ encodedText "Scoreboard" ] ]

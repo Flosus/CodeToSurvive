@@ -1,6 +1,5 @@
 ﻿open System
 open System.Runtime.Serialization.Json
-open System.Text.RegularExpressions
 open CodeToSurvive.Lib
 open CodeToSurvive.Lib.Core
 open CodeToSurvive.Lib.Core.Job
@@ -47,14 +46,14 @@ let loggerFactory =
 let doJobProgress: PlayerTask * State -> State =
     let log = loggerFactory "doJobProgress"
 
-    fun (task, state) ->
+    fun (_, state) ->
         log.LogTrace "doJobProgress"
         state
 
 let runCharacterScripts: State -> State =
     let log = loggerFactory "runCharacterScripts"
 
-    fun (state) ->
+    fun state ->
         log.LogTrace "runCharacterScripts"
         state
 
@@ -69,14 +68,14 @@ let updateWorldMap: WorldMap -> ChunkPosition -> WorldMap =
 let preTickUpdate: State -> State =
     let log = loggerFactory "preTickUpdate"
 
-    fun (state) ->
+    fun state ->
         log.LogTrace "preTickUpdate"
         state
 
 let postTickUpdate: State -> State =
     let log = loggerFactory "postTickUpdate"
 
-    fun (state) ->
+    fun state ->
         log.LogTrace "postTickUpdate"
         state
 
@@ -103,7 +102,7 @@ let serializer = DataContractJsonSerializer(typeof<State>)
 
 let stateCallback (state: State) =
     let log = loggerFactory "stateCallback"
-    let tickSleepAvg = Statistics.printReport (loggerFactory "Statistics")
+    Statistics.printReport (loggerFactory "Statistics")
 
     match state.Timestamp.Second with
     | 0 ->
