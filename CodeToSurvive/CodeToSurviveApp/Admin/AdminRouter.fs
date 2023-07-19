@@ -17,4 +17,4 @@ module AdminRouter =
         subRoute
             "/secured/admin"
             (requiresAuthentication notLoggedIn
-             >=> choose [ GET >=> choose [ adminRoute; adminOverviewRoute ]; POST >=> choose [ ] ])
+             >=> choose [ GET >=> choose [ adminRoute; adminOverviewRoute ]; POST >=> choose [] ])

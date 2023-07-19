@@ -26,6 +26,4 @@ module PrivateRouter =
         subRoute
             "/secured/private"
             (requiresAuthentication authFailedHandler
-             >=> choose
-                 [ GET >=> choose [ privateRoute; overviewRoute ]
-                   POST >=> choose [  ] ])
+             >=> choose [ GET >=> choose [ privateRoute; overviewRoute ]; POST >=> choose [] ])

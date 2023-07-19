@@ -69,4 +69,5 @@ module Statistics =
                else
                    $"{getAverageTickTimeInMicro ()}μs")
             + $" over {tickCount} game ticks"
+
         log.LogDebug tickText

@@ -7,7 +7,6 @@ module World =
 
     exception WorldGenError of string
     let private worldMapLock = obj ()
-
     type ChunkFeature = string
     type ChunkType = string * ChunkFeature[]
 

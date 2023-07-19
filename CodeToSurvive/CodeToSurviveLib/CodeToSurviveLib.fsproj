@@ -23,6 +23,7 @@
         <Compile Include="DevImpl\DevState.fs"/>
         <Compile Include="Storage\StoragePreference.fs"/>
         <Compile Include="Storage\StorageManagement.fs"/>
+        <Compile Include="Storage\FileLoader.fs" />
     </ItemGroup>
 
     <ItemGroup>

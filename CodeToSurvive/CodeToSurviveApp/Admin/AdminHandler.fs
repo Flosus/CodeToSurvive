@@ -8,7 +8,7 @@ open Giraffe
 open Microsoft.Extensions.Logging
 
 module AdminHandler =
-    
+
     let adminOverviewHandler =
         fun (next: HttpFunc) (ctx: HttpContext) ->
             task {

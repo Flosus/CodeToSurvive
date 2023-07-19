@@ -6,4 +6,3 @@ module AdminViews =
 
     let adminOverviewView () =
         [ p [] [ encodedText "Here will be the admin overview" ] ]
-    

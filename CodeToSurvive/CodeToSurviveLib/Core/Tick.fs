@@ -12,8 +12,7 @@ module Tick =
     type CharacterState = { Character: Character }
 
     type State =
-        {
-          Timestamp: DateTime
+        { Timestamp: DateTime
           Players: CharacterState[]
           Tasks: PlayerTask[]
           Map: WorldMap }
@@ -21,18 +20,16 @@ module Tick =
     type RunCharacterScripts = State -> State
     type DoJobProgress = PlayerTask * State -> State
     type StateUpdate = State -> State
-    
+
     type WorldContext =
-        { 
-          CreateLogger: string -> ILogger
+        { CreateLogger: string -> ILogger
           ProgressJob: DoJobProgress
           RunCharacterScripts: RunCharacterScripts
           UpdateWorldMap: UpdateWorldMap
           PreTickUpdate: StateUpdate
           PostTickUpdate: StateUpdate }
-        
-    let getLogger (factory:ILoggerFactory) category : ILogger =
-        factory.CreateLogger category
+
+    let getLogger (factory: ILoggerFactory) category : ILogger = factory.CreateLogger category
 
     let rec doWithStateUpdate (char: CharacterState[]) (state: State) (act: CharacterState * State -> State) : State =
         match char.Length with
@@ -70,6 +67,7 @@ module Tick =
     let tick (state: State) (context: WorldContext) : State =
         let log = context.CreateLogger("tick")
         log.LogDebug "Tick begin"
+
         let progressJobs (curState: State) : State =
             doJobProgress curState.Players curState context.ProgressJob
 
@@ -79,11 +77,11 @@ module Tick =
 
         let generateNewMapChunks (curState: State) : State =
             updateMap curState.Players curState context.UpdateWorldMap
-        
+
         let logStep msg localState =
             log.LogTrace msg
             localState
-            
+
 
         state
         // Pre tick work

@@ -13,7 +13,7 @@ module StorageManagement =
     let private dateTimeFormat = "yyyy-MM-dd_HH-mm-ss"
     let private filePattern = "storage_(\d{4}-\d\d-\d\d_\d\d-\d\d-\d\d).json"
     // storage-yyyy-MM-dd.json
-    let private storageFileName (x:string) = $"storage_{x}.json"
+    let private storageFileName (x: string) = $"storage_{x}.json"
 
     let private serialize (state: 'a) : string =
         let serializer = DataContractJsonSerializer(typeof<'a>)

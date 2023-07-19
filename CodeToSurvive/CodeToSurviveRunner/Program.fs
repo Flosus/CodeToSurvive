@@ -35,9 +35,9 @@ let loggerFactory =
                 .AddFilter(fun (cat: String) (lvl: LogLevel) ->
                     cat.StartsWith "CodeToSurvive" && lvl >= LogLevel.Debug)
                 .AddSimpleConsole(fun opt ->
-                                  opt.SingleLine <- true
-                                  opt.IncludeScopes <- true
-                                  opt.TimestampFormat <- "[yyyy-MM-dd HH:mm:ss]")
+                    opt.SingleLine <- true
+                    opt.IncludeScopes <- true
+                    opt.TimestampFormat <- "[yyyy-MM-dd HH:mm:ss]")
                 .AddDebug()
             |> ignore)
 

@@ -80,10 +80,13 @@ let configureServices (services: IServiceCollection) =
     ()
 
 let configureLogging (builder: ILoggingBuilder) =
-    builder.AddSimpleConsole(fun opt ->
-                                  opt.SingleLine <- true
-                                  opt.IncludeScopes <- true
-                                  opt.TimestampFormat <- "[yyyy-MM-dd HH:mm:ss]").AddDebug() |> ignore
+    builder
+        .AddSimpleConsole(fun opt ->
+            opt.SingleLine <- true
+            opt.IncludeScopes <- true
+            opt.TimestampFormat <- "[yyyy-MM-dd HH:mm:ss]")
+        .AddDebug()
+    |> ignore
 
 [<EntryPoint>]
 let main args =

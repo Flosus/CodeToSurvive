@@ -8,11 +8,9 @@ module PrivateViews =
     let overviewView () =
         [ p [] [ encodedText "Here will be the overview" ] ]
 
-    let privateView (_: PublicModel) =
-        overviewView()
+    let privateView (_: PublicModel) = overviewView ()
 
     let characterView () =
         [ p [] [ encodedText "Here will be the overview" ] ]
-        
-    let htmxContent (content: unit -> XmlNode list): XmlNode =
-        content() |> div []
+
+    let htmxContent (content: unit -> XmlNode list) : XmlNode = content () |> div []

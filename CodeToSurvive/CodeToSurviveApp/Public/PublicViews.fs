@@ -12,15 +12,17 @@ module PublicViews =
             match model.loginModel with
             | ActiveLogin _ -> ("/logout", "Logout")
             | _ -> ("/login", "Login")
+
         div
             [ _class "headPanel" ]
             [ a [ _href "/" ] [ img [ _class "headPanelLogo"; _src "/android-chrome-192x192.png" ] ]
               div
                   [ _class "panelMenu" ]
                   [ match model.loginModel with
-                    | ActiveLogin _ -> a
-                                        [ _href "/secured/private"; _class "panelLink" ]
-                                        [ button [ _class "panelBtn" ] [ encodedText "Survive" ] ] 
+                    | ActiveLogin _ ->
+                        a
+                            [ _href "/secured/private"; _class "panelLink" ]
+                            [ button [ _class "panelBtn" ] [ encodedText "Survive" ] ]
                     | _ -> ()
                     a
                         [ _href "/scoreboard"; _class "panelLink" ]
