@@ -27,12 +27,6 @@
     </ItemGroup>
 
     <ItemGroup>
-        <Content Include="World\**\*">
-            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-        </Content>
-    </ItemGroup>
-
-    <ItemGroup>
         <Reference Include="Microsoft.Extensions.Logging.Abstractions">
             <HintPath>c:\program files\dotnet\shared\Microsoft.AspNetCore.App\7.0.8\Microsoft.Extensions.Logging.Abstractions.dll</HintPath>
         </Reference>

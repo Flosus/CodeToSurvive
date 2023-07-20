@@ -19,6 +19,7 @@
 
     <ItemGroup>
       <ProjectReference Include="..\CodeToSurviveLib\CodeToSurviveLib.fsproj" />
+      <ProjectReference Include="..\CodeToSurviveResource\CodeToSurviveResource.fsproj" />
     </ItemGroup>
 
     <ItemGroup>
