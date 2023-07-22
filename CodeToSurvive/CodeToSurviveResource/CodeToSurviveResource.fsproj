@@ -17,9 +17,16 @@
     </ItemGroup>
 
     <ItemGroup>
+        <Content Include="WebRoot\**\*">
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </Content>
+    </ItemGroup>
+
+    <ItemGroup>
       <Content Include="..\.dockerignore">
         <Link>.dockerignore</Link>
       </Content>
+      <Folder Include="WebRoot\tiles\" />
     </ItemGroup>
 
     <ItemGroup>
