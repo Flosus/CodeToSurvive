@@ -15,7 +15,7 @@ module Character =
         { Id: Guid
           Name: string
           PlayerStats: CharacterStats
-          PlayerPosition: AbsoluteTilePosition
+          PlayerPosition: ChunkPosition
           Inventory: ItemEntity[] }
 
     let NewPlayerStats = { Hunger = 0; Thirst = 0; Fatigue = 0 }

@@ -26,7 +26,6 @@
       <Content Include="..\.dockerignore">
         <Link>.dockerignore</Link>
       </Content>
-      <Folder Include="WebRoot\tiles\" />
     </ItemGroup>
 
     <ItemGroup>

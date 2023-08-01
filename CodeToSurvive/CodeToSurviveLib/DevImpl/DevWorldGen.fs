@@ -43,15 +43,6 @@ module DevWorldGen =
 
     let private isAllowedDefault = checkDefaultAllowed defaultExclusiveFeatures
 
-    let buildPlainTiles () : Tile[][] =
-        [| for i in 1..64 ->
-               [| for j in 1..64 ->
-                      { TileType = "Plains"
-                        CanViewOver = true
-                        Walkable = true
-                        EntitiesAllowed = true
-                        Position = { X = i; Y = j } } |] |]
-
     // TODO add some default templates
     let private getTemplates () : ChunkTemplate[] =
         [| { Name = "Plains"
@@ -60,8 +51,7 @@ module DevWorldGen =
              NorthType = plainsType
              SouthType = plainsType
              EastType = plainsType
-             WestType = plainsType
-             TileGenerator = buildPlainTiles }
+             WestType = plainsType }
 
            |]
     // Dev impl

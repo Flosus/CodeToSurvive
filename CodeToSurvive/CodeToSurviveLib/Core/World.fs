@@ -10,13 +10,6 @@ module World =
     type ChunkFeature = string
     type ChunkType = string * ChunkFeature[]
 
-    type Tile =
-        { TileType: string
-          CanViewOver: bool
-          Walkable: bool
-          EntitiesAllowed: bool
-          Position: TilePosition }
-
     type Chunk =
         { Name: string
           Description: string
@@ -25,9 +18,7 @@ module World =
           NorthType: ChunkType
           SouthType: ChunkType
           EastType: ChunkType
-          WestType: ChunkType
-          // Size 64x64
-          Tiles: Tile[][] }
+          WestType: ChunkType }
 
     type WorldMap =
         { Chunks: ResizeArray<Chunk>

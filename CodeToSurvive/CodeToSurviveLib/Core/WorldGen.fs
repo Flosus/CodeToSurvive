@@ -38,14 +38,7 @@ module WorldGen =
           NorthType: ChunkType
           SouthType: ChunkType
           EastType: ChunkType
-          WestType: ChunkType
-          TileGenerator: unit -> Tile[][] }
-
-    type TileTemplate =
-        { TileType: string
-          CanViewOver: bool
-          Walkable: bool
-          EntitiesAllowed: bool }
+          WestType: ChunkType }
 
     let randomNumberGen = Random()
 
@@ -57,8 +50,7 @@ module WorldGen =
           NorthType = template.NorthType
           SouthType = template.SouthType
           EastType = template.EastType
-          WestType = template.WestType
-          Tiles = template.TileGenerator() }
+          WestType = template.WestType }
 
     let generateChunk isAllowedAdjacent getAllTemplates map position =
         let northChunk = position |> ChunkPosition.plusY 1 |> getChunk map

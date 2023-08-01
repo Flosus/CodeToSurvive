@@ -42,7 +42,7 @@ module Tick =
 
     let updateMap (players: CharacterState[]) (state: State) (act: UpdateWorldMap) : State =
         let mapUpdate (player: CharacterState, state: State) : State =
-            let chunkPosition = getChunkPosition player.Character.PlayerPosition
+            let chunkPosition = player.Character.PlayerPosition
             let newMap = act state.Map chunkPosition
             { state with Map = newMap }
 

@@ -95,8 +95,7 @@ state.Map.Chunks.Add
       NorthType = WorldGen.plainsType
       SouthType = WorldGen.plainsType
       EastType = WorldGen.plainsType
-      WestType = WorldGen.plainsType
-      Tiles = DevWorldGen.buildPlainTiles () }
+      WestType = WorldGen.plainsType }
 
 let serializer = DataContractJsonSerializer(typeof<State>)
 
