@@ -9,6 +9,7 @@ open CodeToSurvive.Lib.Core.World
 open CodeToSurvive.Lib.DevImpl
 open CodeToSurvive.Lib.Storage
 open CodeToSurvive.Lib.Storage.StoragePreference
+open CodeToSurvive.Resource.Core
 open Microsoft.Extensions.Logging
 
 
@@ -26,20 +27,20 @@ let state: State =
         { Chunks = ResizeArray()
           SpecialChunks = ResizeArray() } }
 
+let factory =
+    LoggerFactory.Create(fun builder ->
+        builder
+            .AddFilter("Microsoft", LogLevel.Warning)
+            .AddFilter("System", LogLevel.Warning)
+            .AddFilter(fun (cat: String) (lvl: LogLevel) ->
+                cat.StartsWith "CodeToSurvive" && lvl >= LogLevel.Debug)
+            .AddSimpleConsole(fun opt ->
+                opt.SingleLine <- true
+                opt.IncludeScopes <- true
+                opt.TimestampFormat <- "[yyyy-MM-dd HH:mm:ss]")
+            .AddDebug()
+        |> ignore)
 let loggerFactory =
-    let factory =
-        LoggerFactory.Create(fun builder ->
-            builder
-                .AddFilter("Microsoft", LogLevel.Warning)
-                .AddFilter("System", LogLevel.Warning)
-                .AddFilter(fun (cat: String) (lvl: LogLevel) ->
-                    cat.StartsWith "CodeToSurvive" && lvl >= LogLevel.Debug)
-                .AddSimpleConsole(fun opt ->
-                    opt.SingleLine <- true
-                    opt.IncludeScopes <- true
-                    opt.TimestampFormat <- "[yyyy-MM-dd HH:mm:ss]")
-                .AddDebug()
-            |> ignore)
 
     fun (name: string) -> factory.CreateLogger $"CodeToSurvive.{name}"
 
@@ -112,6 +113,8 @@ let stateCallback (state: State) =
 let shouldStop () = isSingleTick
 
 printfn "Run"
+
+Setup.setupPlugin factory
 
 GameLoop.gameLoop state context stateCallback shouldStop |> ignore
 
