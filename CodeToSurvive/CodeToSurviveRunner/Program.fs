@@ -1,12 +1,9 @@
 ﻿open System
 open System.Runtime.Serialization.Json
 open CodeToSurvive.Lib
-open CodeToSurvive.Lib.Core
 open CodeToSurvive.Lib.Core.Job
-open CodeToSurvive.Lib.Core.Position
 open CodeToSurvive.Lib.Core.Tick
 open CodeToSurvive.Lib.Core.World
-open CodeToSurvive.Lib.DevImpl
 open CodeToSurvive.Lib.Storage
 open CodeToSurvive.Lib.Storage.StoragePreference
 open CodeToSurvive.Resource.Core
@@ -24,8 +21,7 @@ let state: State =
       Players = [||]
       Tasks = [||]
       Map =
-        { Chunks = ResizeArray()
-          SpecialChunks = ResizeArray() } }
+        { Chunks = ResizeArray()} }
 
 let factory =
     LoggerFactory.Create(fun builder ->
@@ -58,14 +54,6 @@ let runCharacterScripts: State -> State =
         log.LogTrace "runCharacterScripts"
         state
 
-let updateWorldMap: WorldMap -> ChunkPosition -> WorldMap =
-    let log = loggerFactory "updateWorldMap"
-
-    fun map position ->
-        log.LogTrace "updateWorldMap"
-        let gen = getGenerator DevWorldGen.generateChunkDefault
-        gen map position
-
 let preTickUpdate: State -> State =
     let log = loggerFactory "preTickUpdate"
 
@@ -84,19 +72,12 @@ let context: WorldContext =
     { CreateLogger = loggerFactory
       ProgressJob = doJobProgress
       RunCharacterScripts = runCharacterScripts
-      UpdateWorldMap = updateWorldMap
       PreTickUpdate = preTickUpdate
       PostTickUpdate = postTickUpdate }
 
 state.Map.Chunks.Add
     { Name = "Plains"
-      Description = "Empty Plains"
-      Location = { X = 0; Y = 0 }
-      MainType = WorldGen.plainsType
-      NorthType = WorldGen.plainsType
-      SouthType = WorldGen.plainsType
-      EastType = WorldGen.plainsType
-      WestType = WorldGen.plainsType }
+      Description = "Empty Plains" }
 
 let serializer = DataContractJsonSerializer(typeof<State>)
 

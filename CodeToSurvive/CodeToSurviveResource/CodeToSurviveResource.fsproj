@@ -7,7 +7,7 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <Compile Include="SetupPlugin.fs" />
+        <Compile Include="SetupPlugin.fs"/>
     </ItemGroup>
 
     <ItemGroup>
@@ -23,13 +23,13 @@
     </ItemGroup>
 
     <ItemGroup>
-      <Content Include="..\.dockerignore">
-        <Link>.dockerignore</Link>
-      </Content>
+        <Content Include="..\.dockerignore">
+            <Link>.dockerignore</Link>
+        </Content>
     </ItemGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\CodeToSurviveLib\CodeToSurviveLib.fsproj" />
+        <ProjectReference Include="..\CodeToSurviveLib\CodeToSurviveLib.fsproj"/>
     </ItemGroup>
 
 </Project>

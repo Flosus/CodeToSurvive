@@ -4,7 +4,6 @@ open System
 open CodeToSurvive.Lib.Core.Job
 open CodeToSurvive.Lib.Core.Character
 open CodeToSurvive.Lib.Core.World
-open CodeToSurvive.Lib.Core.Position
 open Microsoft.Extensions.Logging
 
 module Tick =
@@ -25,7 +24,6 @@ module Tick =
         { CreateLogger: string -> ILogger
           ProgressJob: DoJobProgress
           RunCharacterScripts: RunCharacterScripts
-          UpdateWorldMap: UpdateWorldMap
           PreTickUpdate: StateUpdate
           PostTickUpdate: StateUpdate }
 
@@ -39,14 +37,6 @@ module Tick =
             let newState = act (currentPlayer, state)
             let remainingChars = char[1..]
             doWithStateUpdate remainingChars newState act
-
-    let updateMap (players: CharacterState[]) (state: State) (act: UpdateWorldMap) : State =
-        let mapUpdate (player: CharacterState, state: State) : State =
-            let chunkPosition = player.Character.PlayerPosition
-            let newMap = act state.Map chunkPosition
-            { state with Map = newMap }
-
-        doWithStateUpdate players state mapUpdate
 
     let doJobProgress (character: CharacterState[]) (state: State) (act: DoJobProgress) : State =
         let dJP (cha: CharacterState, state: State) : State =
@@ -75,9 +65,6 @@ module Tick =
             { curState with
                 Tasks = curState.Tasks |> Array.filter isPlayerTaskOpen }
 
-        let generateNewMapChunks (curState: State) : State =
-            updateMap curState.Players curState context.UpdateWorldMap
-
         let logStep msg localState =
             log.LogTrace msg
             localState
@@ -96,9 +83,6 @@ module Tick =
         // Find not finished tasks
         |> removeFinishedJobs
         |> logStep "removeFinishedJobs finished"
-        // Generate new terrain
-        |> generateNewMapChunks
-        |> logStep "generateNewMapChunks finished"
         // Post tick work
         |> context.PostTickUpdate
         |> logStep "PostTickUpdate finished"
