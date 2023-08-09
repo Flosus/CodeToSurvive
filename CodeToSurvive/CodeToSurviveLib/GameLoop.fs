@@ -3,6 +3,7 @@ namespace CodeToSurvive.Lib
 open System
 open System.Threading
 open CodeToSurvive.Lib.Core.Tick
+open CodeToSurvive.Lib.Core.GameState
 open Microsoft.Extensions.Logging
 
 module GameLoop =
@@ -26,7 +27,7 @@ module GameLoop =
         match try1 < 1 with
         | false -> try1
         // Add 5 seconds in case we "go back in time"
-        | true -> ((rounded.AddSeconds(int interval)) - DateTime.UtcNow).TotalMilliseconds
+        | true -> (rounded.AddSeconds(int interval) - DateTime.UtcNow).TotalMilliseconds
 
     let rec _gameLoop state context provideCurrentState shouldStop =
         let log = context.CreateLogger "GameLoop"

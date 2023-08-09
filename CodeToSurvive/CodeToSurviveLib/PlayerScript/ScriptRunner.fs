@@ -3,19 +3,19 @@ namespace CodeToSurvive.Lib.PlayerScript
 open System
 open System.Threading
 open System.Threading.Tasks
+open CodeToSurvive.Lib.Core.GameState
 open CodeToSurvive.Lib.Core.Job
-open CodeToSurvive.Lib.Core.Tick
 open CodeToSurvive.Lib.Script.ScriptInfo
 
 module ScriptRunner =
 
-    let handleTimeout (states: CharacterState * State) : CharacterState * ScriptResult =
+    let handleTimeout (states: CharacterState * WorldState) : CharacterState * ScriptResult =
         let playerState, _ = states
         // TODO write messages, etc
         (playerState, Timeout)
 
     let runScript
-        (state: CharacterState * State)
+        (state: CharacterState * WorldState)
         (playScript: RunPlayerScript)
         (cancellationTime: TimeSpan)
         : Async<CharacterState * ScriptResult> =
@@ -30,11 +30,11 @@ module ScriptRunner =
             async { return handleTimeout state }
 
     let RunScripts
-        (state: State)
+        (state: WorldState)
         (getScriptByPlayer: GetScriptByPlayer)
         (getJobByName: GetJob)
         (scriptRunTime: int)
-        : State =
+        : WorldState =
         let cancellationTime = TimeSpan.FromSeconds(scriptRunTime)
 
         let playerScripts =

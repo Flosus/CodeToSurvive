@@ -1,35 +1,18 @@
 namespace CodeToSurvive.Lib.Core
 
 open System
+open CodeToSurvive.Lib.Core.GameState
 open CodeToSurvive.Lib.Core.Job
 open CodeToSurvive.Lib.Core.Character
-open CodeToSurvive.Lib.Core.World
 open Microsoft.Extensions.Logging
 
 module Tick =
 
-    type CharacterState = { Character: Character }
-
-    type State =
-        { Timestamp: DateTime
-          Players: CharacterState[]
-          Tasks: PlayerTask[]
-          Map: WorldMap }
-
-    type RunCharacterScripts = State -> State
-    type DoJobProgress = PlayerTask * State -> State
-    type StateUpdate = State -> State
-
-    type WorldContext =
-        { CreateLogger: string -> ILogger
-          ProgressJob: DoJobProgress
-          RunCharacterScripts: RunCharacterScripts
-          PreTickUpdate: StateUpdate
-          PostTickUpdate: StateUpdate }
-
-    let getLogger (factory: ILoggerFactory) category : ILogger = factory.CreateLogger category
-
-    let rec doWithStateUpdate (char: CharacterState[]) (state: State) (act: CharacterState * State -> State) : State =
+    let rec doWithStateUpdate
+        (char: CharacterState[])
+        (state: WorldState)
+        (act: CharacterState * WorldState -> WorldState)
+        : WorldState =
         match char.Length with
         | 0 -> state
         | _ ->
@@ -38,15 +21,15 @@ module Tick =
             let remainingChars = char[1..]
             doWithStateUpdate remainingChars newState act
 
-    let doJobProgress (character: CharacterState[]) (state: State) (act: DoJobProgress) : State =
-        let dJP (cha: CharacterState, state: State) : State =
+    let doJobProgress (character: CharacterState[]) (state: WorldState) (act: DoJobProgress) : WorldState =
+        let dJP (cha: CharacterState, state: WorldState) : WorldState =
             let findPlayerTask = fun (cur: PlayerTask) -> cha.Character.Id = cur.Character.Id
             let currentTask = state.Tasks |> Array.find findPlayerTask
             act (currentTask, state)
 
         doWithStateUpdate character state dJP
 
-    let getPlayersWithoutJob (state: State) =
+    let getPlayersWithoutJob (state: WorldState) =
         let filterPlayerHasNoJob (entry: CharacterState) =
             state.Tasks
             |> Array.filter (fun pt -> pt.Character = entry.Character && not pt.Job.IsCancelable)
@@ -54,14 +37,14 @@ module Tick =
 
         state.Players |> Array.filter filterPlayerHasNoJob
 
-    let tick (state: State) (context: WorldContext) : State =
+    let tick (state: WorldState) (context: WorldContext) : WorldState =
         let log = context.CreateLogger("tick")
         log.LogDebug "Tick begin"
 
-        let progressJobs (curState: State) : State =
+        let progressJobs (curState: WorldState) : WorldState =
             doJobProgress curState.Players curState context.ProgressJob
 
-        let removeFinishedJobs (curState: State) : State =
+        let removeFinishedJobs (curState: WorldState) : WorldState =
             { curState with
                 Tasks = curState.Tasks |> Array.filter isPlayerTaskOpen }
 

@@ -1,7 +1,7 @@
 namespace CodeToSurvive.Lib.Script
 
+open CodeToSurvive.Lib.Core.GameState
 open CodeToSurvive.Lib.Core.Job
-open CodeToSurvive.Lib.Core.Tick
 
 module ScriptInfo =
 
@@ -11,6 +11,6 @@ module ScriptInfo =
         | Error
         | Timeout
 
-    type RunPlayerScript = CharacterState * State -> Async<CharacterState * ScriptResult>
+    type RunPlayerScript = CharacterState * WorldState -> Async<CharacterState * ScriptResult>
     type GetScriptByPlayer = CharacterState -> RunPlayerScript
     type GetJob = ScriptResult -> Job

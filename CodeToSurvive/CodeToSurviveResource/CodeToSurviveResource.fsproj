@@ -7,10 +7,6 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <Compile Include="SetupPlugin.fs"/>
-    </ItemGroup>
-
-    <ItemGroup>
         <Content Include="World\**\*">
             <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
         </Content>
@@ -26,10 +22,13 @@
         <Content Include="..\.dockerignore">
             <Link>.dockerignore</Link>
         </Content>
+        <Compile Include="BasePlugin.fs" />
+        <Compile Include="DebugPlugin.fs" />
     </ItemGroup>
 
     <ItemGroup>
         <ProjectReference Include="..\CodeToSurviveLib\CodeToSurviveLib.fsproj"/>
     </ItemGroup>
+
 
 </Project>
