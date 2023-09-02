@@ -7,51 +7,52 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <PackageReference Include="BCrypt.Net-Next" Version="4.0.3"/>
-        <PackageReference Include="Giraffe" Version="6.1.0"/>
-        <PackageReference Include="Giraffe.Htmx" Version="1.9.2"/>
-        <PackageReference Include="Giraffe.ViewEngine" Version="1.4.*"/>
-        <PackageReference Include="Giraffe.ViewEngine.Htmx" Version="1.9.2"/>
-        <PackageReference Include="Ply" Version="0.3.*"/>
+        <PackageReference Include="BCrypt.Net-Next" Version="4.0.3" />
+        <PackageReference Include="Giraffe" Version="6.1.0" />
+        <PackageReference Include="Giraffe.Htmx" Version="1.9.2" />
+        <PackageReference Include="Giraffe.ViewEngine" Version="1.4.*" />
+        <PackageReference Include="Giraffe.ViewEngine.Htmx" Version="1.9.2" />
+        <PackageReference Include="NLua" Version="1.6.3" />
+        <PackageReference Include="Ply" Version="0.3.*" />
     </ItemGroup>
 
     <ItemGroup>
-        <None Include="web.config" CopyToOutputDirectory="PreserveNewest"/>
+        <None Include="web.config" CopyToOutputDirectory="PreserveNewest" />
         <Content Include="WebRoot\**\*">
             <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
         </Content>
     </ItemGroup>
 
     <ItemGroup>
-        <ProjectReference Include="..\CodeToSurviveLib\CodeToSurviveLib.fsproj"/>
-        <ProjectReference Include="..\CodeToSurviveResource\CodeToSurviveResource.fsproj"/>
+        <ProjectReference Include="..\CodeToSurviveLib\CodeToSurviveLib.fsproj" />
+        <ProjectReference Include="..\CodeToSurviveResource\CodeToSurviveResource.fsproj" />
     </ItemGroup>
 
     <ItemGroup>
-        <Compile Include="Config.fs"/>
-        <Compile Include="Security\SecurityModel.fs"/>
-        <Compile Include="Security\UserStore.fs"/>
-        <Compile Include="Security\UserManager.fs"/>
-        <Compile Include="Security\PasswordHasher.fs"/>
-        <Compile Include="Security\RoleStore.fs"/>
-        <Compile Include="Public\PublicModels.fs"/>
-        <Compile Include="Public\PublicViews.fs"/>
-        <Compile Include="Public\PublicHandler.fs"/>
-        <Compile Include="Public\PublicRouter.fs"/>
-        <Compile Include="Private\PrivateModel.fs"/>
-        <Compile Include="Private\PrivateViews.fs"/>
-        <Compile Include="Private\PrivateHandler.fs"/>
-        <Compile Include="Private\PrivateRouter.fs"/>
-        <Compile Include="Admin\AdminViews.fs"/>
-        <Compile Include="Admin\AdminModel.fs"/>
-        <Compile Include="Admin\AdminHandler.fs"/>
-        <Compile Include="Admin\AdminRouter.fs"/>
-        <Compile Include="Program.fs"/>
-        <Content Include="settings.json"/>
+        <Compile Include="Config.fs" />
+        <Compile Include="Security\SecurityModel.fs" />
+        <Compile Include="Security\UserStore.fs" />
+        <Compile Include="Security\UserManager.fs" />
+        <Compile Include="Security\PasswordHasher.fs" />
+        <Compile Include="Security\RoleStore.fs" />
+        <Compile Include="Public\PublicModels.fs" />
+        <Compile Include="Public\PublicViews.fs" />
+        <Compile Include="Public\PublicHandler.fs" />
+        <Compile Include="Public\PublicRouter.fs" />
+        <Compile Include="Private\PrivateModel.fs" />
+        <Compile Include="Private\PrivateViews.fs" />
+        <Compile Include="Private\PrivateHandler.fs" />
+        <Compile Include="Private\PrivateRouter.fs" />
+        <Compile Include="Admin\AdminViews.fs" />
+        <Compile Include="Admin\AdminModel.fs" />
+        <Compile Include="Admin\AdminHandler.fs" />
+        <Compile Include="Admin\AdminRouter.fs" />
+        <Compile Include="Program.fs" />
+        <Content Include="settings.json" />
         <Content Include="..\.dockerignore">
             <Link>.dockerignore</Link>
             <DependentUpon>Dockerfile</DependentUpon>
         </Content>
-        <Content Include="Dockerfile"/>
+        <Content Include="Dockerfile" />
     </ItemGroup>
 </Project>

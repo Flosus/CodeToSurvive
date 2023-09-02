@@ -17,6 +17,7 @@
         <Compile Include="Core\Tick.fs"/>
         <Compile Include="PlayerScript\ScriptInfo.fs"/>
         <Compile Include="PlayerScript\ScriptRunner.fs"/>
+        <Compile Include="PlayerScript\LuaPlayerScript.fs" />
         <Compile Include="GameLoop.fs"/>
         <Compile Include="Storage\StoragePreference.fs"/>
         <Compile Include="Storage\StorageManagement.fs"/>
@@ -29,6 +30,12 @@
     <ItemGroup>
         <Reference Include="Microsoft.Extensions.Logging.Abstractions">
             <HintPath>c:\program files\dotnet\shared\Microsoft.AspNetCore.App\7.0.8\Microsoft.Extensions.Logging.Abstractions.dll</HintPath>
+        </Reference>
+        <Reference Include="NLua">
+          <HintPath>..\..\..\..\.nuget\packages\nlua\1.6.3\lib\net7.0\NLua.dll</HintPath>
+        </Reference>
+        <Reference Include="NLua">
+          <HintPath>..\..\..\..\.nuget\packages\nlua\1.6.3\lib\net7.0\NLua.dll</HintPath>
         </Reference>
     </ItemGroup>
 

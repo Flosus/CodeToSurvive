@@ -14,22 +14,6 @@ module PluginApi =
 
     type OnStartup = WorldContext -> WorldContext
 
-    /// Represents a plugin
-    type Plugin =
-        {
-            /// The id of the plugin. Has to be unique
-            PluginId: PluginId
-            /// An array of pluginIds, which this plugin depends on
-            Dependencies: PluginId[]
-            OnStartup: OnStartup
-        }
-
-    //___________________________
-    // Plugin-Api-Definition
-    // Used in the registry
-    //___________________________
-
-
     /// <summary>Calls for generating a new chunk.
     /// The plugin of the source chunk gets called first.</summary>
     /// <param name="ctx">The world state.</param>
@@ -44,3 +28,15 @@ module PluginApi =
 
     type BeforeSave = WorldContext -> WorldContext
     type AfterSave = WorldContext -> WorldContext
+
+    /// Represents a plugin
+    type Plugin(pluginId: PluginId, dependencies) =
+        /// The id of the plugin. Has to be unique
+        member this.PluginId = pluginId
+        /// An array of pluginIds, which this plugin depends on
+        member this.Dependencies: PluginId[] = dependencies
+        member val OnStartup: Option<OnStartup> = None with get, set
+        member val GenerateChunk: Option<GenerateChunk> = None with get, set
+        member val GetSpawnChunk: Option<GetSpawnChunk> = None with get, set
+        member val BeforeSave: Option<BeforeSave> = None with get, set
+        member val AfterSave: Option<AfterSave> = None with get, set

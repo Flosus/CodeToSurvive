@@ -25,4 +25,6 @@ module GameState =
           ProgressJob: DoJobProgress
           RunCharacterScripts: RunCharacterScripts
           PreTickUpdate: StateUpdate
-          PostTickUpdate: StateUpdate }
+          PostTickUpdate: StateUpdate
+          
+           }

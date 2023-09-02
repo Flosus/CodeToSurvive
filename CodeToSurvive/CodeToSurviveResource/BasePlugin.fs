@@ -16,11 +16,10 @@ module BasePlugin =
         log.LogInformation $"Setup ${pluginName}"
         ctx
 
-    let basePlugin: Plugin =
-        { PluginId = pluginName
-          Dependencies = [||]
-          OnStartup = onStartup}
+    type BasePlugin() as self =
+        inherit Plugin(pluginName, [||])
+        do self.OnStartup <- Some(onStartup)
 
     let register () =
+        let basePlugin = BasePlugin()
         PluginRegistry.registerPlugin basePlugin
-        

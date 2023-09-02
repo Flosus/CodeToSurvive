@@ -95,6 +95,5 @@ DebugPlugin.register ()
 
 printfn "Run"
 
-GameLoop.gameLoop state context stateCallback shouldStop |> ignore
-
+GameLoop.gameLoop state context stateCallback shouldStop false |> ignore 
 printfn "Finished"

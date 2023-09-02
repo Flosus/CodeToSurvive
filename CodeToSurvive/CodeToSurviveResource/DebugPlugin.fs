@@ -17,10 +17,12 @@ module DebugPlugin =
         log.LogInformation $"Setup ${pluginName}"
         ctx
 
-    let debugPlugin: Plugin =
-        { PluginId = pluginName
-          Dependencies = [| BasePlugin.pluginName |]
-          OnStartup = onStartup }
+
+    type DebugPlugin() as self =
+        inherit Plugin(pluginName, [| BasePlugin.pluginName |])
+        do self.OnStartup <- Some(onStartup)
+
 
     let register () =
-        PluginRegistry.registerPlugin debugPlugin
+        let debugPlug = DebugPlugin()
+        PluginRegistry.registerPlugin debugPlug

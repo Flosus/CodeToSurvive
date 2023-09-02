@@ -26,8 +26,3 @@ module PluginRegistry =
                 Some(sortPlugins plugins)
 
         sortedPlugins.Value
-
-
-    let internal callOnStartup () = ()
-    let internal callBeforeSave () = ()
-    let internal callAfterSave () = ()
