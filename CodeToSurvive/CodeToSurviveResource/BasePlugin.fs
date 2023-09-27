@@ -20,6 +20,11 @@ module BasePlugin =
         inherit Plugin(pluginName, [||])
         do self.OnStartup <- Some(onStartup)
 
+    let pluginFactory (loggerFact: ILoggerFactory): Plugin = 
+        let plugin = BasePlugin()
+        plugin
+
+
     let register () =
         let basePlugin = BasePlugin()
-        PluginRegistry.registerPlugin basePlugin
+        PluginRegistry.registerPlugin pluginFactory
