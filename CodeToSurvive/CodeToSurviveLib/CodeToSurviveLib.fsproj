@@ -21,10 +21,10 @@
         <Compile Include="GameLoop.fs" />
         <Compile Include="Storage\StoragePreference.fs" />
         <Compile Include="Storage\StorageManagement.fs" />
-        <Compile Include="Storage\FileLoader.fs" />
         <Compile Include="Plugin\PluginApi.fs" />
         <Compile Include="Plugin\PluginRegistry.fs" />
         <Compile Include="Plugin\WorldGenRegistry.fs" />
+        <Compile Include="Plugin\Util\WorldLoader.fs" />
     </ItemGroup>
 
     <ItemGroup>

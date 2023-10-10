@@ -1,8 +1,14 @@
 ﻿open System
+open System.IO
+open System.Runtime.Serialization
 open System.Runtime.Serialization.Json
+open System.Text
+open System.Xml
 open CodeToSurvive.Lib
 open CodeToSurvive.Lib.Core.GameState
 open CodeToSurvive.Lib.Core.Job
+open CodeToSurvive.Lib.Core.Plugin.Util
+open CodeToSurvive.Lib.Core.Plugin.Util.WorldLoader
 open CodeToSurvive.Lib.Core.World
 open CodeToSurvive.Lib.Storage
 open CodeToSurvive.Lib.Storage.StoragePreference
@@ -95,5 +101,26 @@ DebugPlugin.register ()
 
 printfn "Run"
 
-GameLoop.gameLoop state context stateCallback shouldStop false |> ignore 
+//GameLoop.gameLoop state context stateCallback shouldStop false |> ignore 
 printfn "Finished"
+
+//////
+
+
+let parseXml (xml:string) instance =
+    let ms = new MemoryStream(Encoding.UTF8.GetBytes(xml))
+    let deserializer = DataContractSerializer(instance)
+    use xmlReader = XmlReader.Create ms
+    let deserializedObj = deserializer.ReadObject(xmlReader)
+    deserializedObj
+
+let xmlData = File.ReadAllText ("G:\Dev\CodeToSurvive\documentation\Development\Examples\ActionExample.xml", Encoding.UTF8);
+let res = parseXml xmlData typedefof<ActionDefinition> :?> ActionDefinition
+
+let xmlDataItem = File.ReadAllText ("G:\Dev\CodeToSurvive\documentation\Development\Examples\ItemExample.xml", Encoding.UTF8);
+let resItem = parseXml xmlDataItem typedefof<ItemDefinition> :?> ItemDefinition
+
+
+printfn $"res ${res}"
+printfn $"resItem ${resItem}"
+

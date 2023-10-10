@@ -1,21 +1,22 @@
-<?xml version="1.0"?>
+<?xml version="1.0" encoding="UTF-8"?>
 <?xml-model href="../Schema/ActionSchema.xsd"?>
 <!--
     An action a character can do. This can be an interactive map element or
     an item in the players inventory.
 -->
-<action>
+<Action>
     <!-- The internal id of the action -->
-    <actionId>doingSomething</actionId>
+    <ActionId>doingSomething</ActionId>
     <!-- The description of the action, visible to the player -->
-    <description>This is an action you can do.</description>
+    <Description>This is an action you can do.</Description>
     <!-- The name of the job, done by the player -->
-    <jobName>PullLever</jobName>
+    <JobName>PullLever</JobName>
     <!-- The function name for overwriting the default job handler -->
-    <jobHandler>DoSomethingHandler</jobHandler>
+    <JobHandler>DoSomethingHandler</JobHandler>
     <!-- The function name for checking if a character is even able to do this action -->
-    <checkHandler>CanPlayerDoSomethingCheck</checkHandler>
+    <CheckHandler>CanPlayerDoSomethingCheck</CheckHandler>
     <!-- Optional parameters for the handler -->
-    <handlerParameter>
-    </handlerParameter>
-</action>
+    <HandlerParameter>
+        <test>Abc</test>    
+    </HandlerParameter>
+</Action>

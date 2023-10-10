@@ -1,6 +1,6 @@
-<?xml version="1.0"?>
+<?xml version="1.0" encoding="UTF-8"?>
 <?xml-model href="../Schema/ItemSchema.xsd"?>
-<item>
+<Item>
     <!-- The internal id of the item -->
     <itemId>ironSword</itemId>
     <!-- The name of the item, visible to the player -->
@@ -14,20 +14,20 @@
     <!-- Stateful items can't be stacked, even if they share the same state -->
     <stateful>true</stateful>
     <!-- A list of actions, available on the item. -->
-    <actions>
-        <action>
-            <actionId>ironSwordLick</actionId>
-            <description>Lick the sword, taste the sword.</description>
-            <jobName>Lick</jobName>
+    <Actions>
+        <Action>
+            <ActionId>ironSwordLick</ActionId>
+            <Description>Lick the sword, taste the sword.</Description>
+            <JobName>Lick</JobName>
             <jobHandler>Item_IronSword_Action_Lick</jobHandler>
-        </action>
-        <action>
-            <actionId>ironSwordLick2</actionId>
-            <description>Lick the sword, taste the sword2.</description>
-            <jobName>Lick2</jobName>
-            <jobHandler>Item_IronSword_Action_Lick2</jobHandler>
-        </action>
-    </actions>
+        </Action>
+        <Action>
+            <ActionId>ironSwordLick2</ActionId>
+            <Description>Lick the sword, taste the sword2.</Description>
+            <JobName>Lick2</JobName>
+            <JobHandler>Item_IronSword_Action_Lick2</JobHandler>
+        </Action>
+    </Actions>
     <!--
         optional information for equipable items
         WIP: Addition properties will get added here for combat and other rpg features in the future
@@ -60,4 +60,4 @@
         <isWet>false</isWet>
         <isBroken>false</isBroken>
     </state>
-</item>
+</Item>
