@@ -10,7 +10,7 @@ module LuaPlayerScript =
 
         let runPlayerScript (characterState: CharacterState, worldState: WorldState) =
             async {
-                use lua = Lua()
+                use lua = new Lua()
                 let scriptResult = ScriptResult.Continue
                 let result = (characterState, scriptResult)
                 return result
