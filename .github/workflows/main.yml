@@ -16,3 +16,4 @@ jobs:
         source: "documentation/Development/Schema/*.xsd"
         target: "~/CodeToSurvive/Schema"
         strip_components: 3
+        overwrite: true
