@@ -1,5 +1,5 @@
 <?xml version="1.0"?>
-<?xml-model href="https://aheffner.de/Schema/MapSchema.xsd"?>
+<?xml-model href="../Schema/MapSchema.xsd"?>
 <map>
     <!-- The id of the map. Use the uniqueMapId for referencing instances of maps. -->
     <mapId>ExampleMap</mapId>
@@ -36,29 +36,6 @@
             <check>ExampleMap_TransitionCheckHandler_GateIsOpen</check>
         </transition>
     </transitions>
-    <!-- Actions are the things a character can do on and with the map. -->
-    <actions>
-        <action>
-            <!-- The internal id of the action -->
-            <actionId>pullingTheLever</actionId>
-            <!-- The description of the action, visible to the player -->
-            <description>A lever near the gate. You could pull it and the gate might.</description>
-            <!-- The name of the job, done by the player -->
-            <jobName>PullLever</jobName>
-            <!-- The function name for overwriting the default job handler -->
-            <jobHandler>ExampleMap_PullLever</jobHandler>
-            <!-- Optional parameters for the handler -->
-            <handerParameter>
-                <!-- Add custome parameters here. -->
-            </handerParameter>
-        </action>
-        <action>
-            <actionId>lickingTheLever</actionId>
-            <description>You could lick the lever. Why would you do this?</description>
-            <jobName>LickLever</jobName>
-            <jobHandler>ExampleMap_LickLever</jobHandler>
-        </action>
-    </actions>
     <!-- Trigger are optional handlers that can occure and are used for calling specific functions. -->
     <trigger>
         <!-- Called when a character enters a map. -->
@@ -84,8 +61,26 @@
             <description>A lever beside a gate</description>
             <!-- The actions available to the player on the poi -->
             <actions>
-                <actionId>pullingTheLever</actionId>
-                <actionId>lickingTheLever</actionId>
+                <action>
+                    <!-- The internal id of the action -->
+                    <actionId>pullingTheLever</actionId>
+                    <!-- The description of the action, visible to the player -->
+                    <description>A lever near the gate. You could pull it and the gate might.</description>
+                    <!-- The name of the job, done by the player -->
+                    <jobName>PullLever</jobName>
+                    <!-- The function name for overwriting the default job handler -->
+                    <jobHandler>ExampleMap_PullLever</jobHandler>
+                    <!-- Optional parameters for the handler -->
+                    <handlerParameter>
+                        <!-- Add custome parameters here. -->
+                    </handlerParameter>
+                </action>
+                <action>
+                    <actionId>lickingTheLever</actionId>
+                    <description>You could lick the lever. Why would you do this?</description>
+                    <jobName>LickLever</jobName>
+                    <jobHandler>ExampleMap_LickLever</jobHandler>
+                </action>
             </actions>
         </poi>
         <poi>

@@ -1,44 +1,44 @@
 <xs:schema attributeFormDefault="unqualified" elementFormDefault="qualified"
     xmlns:xs="http://www.w3.org/2001/XMLSchema">
-    <xs:element name="action">
+    <xs:element name="action" type="actionType">
         <xs:annotation>
             <xs:documentation> An action a character can do. This can be an interactive map element
                 or an item in the players inventory. </xs:documentation>
         </xs:annotation>
-        <xs:complexType>
-            <xs:sequence>
-                <xs:element type="xs:string" name="actionId">
-                    <xs:annotation>
-                        <xs:documentation> The internal id of the action </xs:documentation>
-                    </xs:annotation>
-                </xs:element>
-                <xs:element type="xs:string" name="description">
-                    <xs:annotation>
-                        <xs:documentation> The description of the action, visible to the player </xs:documentation>
-                    </xs:annotation>
-                </xs:element>
-                <xs:element type="xs:string" name="jobName">
-                    <xs:annotation>
-                        <xs:documentation> The name of the job, done by the player </xs:documentation>
-                    </xs:annotation>
-                </xs:element>
-                <xs:element type="xs:string" name="jobHandler">
-                    <xs:annotation>
-                        <xs:documentation> The function name for overwriting the default job handler </xs:documentation>
-                    </xs:annotation>
-                </xs:element>
-                <xs:element type="xs:string" name="checkHandler">
-                    <xs:annotation>
-                        <xs:documentation> The function name for checking if a character is even
-                            able to do this action </xs:documentation>
-                    </xs:annotation>
-                </xs:element>
-                <xs:element type="xs:anyType" name="handlerParameter">
-                    <xs:annotation>
-                        <xs:documentation> Optional parameters for the handler </xs:documentation>
-                    </xs:annotation>
-                </xs:element>
-            </xs:sequence>
-        </xs:complexType>
     </xs:element>
+    <xs:complexType name="actionType">
+        <xs:sequence>
+            <xs:element type="xs:string" name="actionId">
+                <xs:annotation>
+                    <xs:documentation> The internal id of the action </xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element type="xs:string" name="description">
+                <xs:annotation>
+                    <xs:documentation> The description of the action, visible to the player </xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element type="xs:string" name="jobName">
+                <xs:annotation>
+                    <xs:documentation> The name of the job, done by the player </xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element type="xs:string" name="jobHandler" minOccurs="0">
+                <xs:annotation>
+                    <xs:documentation> The function name for overwriting the default job handler </xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element type="xs:string" name="checkHandler" minOccurs="0">
+                <xs:annotation>
+                    <xs:documentation> The function name for checking if a character is even able to
+                        do this action </xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element type="xs:anyType" name="handlerParameter" minOccurs="0">
+                <xs:annotation>
+                    <xs:documentation> Optional parameters for the handler </xs:documentation>
+                </xs:annotation>
+            </xs:element>
+        </xs:sequence>
+    </xs:complexType>
 </xs:schema>

@@ -1,144 +1,121 @@
-<xs:schema attributeFormDefault="unqualified" elementFormDefault="qualified" xmlns:xs="http://www.w3.org/2001/XMLSchema">
-  <xs:element name="item">
-    <xs:complexType>
-      <xs:sequence>
-        <xs:element type="xs:string" name="itemId">
-          <xs:annotation>
-            <xs:documentation> The internal id of the item </xs:documentation>
-          </xs:annotation>
-        </xs:element>
-        <xs:element type="xs:string" name="name">
-          <xs:annotation>
-            <xs:documentation> The name of the item, visible to the player </xs:documentation>
-          </xs:annotation>
-        </xs:element>
-        <xs:element type="xs:string" name="description">
-          <xs:annotation>
-            <xs:documentation> The description of the item, when inspected by the player </xs:documentation>
-          </xs:annotation>
-        </xs:element>
-        <xs:element type="xs:float" name="weight">
-          <xs:annotation>
-            <xs:documentation> The weight of the item </xs:documentation>
-          </xs:annotation>
-        </xs:element>
-        <xs:element type="xs:byte" name="value">
-          <xs:annotation>
-            <xs:documentation> The value of the item. </xs:documentation>
-          </xs:annotation>
-        </xs:element>
-        <xs:element type="xs:string" name="stateful">
-          <xs:annotation>
-            <xs:documentation> Stateful items can't be stacked, even if they share the same state </xs:documentation>
-          </xs:annotation>
-        </xs:element>
-        <xs:element name="actions">
-          <xs:annotation>
-            <xs:documentation> A list of actions, available on the item. </xs:documentation>
-          </xs:annotation>
-          <xs:complexType>
+<xs:schema attributeFormDefault="unqualified" elementFormDefault="qualified"
+    xmlns:xs="http://www.w3.org/2001/XMLSchema">
+    <xs:include schemaLocation="ActionSchema.xsd" />
+    <xs:element name="item">
+        <xs:complexType>
             <xs:sequence>
-              <xs:element name="action">
-                <xs:complexType>
-                  <xs:sequence>
-                    <xs:element type="xs:string" name="actionId">
-                      <xs:annotation>
-                        <xs:documentation> The internal id of the action</xs:documentation>
-                      </xs:annotation>
-                    </xs:element>
-                    <xs:element type="xs:string" name="name">
-                      <xs:annotation>
-                        <xs:documentation> The player visisble name of the action </xs:documentation>
-                      </xs:annotation>
-                    </xs:element>
-                    <xs:element type="xs:string" name="description">
-                      <xs:annotation>
-                        <xs:documentation> The description of the action </xs:documentation>
-                      </xs:annotation>
-                    </xs:element>
-                    <xs:element type="xs:string" name="jobHandler">
-                      <xs:annotation>
-                        <xs:documentation> The function name of the job handler </xs:documentation>
-                      </xs:annotation>
-                    </xs:element>
-                    <xs:element type="xs:string" name="handerParameter">
-                      <xs:annotation>
-                        <xs:documentation> Optional parameters for the handler  Add custome parameters here. </xs:documentation>
-                      </xs:annotation>
-                    </xs:element>
-                  </xs:sequence>
-                </xs:complexType>
-              </xs:element>
+                <xs:element type="xs:string" name="itemId">
+                    <xs:annotation>
+                        <xs:documentation> The internal id of the item </xs:documentation>
+                    </xs:annotation>
+                </xs:element>
+                <xs:element type="xs:string" name="name">
+                    <xs:annotation>
+                        <xs:documentation> The name of the item, visible to the player </xs:documentation>
+                    </xs:annotation>
+                </xs:element>
+                <xs:element type="xs:string" name="description">
+                    <xs:annotation>
+                        <xs:documentation> The description of the item, when inspected by the player </xs:documentation>
+                    </xs:annotation>
+                </xs:element>
+                <xs:element type="xs:float" name="weight">
+                    <xs:annotation>
+                        <xs:documentation> The weight of the item </xs:documentation>
+                    </xs:annotation>
+                </xs:element>
+                <xs:element type="xs:byte" name="value">
+                    <xs:annotation>
+                        <xs:documentation> The value of the item. </xs:documentation>
+                    </xs:annotation>
+                </xs:element>
+                <xs:element type="xs:string" name="stateful">
+                    <xs:annotation>
+                        <xs:documentation> Stateful items can't be stacked, even if they share the
+                            same state </xs:documentation>
+                    </xs:annotation>
+                </xs:element>
+                <xs:element name="actions" minOccurs="0">
+                    <xs:annotation>
+                        <xs:documentation> A list of actions, available on the item. </xs:documentation>
+                    </xs:annotation>
+                    <xs:complexType>
+                        <xs:sequence>
+                            <xs:element type="actionType" name="action" maxOccurs="unbounded" minOccurs="0">
+                            </xs:element>
+                        </xs:sequence>
+                    </xs:complexType>
+                </xs:element>
+                <xs:element name="equipmentInfo" minOccurs="0">
+                    <xs:annotation>
+                        <xs:documentation> optional information for equipable items WIP: Addition
+                            properties will get added here for combat and other rpg features in the
+                            future </xs:documentation>
+                    </xs:annotation>
+                    <xs:complexType>
+                        <xs:sequence>
+                            <xs:element type="xs:string" name="slot">
+                                <xs:annotation>
+                                    <xs:documentation> The slot of the eqipment </xs:documentation>
+                                </xs:annotation>
+                            </xs:element>
+                        </xs:sequence>
+                    </xs:complexType>
+                </xs:element>
+                <xs:element name="trigger" minOccurs="0">
+                    <xs:annotation>
+                        <xs:documentation> Triggers associated with the item WIP: Additional
+                            triggers will get added with combat and other rpg features in the future </xs:documentation>
+                    </xs:annotation>
+                    <xs:complexType>
+                        <xs:sequence>
+                            <xs:element type="xs:string" name="onPickup" minOccurs="0">
+                                <xs:annotation>
+                                    <xs:documentation> Called when the item is picked up </xs:documentation>
+                                </xs:annotation>
+                            </xs:element>
+                            <xs:element type="xs:string" name="onDrop" minOccurs="0">
+                                <xs:annotation>
+                                    <xs:documentation> Called when the item is dropped </xs:documentation>
+                                </xs:annotation>
+                            </xs:element>
+                            <xs:element type="xs:string" name="onEquip" minOccurs="0">
+                                <xs:annotation>
+                                    <xs:documentation> Called when the item is equiped </xs:documentation>
+                                </xs:annotation>
+                            </xs:element>
+                            <xs:element type="xs:string" name="onUnequip" minOccurs="0">
+                                <xs:annotation>
+                                    <xs:documentation> Called when the item is unequiped </xs:documentation>
+                                </xs:annotation>
+                            </xs:element>
+                            <xs:element type="xs:string" name="onLoad" minOccurs="0">
+                                <xs:annotation>
+                                    <xs:documentation> Called when loading the item is generated or
+                                        loaded </xs:documentation>
+                                </xs:annotation>
+                            </xs:element>
+                            <xs:element type="xs:string" name="onUnload" minOccurs="0">
+                                <xs:annotation>
+                                    <xs:documentation> Called when unloading/destroying an item
+                                        instance </xs:documentation>
+                                </xs:annotation>
+                            </xs:element>
+                            <xs:element type="xs:string" name="onSave" minOccurs="0">
+                                <xs:annotation>
+                                    <xs:documentation> Called when the item instance is saved </xs:documentation>
+                                </xs:annotation>
+                            </xs:element>
+                        </xs:sequence>
+                    </xs:complexType>
+                </xs:element>
+                <xs:element type="xs:anyType" name="state" minOccurs="0">
+                    <xs:annotation>
+                        <xs:documentation> This contains the current state of the item and the
+                            default values </xs:documentation>
+                    </xs:annotation>
+                </xs:element>
             </xs:sequence>
-          </xs:complexType>
-        </xs:element>
-        <xs:element name="equipmentInfo">
-          <xs:annotation>
-            <xs:documentation>
-        optional information for equipable items
-        WIP: Addition properties will get added here for combat and other rpg features in the future
-    </xs:documentation>
-          </xs:annotation>
-          <xs:complexType>
-            <xs:sequence>
-              <xs:element type="xs:string" name="slot">
-                <xs:annotation>
-                  <xs:documentation> The slot of the eqipment </xs:documentation>
-                </xs:annotation>
-              </xs:element>
-            </xs:sequence>
-          </xs:complexType>
-        </xs:element>
-        <xs:element name="trigger">
-          <xs:annotation>
-            <xs:documentation>
-        Triggers associated with the item
-        WIP: Additional triggers will get added with combat and other rpg features in the future
-    </xs:documentation>
-          </xs:annotation>
-          <xs:complexType>
-            <xs:sequence>
-              <xs:element type="xs:string" name="onPickup">
-                <xs:annotation>
-                  <xs:documentation> Called when the item is picked up </xs:documentation>
-                </xs:annotation>
-              </xs:element>
-              <xs:element type="xs:string" name="onDrop">
-                <xs:annotation>
-                  <xs:documentation> Called when the item is dropped </xs:documentation>
-                </xs:annotation>
-              </xs:element>
-              <xs:element type="xs:string" name="onEquip">
-                <xs:annotation>
-                  <xs:documentation> Called when the item is equiped </xs:documentation>
-                </xs:annotation>
-              </xs:element>
-              <xs:element type="xs:string" name="onUnequip">
-                <xs:annotation>
-                  <xs:documentation> Called when the item is unequiped </xs:documentation>
-                </xs:annotation>
-              </xs:element>
-              <xs:element type="xs:string" name="onLoad">
-                <xs:annotation>
-                  <xs:documentation> Called when loading the item is generated or loaded </xs:documentation>
-                </xs:annotation>
-              </xs:element>
-              <xs:element type="xs:string" name="onUnload">
-                <xs:annotation>
-                  <xs:documentation> Called when unloading/destroying an item instance </xs:documentation>
-                </xs:annotation>
-              </xs:element>
-              <xs:element type="xs:string" name="onSave">
-                <xs:annotation>
-                  <xs:documentation> Called when the item instance is saved </xs:documentation>
-                </xs:annotation>
-              </xs:element>
-            </xs:sequence>
-          </xs:complexType>
-        </xs:element>
-        <xs:element type="xs:anyType" name="state">
-        </xs:element>
-      </xs:sequence>
-    </xs:complexType>
-  </xs:element>
+        </xs:complexType>
+    </xs:element>
 </xs:schema>

@@ -1,0 +1,16 @@
+<?xml version="1.0"?>
+<?xml-model href="../Schema/ItemSchema.xsd"?>
+<item>
+    <!-- The internal id of the item -->
+    <itemId>stone</itemId>
+    <!-- The name of the item, visible to the player -->
+    <name>Stone</name>
+    <!-- The description of the item, when inspected by the player -->
+    <description>A stone</description>
+    <!-- The weight of the item -->
+    <weight>1.0</weight>
+    <!-- The value of the item. -->
+    <value>0</value>
+    <!-- Stateful items can't be stacked, even if they share the same state -->
+    <stateful>false</stateful>
+</item>

@@ -1,0 +1,8 @@
+<?xml version="1.0"?>
+<?xml-model href="../Schema/MapSchema.xsd"?>
+<map>
+    <mapId>Oubliette</mapId>
+    <instanced>false</instanced>
+    <persistent>false</persistent>
+    <description>A hole without escape.</description>
+</map>

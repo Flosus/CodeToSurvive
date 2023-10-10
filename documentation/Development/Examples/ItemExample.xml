@@ -1,5 +1,5 @@
 <?xml version="1.0"?>
-<?xml-model href="https://aheffner.de/Schema/ItemSchema.xsd"?>
+<?xml-model href="../Schema/ItemSchema.xsd"?>
 <item>
     <!-- The internal id of the item -->
     <itemId>ironSword</itemId>
@@ -16,18 +16,16 @@
     <!-- A list of actions, available on the item. -->
     <actions>
         <action>
-            <!-- The internal id of the action-->
             <actionId>ironSwordLick</actionId>
-            <!-- The player visisble name of the action -->
-            <name>Lick</name>
-            <!-- The description of the action -->
             <description>Lick the sword, taste the sword.</description>
-            <!-- The function name of the job handler -->
+            <jobName>Lick</jobName>
             <jobHandler>Item_IronSword_Action_Lick</jobHandler>
-            <!-- Optional parameters for the handler -->
-            <handerParameter>
-                <!-- Add custome parameters here. -->
-            </handerParameter>
+        </action>
+        <action>
+            <actionId>ironSwordLick2</actionId>
+            <description>Lick the sword, taste the sword2.</description>
+            <jobName>Lick2</jobName>
+            <jobHandler>Item_IronSword_Action_Lick2</jobHandler>
         </action>
     </actions>
     <!--
