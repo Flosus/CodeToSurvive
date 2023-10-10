@@ -1,5 +1,5 @@
 <?xml version="1.0"?>
-<?xml-model href="../Schema/MapSchema.xsd"?>
+<?xml-model href="https://aheffner.de/Schema/MapSchema.xsd"?>
 <map>
     <!-- The id of the map. Use the uniqueMapId for referencing instances of maps. -->
     <mapId>ExampleMap</mapId>

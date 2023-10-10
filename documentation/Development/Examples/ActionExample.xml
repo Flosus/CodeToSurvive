@@ -1,0 +1,19 @@
+<!--
+    An action a character can do. This can be an interactive map element or
+    an item in the players inventory.
+-->
+<action>
+    <!-- The internal id of the action -->
+    <actionId>doingSomething</actionId>
+    <!-- The description of the action, visible to the player -->
+    <description>This is an action you can do.</description>
+    <!-- The name of the job, done by the player -->
+    <jobName>PullLever</jobName>
+    <!-- The function name for overwriting the default job handler -->
+    <jobHandler>DoSomethingHandler</jobHandler>
+    <!-- The function name for checking if a character is even able to do this action -->
+    <checkHandler>CanPlayerDoSomethingCheck</checkHandler>
+    <!-- Optional parameters for the handler -->
+    <handlerParameter>
+    </handlerParameter>
+</action>
