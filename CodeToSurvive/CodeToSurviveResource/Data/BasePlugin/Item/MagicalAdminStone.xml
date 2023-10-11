@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?xml-model href="https://aheffner.de/Schema/"?>
+<!DOCTYPE Item SYSTEM "https://aheffner.de/Schema/ItemSchema.xsd">
+<Item>
+    <ItemId>adminStone</ItemId>
+    <Name>Admin Stone</Name>
+    <Description>The one and only magical admin Stone</Description>
+    <Weight>0.0001</Weight>
+    <Value>0</Value>
+    <Actions>
+        <Action>
+            <ActionId>lick</ActionId>
+            <Description>You lick the stone and taste the stone</Description>
+            <JobName>lickAdminStone</JobName>
+            <JobHandler>Debug_lickAdminStone</JobHandler>
+        </Action>
+    </Actions>
+</Item>

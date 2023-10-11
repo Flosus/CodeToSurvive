@@ -6,7 +6,6 @@ open System.Runtime.Serialization.Json
 open System.Text
 open System.Text.RegularExpressions
 open CodeToSurvive.Lib.Core.GameState
-open CodeToSurvive.Lib.Core.Tick
 open CodeToSurvive.Lib.Storage.StoragePreference
 
 module StorageManagement =

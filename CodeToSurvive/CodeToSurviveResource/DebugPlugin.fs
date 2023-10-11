@@ -3,7 +3,6 @@ namespace CodeToSurvive.Resource
 open CodeToSurvive.Lib.Core.GameState
 open CodeToSurvive.Lib.Core.Plugin
 open CodeToSurvive.Lib.Core.Plugin.PluginApi
-open CodeToSurvive.Lib.Core.Tick
 open Microsoft.Extensions.Logging
 
 module DebugPlugin =
@@ -22,7 +21,7 @@ module DebugPlugin =
         inherit Plugin(pluginName, [| BasePlugin.pluginName |])
         do self.OnStartup <- Some(onStartup)
 
-    let pluginFactory (loggerFact: ILoggerFactory): Plugin = 
+    let pluginFactory (loggerFact: ILoggerFactory) : Plugin =
         let plugin = DebugPlugin()
         plugin
 

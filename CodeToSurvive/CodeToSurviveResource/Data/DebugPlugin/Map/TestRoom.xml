@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <?xml-model href="https://aheffner.de/Schema/MapSchema.xsd"?>
+<!DOCTYPE Map SYSTEM "https://aheffner.de/Schema/MapSchema.xsd">
+
 <Map>
     <MapId>Debug_TestRoom</MapId>
     <Instanced>false</Instanced>

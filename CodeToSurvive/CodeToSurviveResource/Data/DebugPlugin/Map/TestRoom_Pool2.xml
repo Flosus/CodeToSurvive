@@ -3,14 +3,19 @@
 <!DOCTYPE Map SYSTEM "https://aheffner.de/Schema/MapSchema.xsd">
 
 <Map>
-    <MapId>Debug_TestRoom_Instanced_Persistent</MapId>
+    <MapId>Debug_TestRoom_Instanced_PoolRoom2</MapId>
     <Instanced>true</Instanced>
     <Persistent>true</Persistent>
-    <Description>You find yourself in the instanced persistent TestRoom. Tread with care.</Description>
+    <PersistencePool>TestRoom_Pool</PersistencePool>
+    <Description>You find yourself in the persistent pooled TestRoom with a "2" written on the ground. Tread with care.</Description>
     <Transitions>
         <Transition>
             <TargetMapId>Debug_TestRoom</TargetMapId>
             <Description>A door with the label "Debug_TestRoom".</Description>
+        </Transition>
+        <Transition>
+            <TargetMapId>Debug_TestRoom_Instanced_PoolRoom1</TargetMapId>
+            <Description>A door with the label "Debug_TestRoom_Instanced_PoolRoom1".</Description>
         </Transition>
     </Transitions>
 </Map>

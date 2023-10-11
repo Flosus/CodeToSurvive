@@ -1,7 +1,5 @@
 namespace CodeToSurvive.Lib.Core.Plugin.Util
 
-open System
-open System.Runtime.Serialization
 open System.Xml
 open System.Xml.Serialization
 
@@ -20,7 +18,7 @@ module WorldLoader =
           JobHandler: string
           [<XmlElement>]
           CheckHandler: string
-          [<XmlAnyElementAttribute>]
+          [<XmlAnyElement>]
           HandlerParameter: XmlElement }
 
     [<CLIMutable>]
@@ -69,7 +67,7 @@ module WorldLoader =
           EquipmentInfo: ItemEquipmentInfoDefinition
           [<XmlElement>]
           Trigger: ItemTriggerDefinition
-          [<XmlAnyElementAttribute>]
+          [<XmlAnyElement>]
           State: XmlElement }
 
 
@@ -134,5 +132,5 @@ module WorldLoader =
           [<XmlArray>]
           [<XmlArrayItem("POI")>]
           POIs: ResizeArray<MapPOIDefinition>
-          [<XmlAnyElementAttribute>]
+          [<XmlAnyElement>]
           State: XmlElement }

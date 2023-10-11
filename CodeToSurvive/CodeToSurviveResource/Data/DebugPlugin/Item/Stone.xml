@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?xml-model href="https://aheffner.de/Schema/"?>
+<!DOCTYPE Item SYSTEM "https://aheffner.de/Schema/ItemSchema.xsd">
+<Item>
+    <ItemId>stone</ItemId>
+    <Name>Stone</Name>
+    <Description>Just a stone</Description>
+    <Weight>1.0</Weight>
+    <Value>0</Value>
+</Item>

@@ -1,13 +1,11 @@
 ﻿open System
 open System.IO
-open System.Runtime.Serialization
 open System.Runtime.Serialization.Json
 open System.Text
 open System.Xml
 open CodeToSurvive.Lib
 open CodeToSurvive.Lib.Core.GameState
 open CodeToSurvive.Lib.Core.Job
-open CodeToSurvive.Lib.Core.Plugin.Util
 open CodeToSurvive.Lib.Core.Plugin.Util.WorldLoader
 open CodeToSurvive.Lib.Core.World
 open CodeToSurvive.Lib.Storage
@@ -79,15 +77,16 @@ let context: WorldContext =
       ProgressJob = doJobProgress
       RunCharacterScripts = runCharacterScripts
       PreTickUpdate = preTickUpdate
-      PostTickUpdate = postTickUpdate }
+      PostTickUpdate = postTickUpdate
+      State = state }
 
 let serializer = DataContractJsonSerializer(typeof<WorldState>)
 
-let stateCallback (state: WorldState) =
+let stateCallback (ctx: WorldContext) =
     let log = loggerFactory "stateCallback"
     Statistics.printReport (loggerFactory "Statistics")
 
-    match state.Timestamp.Second with
+    match ctx.State.Timestamp.Second with
     | 0 ->
         log.LogInformation "Creating backup"
         StorageManagement.save storage state
@@ -102,30 +101,37 @@ DebugPlugin.register ()
 
 printfn "Run"
 
-//GameLoop.gameLoop state context stateCallback shouldStop false |> ignore 
+let skipTimer = false
+
+GameLoop.gameLoop context stateCallback shouldStop skipTimer |> (fun res -> printfn $"Finished gameLoop with ${res}")
 printfn "Finished"
 
 //////
 
 
-let parseXml (xml:string) (instance:Type) =
+let parseXml (xml: string) (instance: Type) =
     let ms = new MemoryStream(Encoding.UTF8.GetBytes(xml))
     let deserializer = XmlSerializer(instance)
     use xmlReader = XmlReader.Create ms
     let deserializedObj = deserializer.Deserialize(xmlReader)
     deserializedObj
 
-let xmlData = File.ReadAllText ("..\\..\\documentation\\Development\\Examples\\ActionExample.xml", Encoding.UTF8);
+let xmlData =
+    File.ReadAllText("..\\..\\documentation\\Development\\Examples\\ActionExample.xml", Encoding.UTF8)
+
 let res = parseXml xmlData typedefof<ActionDefinition> :?> ActionDefinition
 
-let xmlDataItem = File.ReadAllText ("..\\..\\documentation\\Development\\Examples\\ItemExample.xml", Encoding.UTF8);
+let xmlDataItem =
+    File.ReadAllText("..\\..\\documentation\\Development\\Examples\\ItemExample.xml", Encoding.UTF8)
+
 let resItem = parseXml xmlDataItem typedefof<ItemDefinition> :?> ItemDefinition
 
-let xmlDataMap = File.ReadAllText ("..\\..\\documentation\\Development\\Examples\\MapExample.xml", Encoding.UTF8);
+let xmlDataMap =
+    File.ReadAllText("..\\..\\documentation\\Development\\Examples\\MapExample.xml", Encoding.UTF8)
+
 let resMap = parseXml xmlDataMap typedefof<MapDefinition> :?> MapDefinition
 
 
 printfn $"res ${res}"
 printfn $"resItem ${resItem}"
 printfn $"resItem ${resMap}"
-

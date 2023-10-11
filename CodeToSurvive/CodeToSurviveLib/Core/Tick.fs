@@ -37,7 +37,7 @@ module Tick =
 
         state.Players |> Array.filter filterPlayerHasNoJob
 
-    let tick (state: WorldState) (context: WorldContext) : WorldState =
+    let tick (context: WorldContext) : WorldContext =
         let log = context.CreateLogger("tick")
         log.LogDebug "Tick begin"
 
@@ -51,9 +51,11 @@ module Tick =
         let logStep msg localState =
             log.LogTrace msg
             localState
+        
+        let updateContext (state: WorldState): WorldContext =
+            {context with State = state}
 
-
-        state
+        context.State
         // Pre tick work
         |> context.PreTickUpdate
         |> logStep "PreTickUpdate finished"
@@ -71,3 +73,4 @@ module Tick =
         |> logStep "PostTickUpdate finished"
         |> (fun state -> { state with Timestamp = DateTime.Now })
         |> logStep "Tick finished"
+        |> updateContext

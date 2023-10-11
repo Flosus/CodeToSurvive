@@ -5,7 +5,13 @@
         <GenerateDocumentationFile>true</GenerateDocumentationFile>
         <RootNamespace>CodeToSurviveLib</RootNamespace>
     </PropertyGroup>
-
+    
+    <ItemGroup>
+        <Content Include="Data\**\*">
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </Content>
+    </ItemGroup>
+    
     <ItemGroup>
         <Compile Include="Statistics.fs" />
         <Compile Include="Core\Item.fs" />
@@ -30,6 +36,10 @@
     <ItemGroup>
         <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="7.0.1" />
         <PackageReference Include="NLua" Version="1.6.3" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Folder Include="Data\Core\" />
     </ItemGroup>
 
 </Project>

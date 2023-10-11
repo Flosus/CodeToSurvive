@@ -1,16 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <?xml-model href="https://aheffner.de/Schema/MapSchema.xsd"?>
 <!DOCTYPE Map SYSTEM "https://aheffner.de/Schema/MapSchema.xsd">
-
 <Map>
-    <MapId>Debug_TestRoom_Persistent</MapId>
+    <MapId>SmallPathBetweenTrees</MapId>
     <Instanced>false</Instanced>
     <Persistent>true</Persistent>
-    <Description>You find yourself in the persistent TestRoom. Tread with care.</Description>
+    <Description>You walk on a small, trampled path in the forst.</Description>
     <Transitions>
         <Transition>
-            <TargetMapId>Debug_TestRoom</TargetMapId>
-            <Description>A door with the label "Debug_TestRoom".</Description>
+            <TargetMapId>SilentGlade</TargetMapId>
+            <Description>The path ends on a clearing in the forst.</Description>
         </Transition>
+        <!-- Go into the woods? -->
+        <!-- Where to go next? -->
     </Transitions>
 </Map>

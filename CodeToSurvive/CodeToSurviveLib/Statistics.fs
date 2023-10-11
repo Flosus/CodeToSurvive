@@ -71,3 +71,5 @@ module Statistics =
             + $" over {tickCount} game ticks"
 
         log.LogDebug tickText
+        let out = tickTimeQueue |> Seq.last |> tickInMicro
+        log.LogDebug $"Last tick took {out}μs"
