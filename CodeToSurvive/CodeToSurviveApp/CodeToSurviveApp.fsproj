@@ -17,6 +17,7 @@
     </ItemGroup>
 
     <ItemGroup>
+        <None Include="settings.json" CopyToOutputDirectory="PreserveNewest" />
         <None Include="web.config" CopyToOutputDirectory="PreserveNewest" />
         <Content Include="WebRoot\**\*">
             <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
@@ -48,7 +49,6 @@
         <Compile Include="Admin\AdminHandler.fs" />
         <Compile Include="Admin\AdminRouter.fs" />
         <Compile Include="Program.fs" />
-        <Content Include="settings.json" />
         <Content Include="..\.dockerignore">
             <Link>.dockerignore</Link>
             <DependentUpon>Dockerfile</DependentUpon>

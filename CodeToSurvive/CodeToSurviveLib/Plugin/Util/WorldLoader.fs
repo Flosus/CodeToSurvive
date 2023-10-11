@@ -8,49 +8,131 @@ open System.Xml.Serialization
 module WorldLoader =
 
     [<CLIMutable>]
-    [<DataContract(Name = "Action", Namespace = "")>]
+    [<XmlRoot("Action")>]
     type ActionDefinition =
-        { [<DataMember(Order = 0)>]
+        { [<XmlElement>]
           ActionId: string
-          [<DataMember(Order = 1)>]
+          [<XmlElement>]
           Description: string
-          [<DataMember(Order = 2)>]
+          [<XmlElement>]
           JobName: string
-          [<DataMember(Order = 3)>]
+          [<XmlElement>]
           JobHandler: string
-          [<DataMember(Order = 4)>]
+          [<XmlElement>]
           CheckHandler: string
-          [<DataMember(Order = 5)>]
+          [<XmlAnyElementAttribute>]
           HandlerParameter: XmlElement }
 
     [<CLIMutable>]
-    [<DataContract(Name = "Item", Namespace = "")>]
-    [<KnownType(typedefof<ActionDefinition>)>]
+    [<XmlRoot("Trigger")>]
+    type ItemTriggerDefinition =
+        { [<XmlElement>]
+          OnPickup: string
+          [<XmlElement>]
+          OnDrop: string
+          [<XmlElement>]
+          OnEquip: string
+          [<XmlElement>]
+          OnUnequip: string
+          [<XmlElement>]
+          OnLoad: string
+          [<XmlElement>]
+          OnUnload: string
+          [<XmlElement>]
+          OnSave: string }
+
+    [<CLIMutable>]
+    [<XmlRoot("EquipmentInfo")>]
+    type ItemEquipmentInfoDefinition =
+        { [<XmlElement>]
+          Slot: string }
+
+    [<CLIMutable>]
+    [<XmlRoot("Item")>]
     type ItemDefinition =
-        { [<DataMember(Order = 0)>]
-          itemId: string
-          [<DataMember(Order = 1)>]
-          name: string
-          [<DataMember(Order = 2)>]
+        { [<XmlElement>]
+          ItemId: string
+          [<XmlElement>]
+          Name: string
+          [<XmlElement>]
           Description: string
-          [<DataMember(Order = 3)>]
-          weight: double
-          [<DataMember(Order = 4)>]
-          value: int32
-          [<DataMember(Order = 5)>]
-          stateful: bool
-          [<DataMember(Order = 6)>]
-          Actions: List<ActionDefinition>
+          [<XmlElement>]
+          Weight: double
+          [<XmlElement>]
+          Value: int32
+          [<XmlElement>]
+          Stateful: bool
+          [<XmlArray>]
+          [<XmlArrayItem("Action")>]
+          Actions: ResizeArray<ActionDefinition>
+          [<XmlElement>]
+          EquipmentInfo: ItemEquipmentInfoDefinition
+          [<XmlElement>]
+          Trigger: ItemTriggerDefinition
+          [<XmlAnyElementAttribute>]
+          State: XmlElement }
 
-          // [<DataMember(Order = 7)>]
-          // equipmentInfo: XmlNode
-          //
-          // [<DataMember(Order = 8)>]
-          // trigger: XmlNode[]
-          //
-          // [<DataMember(Order = 9)>]
-          // state: XmlNode[]
 
-        }
 
-    ()
+    [<CLIMutable>]
+    [<XmlRoot("Transition")>]
+    type TransitionDefinition =
+        { [<XmlElement>]
+          TargetMapId: string
+          [<XmlElement>]
+          Description: string
+          [<XmlElement>]
+          DescriptionHandler: string
+          [<XmlElement>]
+          Check: string }
+
+    [<CLIMutable>]
+    [<XmlRoot("Trigger")>]
+    type MapTriggerDefinition =
+        { [<XmlElement>]
+          OnMapEnter: string
+          [<XmlElement>]
+          OnMapExit: string
+          [<XmlElement>]
+          OnMapStay: string
+          [<XmlElement>]
+          OnMapSave: string
+          [<XmlElement>]
+          OnMapLoad: string
+          [<XmlElement>]
+          OnMapUnload: string }
+
+    [<CLIMutable>]
+    [<XmlRoot("POI")>]
+    type MapPOIDefinition =
+        { [<XmlElement>]
+          Name: string
+          [<XmlElement>]
+          Description: string
+          [<XmlArray>]
+          [<XmlArrayItem("Action")>]
+          Actions: ResizeArray<ActionDefinition> }
+
+    [<CLIMutable>]
+    [<XmlRoot("Map")>]
+    type MapDefinition =
+        { [<XmlElement>]
+          MapId: string
+          [<XmlElement>]
+          Instanced: bool
+          [<XmlElement>]
+          Persistent: bool
+          [<XmlElement>]
+          PersistencePool: string
+          [<XmlElement>]
+          Description: string
+          [<XmlArray>]
+          [<XmlArrayItem("Transition")>]
+          Transitions: ResizeArray<TransitionDefinition>
+          [<XmlElement>]
+          Trigger: MapTriggerDefinition
+          [<XmlArray>]
+          [<XmlArrayItem("POI")>]
+          POIs: ResizeArray<MapPOIDefinition>
+          [<XmlAnyElementAttribute>]
+          State: XmlElement }

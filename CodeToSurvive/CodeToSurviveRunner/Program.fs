@@ -14,6 +14,7 @@ open CodeToSurvive.Lib.Storage
 open CodeToSurvive.Lib.Storage.StoragePreference
 open CodeToSurvive.Resource
 open Microsoft.Extensions.Logging
+open System.Xml.Serialization
 
 
 
@@ -107,20 +108,24 @@ printfn "Finished"
 //////
 
 
-let parseXml (xml:string) instance =
+let parseXml (xml:string) (instance:Type) =
     let ms = new MemoryStream(Encoding.UTF8.GetBytes(xml))
-    let deserializer = DataContractSerializer(instance)
+    let deserializer = XmlSerializer(instance)
     use xmlReader = XmlReader.Create ms
-    let deserializedObj = deserializer.ReadObject(xmlReader)
+    let deserializedObj = deserializer.Deserialize(xmlReader)
     deserializedObj
 
-let xmlData = File.ReadAllText ("G:\Dev\CodeToSurvive\documentation\Development\Examples\ActionExample.xml", Encoding.UTF8);
+let xmlData = File.ReadAllText ("..\\..\\documentation\\Development\\Examples\\ActionExample.xml", Encoding.UTF8);
 let res = parseXml xmlData typedefof<ActionDefinition> :?> ActionDefinition
 
-let xmlDataItem = File.ReadAllText ("G:\Dev\CodeToSurvive\documentation\Development\Examples\ItemExample.xml", Encoding.UTF8);
+let xmlDataItem = File.ReadAllText ("..\\..\\documentation\\Development\\Examples\\ItemExample.xml", Encoding.UTF8);
 let resItem = parseXml xmlDataItem typedefof<ItemDefinition> :?> ItemDefinition
+
+let xmlDataMap = File.ReadAllText ("..\\..\\documentation\\Development\\Examples\\MapExample.xml", Encoding.UTF8);
+let resMap = parseXml xmlDataMap typedefof<MapDefinition> :?> MapDefinition
 
 
 printfn $"res ${res}"
 printfn $"resItem ${resItem}"
+printfn $"resItem ${resMap}"
 
