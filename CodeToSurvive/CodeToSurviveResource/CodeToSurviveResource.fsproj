@@ -13,9 +13,6 @@
     </ItemGroup>
 
     <ItemGroup>
-        <Content Include="..\.dockerignore">
-            <Link>.dockerignore</Link>
-        </Content>
         <Compile Include="BasePlugin.fs" />
         <Compile Include="DebugPlugin.fs" />
     </ItemGroup>

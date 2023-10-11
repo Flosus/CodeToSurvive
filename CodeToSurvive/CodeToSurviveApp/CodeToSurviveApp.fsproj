@@ -49,10 +49,5 @@
         <Compile Include="Admin\AdminHandler.fs" />
         <Compile Include="Admin\AdminRouter.fs" />
         <Compile Include="Program.fs" />
-        <Content Include="..\.dockerignore">
-            <Link>.dockerignore</Link>
-            <DependentUpon>Dockerfile</DependentUpon>
-        </Content>
-        <Content Include="Dockerfile" />
     </ItemGroup>
 </Project>
