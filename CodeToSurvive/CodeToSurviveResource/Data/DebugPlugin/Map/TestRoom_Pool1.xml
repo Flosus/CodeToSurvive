@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?xml-model href="https://aheffner.de/Schema/MapSchema.xsd"?>
+<!DOCTYPE Map SYSTEM "https://aheffner.de/Schema/MapSchema.xsd">
+
+<Map>
+    <MapId>Debug_TestRoom_Instanced_PoolRoom1</MapId>
+    <Instanced>true</Instanced>
+    <Persistent>true</Persistent>
+    <PersistencePool>TestRoom_Pool</PersistencePool>
+    <Description>You find yourself in the persistent pooled TestRoom with a "1" written on the ground. Tread with care.</Description>
+    <Transitions>
+        <Transition>
+            <TargetMapId>Debug_TestRoom</TargetMapId>
+            <Description>A door with the label "Debug_TestRoom".</Description>
+        </Transition>
+        <Transition>
+            <TargetMapId>Debug_TestRoom_Instanced_PoolRoom2</TargetMapId>
+            <Description>A door with the label "Debug_TestRoom_Instanced_PoolRoom2".</Description>
+        </Transition>
+    </Transitions>
+</Map>

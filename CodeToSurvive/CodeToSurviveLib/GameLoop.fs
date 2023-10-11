@@ -29,31 +29,31 @@ module GameLoop =
         // Add 5 seconds in case we "go back in time"
         | true -> (rounded.AddSeconds(int interval) - DateTime.UtcNow).TotalMilliseconds
 
-    let rec _gameLoop state context provideCurrentState shouldStop (skipTimer: bool) =
+    let rec _gameLoop context consumeCurrentContext shouldStop (skipTimer: bool) =
         let log = context.CreateLogger "GameLoop"
 
         if skipTimer then
+            log.LogTrace "Skipping wait time;"
+        else
             let sleepTime = getWaitTimeInMilliseconds ()
             log.LogTrace $"Waiting for next tick for {int sleepTime}ms;"
             Statistics.addSleepTime sleepTime
             Thread.Sleep(int sleepTime)
-        else
-            log.LogTrace "Skipping wait time;"
 
         let startTick = DateTime.Now.Ticks
-        let newState = tick state context
+        let newContext = tick context
         Statistics.addTickTime (DateTime.Now.Ticks - startTick)
-        provideCurrentState newState
+        consumeCurrentContext newContext
 
         match shouldStop () with
         | true -> Finished
-        | false -> _gameLoop newState context provideCurrentState shouldStop skipTimer
+        | false -> _gameLoop context consumeCurrentContext shouldStop skipTimer
 
-    let rec gameLoop state context provideCurrentState shouldStop skipTimer =
+    let gameLoop context provideCurrentState shouldStop skipTimer =
         let log = context.CreateLogger "GameLoop"
 
         try
-            _gameLoop state context provideCurrentState shouldStop skipTimer
+            _gameLoop context provideCurrentState shouldStop skipTimer
         with e ->
             log.LogError $"Error while running gameLoop; {e}"
             Error e

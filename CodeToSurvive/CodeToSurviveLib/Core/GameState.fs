@@ -26,5 +26,5 @@ module GameState =
           RunCharacterScripts: RunCharacterScripts
           PreTickUpdate: StateUpdate
           PostTickUpdate: StateUpdate
-          
-           }
+          State: WorldState
+        }

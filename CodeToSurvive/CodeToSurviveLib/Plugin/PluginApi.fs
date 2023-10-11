@@ -1,7 +1,6 @@
 namespace CodeToSurvive.Lib.Core.Plugin
 
 open CodeToSurvive.Lib.Core.GameState
-open CodeToSurvive.Lib.Core.Tick
 open CodeToSurvive.Lib.Core.World
 
 module PluginApi =

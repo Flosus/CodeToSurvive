@@ -6,11 +6,12 @@ open CodeToSurvive.Lib.Core.Job
 module ScriptInfo =
 
     type ScriptResult =
-        | JobName
+        // TODO fix job parameter
+        | Job of (string * string option)
         | Continue
         | Error
         | Timeout
 
-    type RunPlayerScript = CharacterState * WorldState -> Async<CharacterState * ScriptResult>
+    type RunPlayerScript = CharacterState * WorldContext -> Async<CharacterState * ScriptResult>
     type GetScriptByPlayer = CharacterState -> RunPlayerScript
     type GetJob = ScriptResult -> Job

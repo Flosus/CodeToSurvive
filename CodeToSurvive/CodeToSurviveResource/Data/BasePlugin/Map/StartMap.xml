@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?xml-model href="https://aheffner.de/Schema/MapSchema.xsd"?>
+<!DOCTYPE Map SYSTEM "https://aheffner.de/Schema/MapSchema.xsd">
+<Map>
+    <MapId>SilentGlade</MapId>
+    <Instanced>false</Instanced>
+    <Persistent>false</Persistent>
+    <Description>You find yourself on a glade. There is an eerie silence.</Description>
+    <Transitions>
+        <Transition>
+            <TargetMapId>SmallPathBetweenTrees</TargetMapId>
+            <Description>A small path between the trees.</Description>
+        </Transition>
+        <!-- Go into the woods? -->
+    </Transitions>
+</Map>

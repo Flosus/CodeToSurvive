@@ -9,13 +9,13 @@ open CodeToSurvive.Lib.Script.ScriptInfo
 
 module ScriptRunner =
 
-    let handleTimeout (states: CharacterState * WorldState) : CharacterState * ScriptResult =
+    let handleTimeout (states: CharacterState * WorldContext) : CharacterState * ScriptResult =
         let playerState, _ = states
         // TODO write messages, etc
         (playerState, Timeout)
 
     let runScript
-        (state: CharacterState * WorldState)
+        (state: CharacterState * WorldContext)
         (playScript: RunPlayerScript)
         (cancellationTime: TimeSpan)
         : Async<CharacterState * ScriptResult> =
@@ -30,22 +30,22 @@ module ScriptRunner =
             async { return handleTimeout state }
 
     let RunScripts
-        (state: WorldState)
+        (ctx: WorldContext)
         (getScriptByPlayer: GetScriptByPlayer)
         (getJobByName: GetJob)
         (scriptRunTime: int)
-        : WorldState =
+        : WorldContext =
         let cancellationTime = TimeSpan.FromSeconds(scriptRunTime)
 
         let playerScripts =
-            state.Players
+            ctx.State.Players
             |> Array.map (fun pl ->
                 (let script = getScriptByPlayer pl
                  (pl, script)))
 
         let asyncResults =
             playerScripts
-            |> Array.map (fun (pState, pScript) -> runScript (pState, state) pScript cancellationTime)
+            |> Array.map (fun (pState, pScript) -> runScript (pState, ctx) pScript cancellationTime)
 
         let results = asyncResults |> Async.Parallel |> Async.RunSynchronously
 
@@ -61,6 +61,8 @@ module ScriptRunner =
         let playerStates = newStateData |> Array.map fst
         let PlayerJobStates = newStateData |> Array.map snd
 
-        { state with
-            Players = playerStates
-            Tasks = PlayerJobStates }
+        { ctx with
+            State =
+                { ctx.State with
+                    Players = playerStates
+                    Tasks = PlayerJobStates } }
