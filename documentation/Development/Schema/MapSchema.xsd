@@ -1,16 +1,16 @@
 <xs:schema attributeFormDefault="unqualified" elementFormDefault="qualified"
     xmlns:xs="http://www.w3.org/2001/XMLSchema">
     <xs:include schemaLocation="ActionSchema.xsd" />
-    <xs:element name="map">
+    <xs:element name="Map">
         <xs:complexType>
             <xs:sequence>
-                <xs:element type="xs:string" name="mapId">
+                <xs:element type="xs:string" name="MapId">
                     <xs:annotation>
                         <xs:documentation> The id of the map. Use the uniqueMapId for referencing
                             instances of maps. </xs:documentation>
                     </xs:annotation>
                 </xs:element>
-                <xs:element type="xs:boolean" name="instanced">
+                <xs:element type="xs:boolean" name="Instanced">
                     <xs:annotation>
                         <xs:documentation> Instanced maps are not shared with other players /
                             groups. Two independed players will get different instances. Important:
@@ -19,53 +19,53 @@
                             "ExampleMap.fdsdkfbsgfdsfds". </xs:documentation>
                     </xs:annotation>
                 </xs:element>
-                <xs:element type="xs:boolean" name="persistent">
+                <xs:element type="xs:boolean" name="Persistent">
                     <xs:annotation>
                         <xs:documentation> Persistent maps will get saved and restored, if
                             corresponding players reenter the map. nonpersistent maps cease to exist
                             after every character leafs the map. </xs:documentation>
                     </xs:annotation>
                 </xs:element>
-                <xs:element type="xs:string" name="persistencePool" minOccurs="0">
+                <xs:element type="xs:string" name="PersistencePool" minOccurs="0">
                     <xs:annotation>
                         <xs:documentation> A persistent pool is cleand when all corresponding maps
                             are deserted. </xs:documentation>
                     </xs:annotation>
                 </xs:element>
-                <xs:element type="xs:string" name="description">
+                <xs:element type="xs:string" name="Description">
                     <xs:annotation>
                         <xs:documentation> The description of the map. This text will get shown to
                             the player when they look around. </xs:documentation>
                     </xs:annotation>
                 </xs:element>
-                <xs:element name="transitions" minOccurs="0">
+                <xs:element name="Transitions" minOccurs="0">
                     <xs:annotation>
                         <xs:documentation> Transitions determin where a character can walk to for
                             exiting a map. Transitions can also occure when performing actions. </xs:documentation>
                     </xs:annotation>
                     <xs:complexType>
                         <xs:sequence>
-                            <xs:element name="transition" maxOccurs="unbounded" minOccurs="0">
+                            <xs:element name="Transition" maxOccurs="unbounded" minOccurs="0">
                                 <xs:annotation>
                                     <xs:documentation> A transition defines a single point where a
                                         character can change maps. </xs:documentation>
                                 </xs:annotation>
                                 <xs:complexType>
                                     <xs:sequence>
-                                        <xs:element type="xs:string" name="targetMapId">
+                                        <xs:element type="xs:string" name="TargetMapId">
                                             <xs:annotation>
                                                 <xs:documentation> The target map </xs:documentation>
                                             </xs:annotation>
                                         </xs:element>
                                         <xs:choice>
-                                            <xs:element type="xs:string" name="description"
+                                            <xs:element type="xs:string" name="Description"
                                                 minOccurs="0">
                                                 <xs:annotation>
                                                     <xs:documentation> A description of the
                                                         transition point, visible to the player </xs:documentation>
                                                 </xs:annotation>
                                             </xs:element>
-                                            <xs:element type="xs:string" name="descriptionHandler"
+                                            <xs:element type="xs:string" name="DescriptionHandler"
                                                 minOccurs="0">
                                                 <xs:annotation>
                                                     <xs:documentation> A code handler, called for
@@ -74,7 +74,7 @@
                                                 </xs:annotation>
                                             </xs:element>
                                         </xs:choice>
-                                        <xs:element type="xs:string" name="check" minOccurs="0">
+                                        <xs:element type="xs:string" name="Check" minOccurs="0">
                                             <xs:annotation>
                                                 <xs:documentation> A function called for checking if
                                                     a transition is allowed to occure </xs:documentation>
@@ -86,40 +86,40 @@
                         </xs:sequence>
                     </xs:complexType>
                 </xs:element>
-                <xs:element name="trigger" minOccurs="0">
+                <xs:element name="Trigger" minOccurs="0">
                     <xs:annotation>
                         <xs:documentation> Trigger are optional handlers that can occure and are
                             used for calling specific functions. </xs:documentation>
                     </xs:annotation>
                     <xs:complexType>
                         <xs:sequence>
-                            <xs:element type="xs:string" name="onMapEnter" minOccurs="0">
+                            <xs:element type="xs:string" name="OnMapEnter" minOccurs="0">
                                 <xs:annotation>
                                     <xs:documentation> Called when a character enters a map. </xs:documentation>
                                 </xs:annotation>
                             </xs:element>
-                            <xs:element type="xs:string" name="onMapExit" minOccurs="0">
+                            <xs:element type="xs:string" name="OnMapExit" minOccurs="0">
                                 <xs:annotation>
                                     <xs:documentation> Called when a character exits a map. </xs:documentation>
                                 </xs:annotation>
                             </xs:element>
-                            <xs:element type="xs:string" name="onMapStay" minOccurs="0">
+                            <xs:element type="xs:string" name="OnMapStay" minOccurs="0">
                                 <xs:annotation>
                                     <xs:documentation> Called when a character stays on a map. </xs:documentation>
                                 </xs:annotation>
                             </xs:element>
-                            <xs:element type="xs:string" name="onMapSave" minOccurs="0">
+                            <xs:element type="xs:string" name="OnMapSave" minOccurs="0">
                                 <xs:annotation>
                                     <xs:documentation> Called when saving the map </xs:documentation>
                                 </xs:annotation>
                             </xs:element>
-                            <xs:element type="xs:string" name="onMapLoad" minOccurs="0">
+                            <xs:element type="xs:string" name="OnMapLoad" minOccurs="0">
                                 <xs:annotation>
                                     <xs:documentation> Called when loading the map or generating a
                                         new instance </xs:documentation>
                                 </xs:annotation>
                             </xs:element>
-                            <xs:element type="xs:string" name="onMapUnload" minOccurs="0">
+                            <xs:element type="xs:string" name="OnMapUnload" minOccurs="0">
                                 <xs:annotation>
                                     <xs:documentation> Called when unloading/destroying a map
                                         instance </xs:documentation>
@@ -128,44 +128,44 @@
                         </xs:sequence>
                     </xs:complexType>
                 </xs:element>
-                <xs:element name="pois" minOccurs="0">
+                <xs:element name="POIs" minOccurs="0">
                     <xs:annotation>
                         <xs:documentation> Points of interest are things visible to the player. </xs:documentation>
                     </xs:annotation>
                     <xs:complexType>
                         <xs:sequence>
-                            <xs:element name="poi" maxOccurs="unbounded" minOccurs="0">
+                            <xs:element name="POI" maxOccurs="unbounded" minOccurs="0">
                                 <xs:annotation>
                                     <xs:documentation> A single point of interest on the map </xs:documentation>
                                 </xs:annotation>
                                 <xs:complexType>
                                     <xs:sequence>
-                                        <xs:element type="xs:string" name="name">
+                                        <xs:element type="xs:string" name="Name">
                                             <xs:annotation>
                                                 <xs:documentation> The name of the poi. This is
                                                     visible to the player </xs:documentation>
                                             </xs:annotation>
                                         </xs:element>
-                                        <xs:element type="xs:string" name="description"
+                                        <xs:element type="xs:string" name="Description"
                                             minOccurs="0">
                                             <xs:annotation>
                                                 <xs:documentation> The Description of the poi </xs:documentation>
                                             </xs:annotation>
                                         </xs:element>
-                                        <xs:element name="actions" minOccurs="0">
+                                        <xs:element name="Actions" minOccurs="0">
                                             <xs:annotation>
                                                 <xs:documentation> The actions available to the
                                                     player on the poi </xs:documentation>
                                             </xs:annotation>
                                             <xs:complexType>
                                                 <xs:sequence>
-                                                    <xs:element type="actionType" name="action"
+                                                    <xs:element type="actionType" name="Action"
                                                         maxOccurs="unbounded" minOccurs="0">
                                                     </xs:element>
                                                 </xs:sequence>
                                             </xs:complexType>
                                         </xs:element>
-                                        <xs:element type="xs:string" name="descriptionHandler"
+                                        <xs:element type="xs:string" name="DescriptionHandler"
                                             minOccurs="0">
                                             <xs:annotation>
                                                 <xs:documentation> A custom function for providing
@@ -178,7 +178,7 @@
                         </xs:sequence>
                     </xs:complexType>
                 </xs:element>
-                <xs:element type="xs:anyType" name="state" minOccurs="0">
+                <xs:element type="xs:anyType" name="State" minOccurs="0">
                     <xs:annotation>
                         <xs:documentation> This contains the current state of the map and the
                             default values </xs:documentation>

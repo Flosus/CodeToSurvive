@@ -1,100 +1,100 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <?xml-model href="../Schema/MapSchema.xsd"?>
-<map>
+<Map>
     <!-- The id of the map. Use the uniqueMapId for referencing instances of maps. -->
-    <mapId>ExampleMap</mapId>
+    <MapId>ExampleMap</MapId>
     <!--
     Instanced maps are not shared with other players / groups. Two independed players will get
     different instances.
     Important: The uniqueMapId and persistencePoolUniqueId of instanced maps will get random characters
     appended to differenciate between them. e.g. "ExampleMap.fdsdkfbsgfdsfds".
     -->
-    <instanced>true</instanced>
+    <Instanced>true</Instanced>
     <!-- Persistent maps will get saved and restored, if corresponding players reenter the map.
     nonpersistent maps cease to exist after every character leafs the map. -->
-    <persistent>true</persistent>
+    <Persistent>true</Persistent>
     <!-- A persistent pool is cleand when all corresponding maps are deserted. -->
-    <persistencePool>ExamplePool</persistencePool>
+    <PersistencePool>ExamplePool</PersistencePool>
     <!-- The description of the map. This text will get shown to the player when they look around. -->
-    <description>Example Description</description>
+    <Description>Example Description</Description>
     <!-- Transitions determin where a character can walk to for exiting a map. Transitions can also
     occure when performing actions. -->
-    <transitions>
+    <Transitions>
         <!-- A transition defines a single point where a character can change maps. -->
-        <transition>
+        <Transition>
             <!-- The target map -->
-            <targetMapId>ExampleMap2</targetMapId>
+            <TargetMapId>ExampleMap2</TargetMapId>
             <!-- A description of the transition point, visible to the player -->
-            <description>You can go here</description>
-        </transition>
-        <transition>
-            <targetMapId>ExampleMap3</targetMapId>
+            <Description>You can go here</Description>
+        </Transition>
+        <Transition>
+            <TargetMapId>ExampleMap3</TargetMapId>
             <!-- A code handler, called for getting the description, instead of a hardcoded
             description -->
-            <descriptionHandler>ExampleMap_GateTransitionDescription</descriptionHandler>
+            <DescriptionHandler>ExampleMap_GateTransitionDescription</DescriptionHandler>
             <!-- A function called for checking if a transition is allowed to occure -->
-            <check>ExampleMap_TransitionCheckHandler_GateIsOpen</check>
-        </transition>
-    </transitions>
+            <Check>ExampleMap_TransitionCheckHandler_GateIsOpen</Check>
+        </Transition>
+    </Transitions>
     <!-- Trigger are optional handlers that can occure and are used for calling specific functions. -->
-    <trigger>
+    <Trigger>
         <!-- Called when a character enters a map. -->
-        <onMapEnter>ExampleMap_OnMapEnter</onMapEnter>
+        <OnMapEnter>ExampleMap_OnMapEnter</OnMapEnter>
         <!-- Called when a character exits a map. -->
-        <onMapExit>ExampleMap_OnMapExit</onMapExit>
+        <OnMapExit>ExampleMap_OnMapExit</OnMapExit>
         <!-- Called when a character stays on a map. -->
-        <onMapStay>ExampleMap_OnMapStay</onMapStay>
+        <OnMapStay>ExampleMap_OnMapStay</OnMapStay>
         <!-- Called when saving the map -->
-        <onMapSave>ExampleMap_OnMapSave</onMapSave>
+        <OnMapSave>ExampleMap_OnMapSave</OnMapSave>
         <!-- Called when loading the map or generating a new instance -->
-        <onMapLoad>ExampleMap_OnMapLoad</onMapLoad>
+        <OnMapLoad>ExampleMap_OnMapLoad</OnMapLoad>
         <!-- Called when unloading/destroying a map instance -->
-        <onMapUnload>ExampleMap_OnMapUnload</onMapUnload>
-    </trigger>
+        <OnMapUnload>ExampleMap_OnMapUnload</OnMapUnload>
+    </Trigger>
     <!-- Points of interest are things visible to the player. -->
-    <pois>
+    <POIs>
         <!-- A single point of interest on the map -->
-        <poi>
+        <POI>
             <!-- The name of the poi. This is visible to the player -->
-            <name>Lever</name>
+            <Name>Lever</Name>
             <!-- The Description of the poi -->
-            <description>A lever beside a gate</description>
+            <Description>A lever beside a gate</Description>
             <!-- The actions available to the player on the poi -->
-            <actions>
-                <action>
+            <Actions>
+                <Action>
                     <!-- The internal id of the action -->
-                    <actionId>pullingTheLever</actionId>
+                    <ActionId>pullingTheLever</ActionId>
                     <!-- The description of the action, visible to the player -->
-                    <description>A lever near the gate. You could pull it and the gate might.</description>
+                    <Description>A lever near the gate. You could pull it and the gate might.</Description>
                     <!-- The name of the job, done by the player -->
-                    <jobName>PullLever</jobName>
+                    <JobName>PullLever</JobName>
                     <!-- The function name for overwriting the default job handler -->
-                    <jobHandler>ExampleMap_PullLever</jobHandler>
+                    <JobHandler>ExampleMap_PullLever</JobHandler>
                     <!-- Optional parameters for the handler -->
-                    <handlerParameter>
+                    <HandlerParameter>
                         <!-- Add custome parameters here. -->
-                    </handlerParameter>
-                </action>
-                <action>
-                    <actionId>lickingTheLever</actionId>
-                    <description>You could lick the lever. Why would you do this?</description>
-                    <jobName>LickLever</jobName>
-                    <jobHandler>ExampleMap_LickLever</jobHandler>
-                </action>
-            </actions>
-        </poi>
-        <poi>
-            <name>gate</name>
+                    </HandlerParameter>
+                </Action>
+                <Action>
+                    <ActionId>lickingTheLever</ActionId>
+                    <Description>You could lick the lever. Why would you do this?</Description>
+                    <JobName>LickLever</JobName>
+                    <JobHandler>ExampleMap_LickLever</JobHandler>
+                </Action>
+            </Actions>
+        </POI>
+        <POI>
+            <Name>gate</Name>
             <!-- A custom function for providing the description -->
-            <descriptionHandler>ExampleMap_GateDescription</descriptionHandler>
-        </poi>
-    </pois>
+            <DescriptionHandler>ExampleMap_GateDescription</DescriptionHandler>
+        </POI>
+    </POIs>
     <!-- This contains the current state of the map and the default values -->
-    <state>
+    <State>
         <gate>
-            <closed>true</closed>
+            <Closed>true</Closed>
         </gate>
         <flowerCount>15</flowerCount>
         <fishCatchChance>5</fishCatchChance>
-    </state>
-</map>
+    </State>
+</Map>

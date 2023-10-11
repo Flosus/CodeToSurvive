@@ -2,24 +2,24 @@
 <?xml-model href="../Schema/ItemSchema.xsd"?>
 <Item>
     <!-- The internal id of the item -->
-    <itemId>ironSword</itemId>
+    <ItemId>ironSword</ItemId>
     <!-- The name of the item, visible to the player -->
-    <name>Iron Sword</name>
+    <Name>Iron Sword</Name>
     <!-- The description of the item, when inspected by the player -->
-    <description>A simple iron sword</description>
+    <Description>A simple iron sword</Description>
     <!-- The weight of the item -->
-    <weight>1.0</weight>
+    <Weight>1.0</Weight>
     <!-- The value of the item. -->
-    <value>22</value>
+    <Value>22</Value>
     <!-- Stateful items can't be stacked, even if they share the same state -->
-    <stateful>true</stateful>
+    <Stateful>true</Stateful>
     <!-- A list of actions, available on the item. -->
     <Actions>
         <Action>
             <ActionId>ironSwordLick</ActionId>
             <Description>Lick the sword, taste the sword.</Description>
             <JobName>Lick</JobName>
-            <jobHandler>Item_IronSword_Action_Lick</jobHandler>
+            <JobHandler>Item_IronSword_Action_Lick</JobHandler>
         </Action>
         <Action>
             <ActionId>ironSwordLick2</ActionId>
@@ -32,32 +32,32 @@
         optional information for equipable items
         WIP: Addition properties will get added here for combat and other rpg features in the future
     -->
-    <equipmentInfo>
+    <EquipmentInfo>
         <!-- The slot of the eqipment -->
-        <slot>TheSlotOfTheEquipment</slot>
-    </equipmentInfo>
+        <Slot>TheSlotOfTheEquipment</Slot>
+    </EquipmentInfo>
     <!--
         Triggers associated with the item
         WIP: Additional triggers will get added with combat and other rpg features in the future
     -->
-    <trigger>
+    <Trigger>
         <!-- Called when the item is picked up -->
-        <onPickup>Item_IronSword_OnPickup</onPickup>
+        <OnPickup>Item_IronSword_OnPickup</OnPickup>
         <!-- Called when the item is dropped -->
-        <onDrop>Item_IronSword_OnDrop</onDrop>
+        <OnDrop>Item_IronSword_OnDrop</OnDrop>
         <!-- Called when the item is equiped -->
-        <onEquip>Item_IronSword_OnEquip</onEquip>
+        <OnEquip>Item_IronSword_OnEquip</OnEquip>
         <!-- Called when the item is unequiped -->
-        <onUnequip>Item_IronSword_OnUnequip</onUnequip>
+        <OnUnequip>Item_IronSword_OnUnequip</OnUnequip>
         <!-- Called when loading the item is generated or loaded -->
-        <onLoad>Item_IronSword_OnLoad</onLoad>
+        <OnLoad>Item_IronSword_OnLoad</OnLoad>
         <!-- Called when unloading/destroying an item instance -->
-        <onUnload>Item_IronSword_OnUnload</onUnload>
+        <OnUnload>Item_IronSword_OnUnload</OnUnload>
         <!-- Called when the item instance is saved -->
-        <onSave>Item_IronSword_OnSave</onSave>
-    </trigger>
-    <state>
+        <OnSave>Item_IronSword_OnSave</OnSave>
+    </Trigger>
+    <State>
         <isWet>false</isWet>
         <isBroken>false</isBroken>
-    </state>
+    </State>
 </Item>
