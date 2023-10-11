@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?xml-model href="https://aheffner.de/Schema/MapSchema.xsd"?>
+<Map>
+    <MapId>Debug_TestRoom</MapId>
+    <Instanced>false</Instanced>
+    <Persistent>false</Persistent>
+    <Description>You find yourself in a TestRoom. Tread with care.</Description>
+    <Transitions>
+        <Transition>
+            <TargetMapId>Debug_TestRoom_Instanced</TargetMapId>
+            <Description>A door with the label "Debug_TestRoom_Instanced".</Description>
+        </Transition>
+        <Transition>
+            <TargetMapId>Debug_TestRoom_Persistent</TargetMapId>
+            <Description>A door with the label "Debug_TestRoom_Persistent".</Description>
+        </Transition>
+        <Transition>
+            <TargetMapId>Debug_TestRoom_Instanced_Persistent</TargetMapId>
+            <Description>A door with the label "Debug_TestRoom_Instanced_Persistent".</Description>
+        </Transition>
+        <Transition>
+            <TargetMapId>Debug_TestRoom_Instanced_PoolRoom1</TargetMapId>
+            <Description>A door with the label "Debug_TestRoom_Instanced_PoolRoom1".</Description>
+        </Transition>
+        <Transition>
+            <TargetMapId>Debug_TestRoom_Instanced_PoolRoom2</TargetMapId>
+            <Description>A door with the label "Debug_TestRoom_Instanced_PoolRoom2".</Description>
+        </Transition>
+    </Transitions>
+</Map>
