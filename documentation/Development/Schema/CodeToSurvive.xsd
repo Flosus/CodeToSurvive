@@ -1,0 +1,6 @@
+<xs:schema attributeFormDefault="unqualified" elementFormDefault="qualified" targetNamespace="https://aheffner.de/Schema" xmlns:cts="https://aheffner.de/Schema"
+    xmlns:xs="http://www.w3.org/2001/XMLSchema">
+    <xs:include schemaLocation="ActionSchema.xsd" />
+    <xs:include schemaLocation="ItemSchema.xsd" />
+    <xs:include schemaLocation="MapSchema.xsd" />
+</xs:schema>

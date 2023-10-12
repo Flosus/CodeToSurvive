@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
+
 <Map xmlns="https://aheffner.de/Schema"
-xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-xsi:schemaLocation="https://aheffner.de/Schema https://aheffner.de/Schema/MapSchema.xsd">
+     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+     xsi:schemaLocation="https://aheffner.de/Schema https://aheffner.de/Schema/MapSchema.xsd">
     <MapId>Debug_TestRoom</MapId>
     <Instanced>false</Instanced>
     <Persistent>false</Persistent>
