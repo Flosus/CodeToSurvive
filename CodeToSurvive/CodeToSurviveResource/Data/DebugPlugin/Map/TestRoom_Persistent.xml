@@ -2,7 +2,7 @@
 
 <Map xmlns="https://aheffner.de/Schema"
      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-     xsi:schemaLocation="https://aheffner.de/Schema https://aheffner.de/Schema/MapSchema.xsd">
+     xsi:schemaLocation="https://aheffner.de/Schema https://aheffner.de/Schema/CodeToSurviveSchema.xsd">
     <MapId>Debug_TestRoom_Persistent</MapId>
     <Instanced>false</Instanced>
     <Persistent>true</Persistent>

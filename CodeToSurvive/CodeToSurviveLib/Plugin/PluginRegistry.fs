@@ -1,6 +1,6 @@
-namespace CodeToSurvive.Lib.Core.Plugin
+namespace CodeToSurviveLib.Core.Plugin
 
-open CodeToSurvive.Lib.Core.Plugin.PluginApi
+open CodeToSurviveLib.Core.Plugin.PluginApi
 
 module PluginRegistry =
     open Microsoft.Extensions.Logging

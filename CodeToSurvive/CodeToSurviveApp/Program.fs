@@ -8,7 +8,7 @@ open CodeToSurvive.App.Public.PublicHandler
 open CodeToSurvive.App.Public.PublicRouter
 open CodeToSurvive.App.Private.PrivateRouter
 open CodeToSurvive.App.Admin.AdminRouter
-open CodeToSurvive.Lib.Storage.StoragePreference
+open CodeToSurviveLib.Storage.StoragePreference
 open CodeToSurviveApp.Security
 open Microsoft.AspNetCore.Builder
 open Microsoft.AspNetCore.Cors.Infrastructure

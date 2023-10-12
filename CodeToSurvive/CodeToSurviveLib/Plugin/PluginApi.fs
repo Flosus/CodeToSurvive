@@ -1,7 +1,7 @@
-namespace CodeToSurvive.Lib.Core.Plugin
+namespace CodeToSurviveLib.Core.Plugin
 
-open CodeToSurvive.Lib.Core.GameState
-open CodeToSurvive.Lib.Core.World
+open CodeToSurviveLib.Core.GameState
+open CodeToSurviveLib.Core.World
 
 module PluginApi =
 

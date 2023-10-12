@@ -1,7 +1,7 @@
-namespace CodeToSurvive.Lib.Core
+namespace CodeToSurviveLib.Core
 
 open System
-open CodeToSurvive.Lib.Core.Character
+open CodeToSurviveLib.Core.Character
 
 module Job =
 

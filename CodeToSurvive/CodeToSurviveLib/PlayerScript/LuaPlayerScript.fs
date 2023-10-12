@@ -1,9 +1,9 @@
-namespace CodeToSurvive.Lib.Script
+namespace CodeToSurviveLib.Script
 
 open System.IO
 open System.Text
-open CodeToSurvive.Lib.Core.GameState
-open CodeToSurvive.Lib.Script.ScriptInfo
+open CodeToSurviveLib.Core.GameState
+open CodeToSurviveLib.Script.ScriptInfo
 open NLua
 
 module LuaPlayerScript =

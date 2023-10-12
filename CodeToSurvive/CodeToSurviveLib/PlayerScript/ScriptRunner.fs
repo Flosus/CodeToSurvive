@@ -1,11 +1,11 @@
-namespace CodeToSurvive.Lib.PlayerScript
+namespace CodeToSurviveLib.PlayerScript
 
 open System
 open System.Threading
 open System.Threading.Tasks
-open CodeToSurvive.Lib.Core.GameState
-open CodeToSurvive.Lib.Core.Job
-open CodeToSurvive.Lib.Script.ScriptInfo
+open CodeToSurviveLib.Core.GameState
+open CodeToSurviveLib.Core.Job
+open CodeToSurviveLib.Script.ScriptInfo
 
 module ScriptRunner =
 

@@ -1,4 +1,4 @@
-namespace CodeToSurvive.Lib.Core.Plugin.Util
+namespace CodeToSurviveLib.Core.Plugin.Util
 
 open System.Xml
 open System.Xml.Serialization

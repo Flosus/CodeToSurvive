@@ -1,10 +1,11 @@
-namespace CodeToSurvive.Lib.Core
+namespace CodeToSurviveLib.Core
 
 open System
-open CodeToSurvive.Lib.Core.GameState
-open CodeToSurvive.Lib.Core.Job
-open CodeToSurvive.Lib.Core.Character
+open CodeToSurviveLib.Core.GameState
+open CodeToSurviveLib.Core.Job
+open CodeToSurviveLib.Core.Character
 open Microsoft.Extensions.Logging
+open Microsoft.FSharp.Collections
 
 module Tick =
 
@@ -51,9 +52,8 @@ module Tick =
         let logStep msg localState =
             log.LogTrace msg
             localState
-        
-        let updateContext (state: WorldState): WorldContext =
-            {context with State = state}
+
+        let updateContext (state: WorldState) : WorldContext = { context with State = state }
 
         context.State
         // Pre tick work
