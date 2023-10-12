@@ -1,4 +1,4 @@
-namespace CodeToSurvive.Lib.Core
+namespace CodeToSurviveLib.Core
 
 open System.Collections.Generic
 

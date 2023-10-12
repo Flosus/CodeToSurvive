@@ -1,8 +1,8 @@
-namespace CodeToSurvive.Resource
+namespace CodeToSurviveResource
 
-open CodeToSurvive.Lib.Core.GameState
-open CodeToSurvive.Lib.Core.Plugin
-open CodeToSurvive.Lib.Core.Plugin.PluginApi
+open CodeToSurviveLib.Core.GameState
+open CodeToSurviveLib.Core.Plugin
+open CodeToSurviveLib.Core.Plugin.PluginApi
 open Microsoft.Extensions.Logging
 
 module DebugPlugin =
@@ -15,7 +15,6 @@ module DebugPlugin =
         let log = getLog ctx
         log.LogInformation $"Setup ${pluginName}"
         ctx
-
 
     type DebugPlugin() as self =
         inherit Plugin(pluginName, [| BasePlugin.pluginName |])

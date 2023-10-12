@@ -1,7 +1,7 @@
-namespace CodeToSurvive.Lib.Script
+namespace CodeToSurviveLib.Script
 
-open CodeToSurvive.Lib.Core.GameState
-open CodeToSurvive.Lib.Core.Job
+open CodeToSurviveLib.Core.GameState
+open CodeToSurviveLib.Core.Job
 
 module ScriptInfo =
 

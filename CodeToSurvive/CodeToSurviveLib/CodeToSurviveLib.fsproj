@@ -31,6 +31,7 @@
         <Compile Include="Plugin\PluginRegistry.fs" />
         <Compile Include="Plugin\WorldGenRegistry.fs" />
         <Compile Include="Plugin\Util\WorldLoader.fs" />
+        <Compile Include="Util\WorldContextUtil.fs" />
     </ItemGroup>
 
     <ItemGroup>

@@ -1,4 +1,4 @@
-namespace CodeToSurvive.Lib.Storage
+namespace CodeToSurviveLib.Storage
 
 open System.IO
 

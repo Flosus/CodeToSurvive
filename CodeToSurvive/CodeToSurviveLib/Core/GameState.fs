@@ -1,9 +1,9 @@
-namespace CodeToSurvive.Lib.Core
+namespace CodeToSurviveLib.Core
 
 open System
-open CodeToSurvive.Lib.Core.Job
-open CodeToSurvive.Lib.Core.Character
-open CodeToSurvive.Lib.Core.World
+open CodeToSurviveLib.Core.Job
+open CodeToSurviveLib.Core.Character
+open CodeToSurviveLib.Core.World
 open Microsoft.Extensions.Logging
 
 module GameState =
@@ -16,8 +16,8 @@ module GameState =
           Tasks: PlayerTask[]
           Map: WorldMap }
 
-    type RunCharacterScripts = WorldState -> WorldState
     type DoJobProgress = PlayerTask * WorldState -> WorldState
+    type RunCharacterScripts = WorldState -> WorldState
     type StateUpdate = WorldState -> WorldState
 
     type WorldContext =
@@ -26,5 +26,4 @@ module GameState =
           RunCharacterScripts: RunCharacterScripts
           PreTickUpdate: StateUpdate
           PostTickUpdate: StateUpdate
-          State: WorldState
-        }
+          State: WorldState }

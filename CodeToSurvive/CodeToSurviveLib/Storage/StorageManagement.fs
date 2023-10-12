@@ -1,12 +1,12 @@
-namespace CodeToSurvive.Lib.Storage
+namespace CodeToSurviveLib.Storage
 
 open System
 open System.IO
 open System.Runtime.Serialization.Json
 open System.Text
 open System.Text.RegularExpressions
-open CodeToSurvive.Lib.Core.GameState
-open CodeToSurvive.Lib.Storage.StoragePreference
+open CodeToSurviveLib.Core.GameState
+open CodeToSurviveLib.Storage.StoragePreference
 
 module StorageManagement =
 

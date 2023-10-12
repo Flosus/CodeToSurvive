@@ -6,7 +6,7 @@ open System.Threading
 open System.Threading.Tasks
 open BCrypt.Net
 open CodeToSurvive.App.Security.SecurityModel
-open CodeToSurvive.Lib.Storage.StoragePreference
+open CodeToSurviveLib.Storage.StoragePreference
 open Microsoft.AspNetCore.Identity
 
 type UserStore(storage: IStoragePreference) =

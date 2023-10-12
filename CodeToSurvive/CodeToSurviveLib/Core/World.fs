@@ -1,4 +1,4 @@
-namespace CodeToSurvive.Lib.Core
+namespace CodeToSurviveLib.Core
 
 module World =
     open System.Collections.Generic

@@ -1,9 +1,9 @@
-namespace CodeToSurvive.Lib
+namespace CodeToSurviveLib
 
 open System
 open System.Threading
-open CodeToSurvive.Lib.Core.Tick
-open CodeToSurvive.Lib.Core.GameState
+open CodeToSurviveLib.Core.Tick
+open CodeToSurviveLib.Core.GameState
 open Microsoft.Extensions.Logging
 
 module GameLoop =
@@ -22,12 +22,12 @@ module GameLoop =
         let rounded =
             DateTime(((currentTime.Ticks + halfIntervalInTicks) / intervalInTicks) * intervalInTicks)
 
-        let try1 = (rounded - DateTime.UtcNow).TotalMilliseconds
+        let try1 = (rounded - DateTime.UtcNow)
 
-        match try1 < 1 with
+        match try1.Milliseconds < 1 with
         | false -> try1
         // Add 5 seconds in case we "go back in time"
-        | true -> (rounded.AddSeconds(int interval) - DateTime.UtcNow).TotalMilliseconds
+        | true -> (rounded.AddSeconds(int interval) - DateTime.UtcNow)
 
     let rec _gameLoop context consumeCurrentContext shouldStop (skipTimer: bool) =
         let log = context.CreateLogger "GameLoop"
@@ -36,9 +36,9 @@ module GameLoop =
             log.LogTrace "Skipping wait time;"
         else
             let sleepTime = getWaitTimeInMilliseconds ()
-            log.LogTrace $"Waiting for next tick for {int sleepTime}ms;"
-            Statistics.addSleepTime sleepTime
-            Thread.Sleep(int sleepTime)
+            log.LogTrace $"Waiting for next tick for {int sleepTime.Milliseconds}ms;"
+            Statistics.addSleepTime sleepTime.Milliseconds
+            Thread.Sleep(sleepTime)
 
         let startTick = DateTime.Now.Ticks
         let newContext = tick context

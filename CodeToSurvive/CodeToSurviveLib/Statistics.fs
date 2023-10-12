@@ -1,4 +1,4 @@
-namespace CodeToSurvive.Lib
+namespace CodeToSurviveLib
 
 open System
 open System.Collections.Concurrent
