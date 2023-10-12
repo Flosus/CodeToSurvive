@@ -21,10 +21,9 @@ module DebugPlugin =
         inherit Plugin(pluginName, [| BasePlugin.pluginName |])
         do self.OnStartup <- Some(onStartup)
 
-    let pluginFactory (loggerFact: ILoggerFactory) : Plugin =
+    let pluginFactory (_: ILoggerFactory) : Plugin =
         let plugin = DebugPlugin()
         plugin
 
     let register () =
-        let debugPlug = DebugPlugin()
         PluginRegistry.registerPlugin pluginFactory

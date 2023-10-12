@@ -2,15 +2,15 @@
 
 <Map xmlns="https://aheffner.de/Schema"
      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-     xsi:schemaLocation="https://aheffner.de/Schema https://aheffner.de/Schema/MapSchema.xsd">
+     xsi:schemaLocation="https://aheffner.de/Schema https://aheffner.de/Schema/CodeToSurviveSchema.xsd">
     <MapId>SmallPathBetweenTrees</MapId>
     <Instanced>false</Instanced>
     <Persistent>true</Persistent>
-    <Description>You walk on a small, trampled path in the forst.</Description>
+    <Description>You walk on a small, trampled path in the forest.</Description>
     <Transitions>
         <Transition>
             <TargetMapId>SilentGlade</TargetMapId>
-            <Description>The path ends on a clearing in the forst.</Description>
+            <Description>The path ends on a clearing in the forest.</Description>
         </Transition>
         <!-- Go into the woods? -->
         <!-- Where to go next? -->

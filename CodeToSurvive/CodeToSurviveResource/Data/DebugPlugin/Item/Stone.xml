@@ -2,10 +2,11 @@
 
 <Item xmlns="https://aheffner.de/Schema"
       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-      xsi:schemaLocation="https://aheffner.de/Schema https://aheffner.de/Schema/ItemSchema.xsd">
+      xsi:schemaLocation="https://aheffner.de/Schema https://aheffner.de/Schema/CodeToSurvive.xsd">
     <ItemId>stone</ItemId>
     <Name>Stone</Name>
     <Description>Just a stone</Description>
     <Weight>1.0</Weight>
     <Value>0</Value>
+    <Stateful>false</Stateful>
 </Item>
