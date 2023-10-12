@@ -18,6 +18,13 @@ end
 ---@return Job
 function getIdleJob()
     local idleJob = Job:new(nil)
-    idleJob.Name = "idle"
+    idleJob.Name = "Idle"
+    return idleJob
+end
+
+---@return Job
+function getContinueJob()
+    local idleJob = Job:new(nil)
+    idleJob.Name = "Continue"
     return idleJob
 end

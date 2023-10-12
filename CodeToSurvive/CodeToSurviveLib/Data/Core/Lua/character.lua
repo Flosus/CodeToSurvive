@@ -18,3 +18,9 @@ end
 function Character:getEquipment()
 end
 
+---Returns the currently active job. Some jobs might require a longer time to complete. Some job can not be canceled
+---once started, other can be overwritten. Keep in mind that canceling a job might result in the loss of items
+---TODO implementation
+function Character:getCurrentJob()
+end
+
