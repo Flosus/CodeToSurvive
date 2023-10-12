@@ -1,4 +1,4 @@
-<xs:schema attributeFormDefault="unqualified" elementFormDefault="qualified"
+<xs:schema attributeFormDefault="unqualified" elementFormDefault="qualified" targetNamespace="https://aheffner.de/Schema" xmlns:cts="https://aheffner.de/Schema"
     xmlns:xs="http://www.w3.org/2001/XMLSchema">
     <xs:include schemaLocation="ActionSchema.xsd" />
     <xs:element name="Map">
@@ -159,7 +159,7 @@
                                             </xs:annotation>
                                             <xs:complexType>
                                                 <xs:sequence>
-                                                    <xs:element type="actionType" name="Action"
+                                                    <xs:element type="cts:actionType" name="Action"
                                                         maxOccurs="unbounded" minOccurs="0">
                                                     </xs:element>
                                                 </xs:sequence>

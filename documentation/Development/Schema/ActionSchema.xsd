@@ -1,6 +1,6 @@
-<xs:schema attributeFormDefault="unqualified" elementFormDefault="qualified"
+<xs:schema attributeFormDefault="unqualified" elementFormDefault="qualified" targetNamespace="https://aheffner.de/Schema" xmlns:cts="https://aheffner.de/Schema"
     xmlns:xs="http://www.w3.org/2001/XMLSchema">
-    <xs:element name="Action" type="actionType">
+    <xs:element name="Action" type="cts:actionType">
         <xs:annotation>
             <xs:documentation> An action a character can do. This can be an interactive map element
                 or an item in the players inventory. </xs:documentation>
