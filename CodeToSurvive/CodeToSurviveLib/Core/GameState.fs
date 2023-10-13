@@ -8,11 +8,11 @@ open Microsoft.Extensions.Logging
 
 module GameState =
 
-    type CharacterState = {
-        Character: Character
+    type CharacterState =
+        { Character: Character
         // TODO characterLogHandler?
         // TODO characterScriptHandler?
-    }
+        }
 
     type WorldState =
         { mutable Timestamp: DateTime

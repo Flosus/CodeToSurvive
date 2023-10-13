@@ -24,8 +24,11 @@ module Action =
           IsCancelable = false }
 
     let IsActionFinished (action: Action) =
-        TimeSpan.FromSeconds(action.Duration) - TimeSpan.FromSeconds(action.CurrentProgress)
+        TimeSpan.FromSeconds(action.Duration)
+        - TimeSpan.FromSeconds(action.CurrentProgress)
         <= TimeSpan.Zero
 
-    type CharacterAction = { Character: Character; Action: Action }
+    type CharacterAction =
+        { Character: Character; Action: Action }
+
     let isPlayerActionOpen = fun pAction -> IsActionFinished pAction.Action |> not

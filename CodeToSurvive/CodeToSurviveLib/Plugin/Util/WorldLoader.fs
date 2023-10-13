@@ -1,7 +1,11 @@
 namespace CodeToSurviveLib.Core.Plugin.Util
 
+open System
+open System.IO
+open System.Text
 open System.Xml
 open System.Xml.Serialization
+open CodeToSurviveLib.Core.Plugin.PluginApi
 
 module WorldLoader =
 
@@ -112,7 +116,7 @@ module WorldLoader =
           Actions: ResizeArray<ActionDefinition> }
 
     [<CLIMutable>]
-    [<XmlRoot("Map")>]
+    [<XmlRoot(ElementName = "Map", Namespace = "https://aheffner.de/Schema")>]
     type MapDefinition =
         { [<XmlElement>]
           MapId: string
@@ -134,3 +138,22 @@ module WorldLoader =
           POIs: ResizeArray<MapPOIDefinition>
           [<XmlAnyElement>]
           State: XmlElement }
+
+
+    let private parseXml (xml: string) (instance: Type) =
+        let ms = new MemoryStream(Encoding.UTF8.GetBytes(xml))
+        let deserializer = XmlSerializer(instance)
+        use xmlReader = XmlReader.Create ms
+        let deserializedObj = deserializer.Deserialize(xmlReader)
+        deserializedObj
+
+    let private load (pluginId: PluginId) (folder:string) =
+        let readFile path = File.ReadAllText(path, Encoding.UTF8)
+
+        Directory.EnumerateFiles($"./Data/{pluginId}/{folder}", "*.xml", SearchOption.AllDirectories)
+        |> Seq.map readFile
+        |> Seq.map (fun xmlString -> parseXml xmlString typedefof<'a> :?> 'a)
+        |> Seq.toArray
+
+    let loadMaps (pluginId: PluginId) : MapDefinition[] = load pluginId "Map"
+    let loadItems (pluginId: PluginId) : ItemDefinition[] = load pluginId "Map"

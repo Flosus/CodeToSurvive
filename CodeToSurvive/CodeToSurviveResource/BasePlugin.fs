@@ -1,4 +1,4 @@
-namespace CodeToSurviveResource
+namespace CodeToSurviveResource.BasePlugin
 
 open CodeToSurviveLib.Core.Plugin
 open CodeToSurviveLib.Core.Plugin.PluginApi
@@ -16,8 +16,8 @@ module BasePlugin =
             self.PreTickUpdate <- Some(PreTickUpdate.preTickUpdate)
             self.PostTickUpdate <- Some(PostTickUpdate.postTickUpdate)
             // TODO implement the following
-            self.GenerateChunk <- None
-            self.GetSpawnChunk <- None
+            self.GenerateChunk <- Some(ChunkGeneration.generateChunk)
+            self.GetSpawnChunk <- Some(ChunkGeneration.getSpawnChunk)
             self.ProgressJob <- None
 
     let pluginFactory (_: ILoggerFactory) : Plugin =

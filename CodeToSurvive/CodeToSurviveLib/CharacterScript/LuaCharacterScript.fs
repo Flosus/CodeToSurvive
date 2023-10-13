@@ -11,7 +11,7 @@ module LuaCharacterScript =
     let getLuaPluginFiles () : string[] =
         let readFile path = File.ReadAllText(path, Encoding.UTF8)
 
-        Directory.EnumerateFiles("./Data", "", SearchOption.AllDirectories)
+        Directory.EnumerateFiles("./Data", "*.lua", SearchOption.AllDirectories)
         |> Seq.map readFile
         |> Seq.toArray
 

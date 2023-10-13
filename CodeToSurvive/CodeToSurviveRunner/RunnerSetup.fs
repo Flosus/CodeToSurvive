@@ -7,6 +7,8 @@ open CodeToSurviveLib.Storage
 open CodeToSurviveLib.Storage.StoragePreference
 open CodeToSurviveLib.Util
 open CodeToSurviveResource
+open CodeToSurviveResource.BasePlugin
+open CodeToSurviveResource.DebugPlugin
 open Microsoft.Extensions.Logging
 
 module RunnerSetup =
@@ -25,28 +27,28 @@ module RunnerSetup =
             |> ignore)
 
     let setupContext (factory: ILoggerFactory) =
-        let defaultCtx = WorldContextUtil.createDefaultCtx factory
+        let defaultCtx = WorldContextDefaults.createDefaultCtx factory
 
         let log = defaultCtx.CreateLogger "Runner"
 
         let doJobProgress: CharacterAction * WorldContext -> WorldContext =
             fun (_, ctx) ->
-                log.LogDebug "doJobProgress"
+                log.LogTrace "doJobProgress"
                 ctx
 
         let runCharacterScripts (ori: WorldContext -> WorldContext) : WorldContext -> WorldContext =
             fun ctx ->
-                log.LogDebug "runCharacterScripts"
+                log.LogTrace "runCharacterScripts"
                 ori ctx
 
         let preTickUpdate (ori: WorldContext -> WorldContext) : WorldContext -> WorldContext =
             fun ctx ->
-                log.LogDebug "preTickUpdate"
+                log.LogTrace "preTickUpdate"
                 ori ctx
 
         let postTickUpdate (ori: WorldContext -> WorldContext) : WorldContext -> WorldContext =
             fun ctx ->
-                log.LogDebug "postTickUpdate"
+                log.LogTrace "postTickUpdate"
                 ori ctx
 
         let context: WorldContext =

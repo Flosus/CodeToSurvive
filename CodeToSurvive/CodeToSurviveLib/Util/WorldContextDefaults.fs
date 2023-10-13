@@ -5,7 +5,7 @@ open CodeToSurviveLib.Core.GameState
 open CodeToSurviveLib.Core.World
 open Microsoft.Extensions.Logging
 
-module WorldContextUtil =
+module WorldContextDefaults =
     open CodeToSurviveLib.Core.Plugin
 
     let rec private stateUpdate ctx (fncs: (WorldContext -> WorldContext)[]) : WorldContext =

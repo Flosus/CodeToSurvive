@@ -1,4 +1,4 @@
-namespace CodeToSurviveResource
+namespace CodeToSurviveResource.DebugPlugin
 
 open CodeToSurviveLib.Core.Plugin
 open CodeToSurviveLib.Core.Plugin.PluginApi
@@ -8,7 +8,7 @@ open Microsoft.Extensions.Logging
 module DebugPlugin =
 
     type DebugPlugin() as self =
-        inherit Plugin(Constants.pluginName, [| BasePlugin.Constants.pluginName |])
+        inherit Plugin(Constants.pluginName, [| CodeToSurviveResource.BasePlugin.Constants.pluginName |])
 
         do
             self.OnStartup <- Some(OnStartup.onStartup)

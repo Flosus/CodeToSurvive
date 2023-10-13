@@ -22,7 +22,6 @@
         <Compile Include="Core\Action.fs" />
         <Compile Include="Core\GameState.fs" />
         <Compile Include="Core\Tick.fs" />
-        <Compile Include="Core\Player\CharacterManager.fs" />
         <Compile Include="CharacterScript\ScriptInfo.fs" />
         <Compile Include="CharacterScript\ScriptRunner.fs" />
         <Compile Include="CharacterScript\LuaCharacterScript.fs" />
@@ -33,7 +32,9 @@
         <Compile Include="Plugin\PluginRegistry.fs" />
         <Compile Include="Plugin\WorldGenRegistry.fs" />
         <Compile Include="Plugin\Util\WorldLoader.fs" />
-        <Compile Include="Util\WorldContextUtil.fs" />
+        <Compile Include="Util\WorldUtil.fs" />
+        <Compile Include="Core\Player\CharacterManager.fs" />
+        <Compile Include="Util\WorldContextDefaults.fs" />
     </ItemGroup>
 
     <ItemGroup>
