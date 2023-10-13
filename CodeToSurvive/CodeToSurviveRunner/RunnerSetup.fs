@@ -2,59 +2,58 @@ namespace CodeToSurviveRunner
 
 open CodeToSurviveLib
 open CodeToSurviveLib.Core.GameState
-open CodeToSurviveLib.Core.Job
+open CodeToSurviveLib.Core.Action
 open CodeToSurviveLib.Storage
 open CodeToSurviveLib.Storage.StoragePreference
 open CodeToSurviveLib.Util
 open CodeToSurviveResource
+open CodeToSurviveResource.BasePlugin
+open CodeToSurviveResource.DebugPlugin
 open Microsoft.Extensions.Logging
 
 module RunnerSetup =
 
     let getLoggerFactory () =
-        LoggerFactory.Create (fun builder ->
+        LoggerFactory.Create(fun builder ->
             builder
                 .AddFilter("Microsoft", LogLevel.Warning)
                 .AddFilter("System", LogLevel.Warning)
                 .AddFilter(fun (cat: string) (lvl: LogLevel) ->
-                    cat.StartsWith "CodeToSurvive"
-                    && lvl >= LogLevel.Debug)
+                    cat.StartsWith "CodeToSurvive" && lvl >= LogLevel.Debug)
                 .AddSimpleConsole(fun opt ->
                     opt.SingleLine <- true
                     opt.IncludeScopes <- true
                     opt.TimestampFormat <- "[yyyy-MM-dd HH:mm:ss]")
-            // .AddDebug()
             |> ignore)
 
     let setupContext (factory: ILoggerFactory) =
-        let defaultCtx =
-            WorldContextUtil.createDefaultCtx factory
+        let defaultCtx = WorldContextDefaults.createDefaultCtx factory
 
         let log = defaultCtx.CreateLogger "Runner"
 
-        let doJobProgress: PlayerTask * WorldContext -> WorldContext =
+        let doJobProgress: CharacterAction * WorldContext -> WorldContext =
             fun (_, ctx) ->
-                log.LogDebug "doJobProgress"
+                log.LogTrace "doJobProgress"
                 ctx
 
-        let runCharacterScripts (ori: (WorldContext -> WorldContext)) : WorldContext -> WorldContext =
+        let runCharacterScripts (ori: WorldContext -> WorldContext) : WorldContext -> WorldContext =
             fun ctx ->
-                log.LogDebug "runCharacterScripts"
+                log.LogTrace "runCharacterScripts"
                 ori ctx
 
-        let preTickUpdate (ori: (WorldContext -> WorldContext)) : WorldContext -> WorldContext =
+        let preTickUpdate (ori: WorldContext -> WorldContext) : WorldContext -> WorldContext =
             fun ctx ->
-                log.LogDebug "preTickUpdate"
+                log.LogTrace "preTickUpdate"
                 ori ctx
 
-        let postTickUpdate (ori: (WorldContext -> WorldContext)) : WorldContext -> WorldContext =
+        let postTickUpdate (ori: WorldContext -> WorldContext) : WorldContext -> WorldContext =
             fun ctx ->
-                log.LogDebug "postTickUpdate"
+                log.LogTrace "postTickUpdate"
                 ori ctx
 
         let context: WorldContext =
             { defaultCtx with
-                ProgressJob = doJobProgress
+                ProgressAction = doJobProgress
                 RunCharacterScripts = runCharacterScripts defaultCtx.RunCharacterScripts
                 PreTickUpdate = preTickUpdate defaultCtx.PreTickUpdate
                 PostTickUpdate = postTickUpdate defaultCtx.PostTickUpdate }

@@ -5,24 +5,30 @@ open CodeToSurviveLib.Core.GameState
 open CodeToSurviveLib.Core.World
 open Microsoft.Extensions.Logging
 
-module WorldContextUtil =
+module WorldContextDefaults =
     open CodeToSurviveLib.Core.Plugin
 
-    let rec private stateUpdate ctx (fncs: (WorldContext -> WorldContext)[]): WorldContext =
+    let rec private stateUpdate ctx (fncs: (WorldContext -> WorldContext)[]) : WorldContext =
         match fncs.Length with
         | 0 -> ctx
         | _ ->
-                let headFunc = fncs[0]
-                let newCtx = headFunc ctx
-                stateUpdate newCtx fncs[1..]
-    
-    let private finPluginsWithAction (ctx: WorldContext) (funcMapper: PluginApi.Plugin -> Option<WorldContext -> WorldContext>): WorldContext =
+            let headFunc = fncs[0]
+            let newCtx = headFunc ctx
+            stateUpdate newCtx fncs[1..]
+
+    let private finPluginsWithAction
+        (ctx: WorldContext)
+        (funcMapper: PluginApi.Plugin -> Option<WorldContext -> WorldContext>)
+        : WorldContext =
         let plugins = PluginRegistry.getPlugins ()
-        let newCtx = plugins
-                    |> Array.map (funcMapper)
-                    |> Array.filter(fun funcOpt -> funcOpt.IsSome)
-                    |> Array.map (fun (funcOpt) -> funcOpt.Value)
-                    |> stateUpdate ctx
+
+        let newCtx =
+            plugins
+            |> Array.map (funcMapper)
+            |> Array.filter (fun funcOpt -> funcOpt.IsSome)
+            |> Array.map (fun (funcOpt) -> funcOpt.Value)
+            |> stateUpdate ctx
+
         newCtx
 
     let defaultPreTickUpdate (ctx: WorldContext) =
@@ -41,8 +47,8 @@ module WorldContextUtil =
     let createDefaultWorldState () : WorldState =
         let state =
             { Timestamp = DateTime.Now
-              Players = [||]
-              Tasks = [||]
+              CharacterStates = [||]
+              ActiveActions = [||]
               Map = { Chunks = ResizeArray<Chunk>() } }
 
         state
@@ -53,7 +59,7 @@ module WorldContextUtil =
     let createDefaultWorldContext (stateProvider: unit -> WorldState) (factory: ILoggerFactory) : WorldContext =
         let ctx =
             { CreateLogger = loggerFactory factory
-              ProgressJob = fun (_, state) -> state
+              ProgressAction = fun (_, state) -> state
               OnStartup = defaultOnStartup factory
               RunCharacterScripts = defaultRunCharacterScripts
               PreTickUpdate = defaultPreTickUpdate

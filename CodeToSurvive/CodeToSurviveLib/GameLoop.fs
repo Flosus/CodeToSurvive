@@ -51,7 +51,7 @@ module GameLoop =
 
     let gameLoop context provideCurrentState shouldStop skipTimer =
         let log = context.CreateLogger "GameLoop"
-        
+
 
         try
             context

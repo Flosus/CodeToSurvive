@@ -1,37 +1,24 @@
-namespace CodeToSurviveResource
+namespace CodeToSurviveResource.BasePlugin
 
-open CodeToSurviveLib.Core.GameState
 open CodeToSurviveLib.Core.Plugin
 open CodeToSurviveLib.Core.Plugin.PluginApi
+open CodeToSurviveResource.BasePlugin
+open CodeToSurviveResource.BasePlugin.Constants
 open Microsoft.Extensions.Logging
 
 module BasePlugin =
-
-    let pluginName = "BasePlugin"
-    let getLog ctx = ctx.CreateLogger pluginName
-
-    let onStartup (ctx: WorldContext) : WorldContext =
-        let log = getLog ctx
-        log.LogInformation $"Setup {pluginName}"
-        ctx
-
-    let preTickUpdate (ctx: WorldContext) : WorldContext =
-        let log = getLog ctx
-        log.LogInformation $"PreTickUpdate {pluginName}"
-        ctx
-
-    let postTickUpdate (ctx: WorldContext) : WorldContext =
-        let log = getLog ctx
-        log.LogInformation $"PostTickUpdate {pluginName}"
-        ctx
 
     type BasePlugin() as self =
         inherit Plugin(pluginName, [||])
 
         do
-            self.OnStartup <- Some(onStartup)
-            self.PreTickUpdate <- Some(preTickUpdate)
-            self.PostTickUpdate <- Some(postTickUpdate)
+            self.OnStartup <- Some(OnStartup.onStartup)
+            self.PreTickUpdate <- Some(PreTickUpdate.preTickUpdate)
+            self.PostTickUpdate <- Some(PostTickUpdate.postTickUpdate)
+            // TODO implement the following
+            self.GenerateChunk <- Some(ChunkGeneration.generateChunk)
+            self.GetSpawnChunk <- Some(ChunkGeneration.getSpawnChunk)
+            self.ProgressJob <- None
 
     let pluginFactory (_: ILoggerFactory) : Plugin =
         let plugin = BasePlugin()

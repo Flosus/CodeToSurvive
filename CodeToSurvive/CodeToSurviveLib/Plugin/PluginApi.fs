@@ -4,7 +4,7 @@ open CodeToSurviveLib.Core.GameState
 open CodeToSurviveLib.Core.World
 
 module PluginApi =
-    open CodeToSurviveLib.Core.Job
+    open CodeToSurviveLib.Core.Action
 
     //___________________________
     // Plugin-Definition
@@ -14,18 +14,20 @@ module PluginApi =
 
     type OnStartup = WorldContext -> WorldContext
 
-    /// <summary>Calls for generating a new chunk.
-    /// The plugin of the source chunk gets called first.</summary>
+    /// <summary>
+    /// Calls for generating a new chunk.
+    /// The list of plugins is reversed and then the first plugin, providing a chunk is used
+    /// </summary>
     /// <param name="ctx">The world state.</param>
-    /// <param name="chunk">The source chunk, from which the chunk is reachable.</param>
     /// <param name="chunkId">The expected id of the new chunk</param>
-    /// <param name="chunk option">The already generated chunk by an other plugin.</param>
     /// <returns>Some chunk if the plugin was able to generate the chunk</returns>
-    type GenerateChunk = WorldState * Chunk * ChunkId * Chunk option -> Chunk option
+    type GenerateChunk = WorldContext -> ChunkId -> Chunk option
 
     /// Returns the SpawnChunk.
-    /// The last plugin that provides a SpawnChunk will get used.
-    type GetSpawnChunk = CharacterState * WorldState * Chunk option -> Chunk option
+    /// The first plugin that provides a SpawnChunk will get used, but the list of plugin is reversed!
+    /// Take care to not duplicate spawn chunks, as this method might be called multiple times. When a chunk with
+    /// an existing chunkId already exist it will get dropped.
+    type GetSpawnChunk = WorldContext -> Chunk option
 
     /// Represents a plugin
     type Plugin(pluginId: PluginId, dependencies) =
@@ -41,4 +43,4 @@ module PluginApi =
         member val PreTickUpdate: Option<WorldContext -> WorldContext> = None with get, set
         member val PostTickUpdate: Option<WorldContext -> WorldContext> = None with get, set
         member val RunCharacterScripts: Option<WorldContext -> WorldContext> = None with get, set
-        member val ProgressJob: Option<PlayerTask * WorldContext -> WorldContext> = None with get, set
+        member val ProgressJob: Option<CharacterAction * WorldContext -> WorldContext> = None with get, set

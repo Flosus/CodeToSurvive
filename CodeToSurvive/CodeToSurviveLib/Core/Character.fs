@@ -2,6 +2,8 @@ namespace CodeToSurviveLib.Core
 
 open System
 open CodeToSurviveLib.Core.Item
+open CodeToSurviveLib.Core.Player.PlayerManager
+open CodeToSurviveLib.Core.World
 
 module Character =
 
@@ -13,13 +15,17 @@ module Character =
     type Character =
         { Id: Guid
           Name: string
-          PlayerStats: CharacterStats
-          Inventory: ItemEntity[] }
+          Player: Player
+          Location: ChunkId
+          mutable CharacterStats: CharacterStats
+          mutable Inventory: ItemEntity[] }
 
     let NewPlayerStats = { Hunger = 0; Thirst = 0; Fatigue = 0 }
 
-    let newCharacter name =
+    let internal newCharacter name player getSpawnChunk =
         { Id = Guid.NewGuid()
           Name = name
-          PlayerStats = NewPlayerStats
+          Player = player
+          CharacterStats = NewPlayerStats
+          Location = getSpawnChunk ()
           Inventory = [||] }

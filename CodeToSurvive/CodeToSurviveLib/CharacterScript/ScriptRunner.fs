@@ -4,7 +4,7 @@ open System
 open System.Threading
 open System.Threading.Tasks
 open CodeToSurviveLib.Core.GameState
-open CodeToSurviveLib.Core.Job
+open CodeToSurviveLib.Core.Action
 open CodeToSurviveLib.Script.ScriptInfo
 
 module ScriptRunner =
@@ -38,7 +38,7 @@ module ScriptRunner =
         let cancellationTime = TimeSpan.FromSeconds(scriptRunTime)
 
         let playerScripts =
-            ctx.State.Players
+            ctx.State.CharacterStates
             |> Array.map (fun pl ->
                 (let script = getScriptByPlayer pl
                  (pl, script)))
@@ -56,7 +56,7 @@ module ScriptRunner =
 
                  (playerState,
                   { Character = playerState.Character
-                    Job = job })))
+                    Action = job })))
 
         let playerStates = newStateData |> Array.map fst
         let PlayerJobStates = newStateData |> Array.map snd
@@ -64,5 +64,5 @@ module ScriptRunner =
         { ctx with
             State =
                 { ctx.State with
-                    Players = playerStates
-                    Tasks = PlayerJobStates } }
+                    CharacterStates = playerStates
+                    ActiveActions = PlayerJobStates } }

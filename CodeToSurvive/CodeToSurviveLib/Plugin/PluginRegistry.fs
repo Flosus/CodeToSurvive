@@ -20,8 +20,8 @@ module PluginRegistry =
         let _ = ResizeArray<Plugin>()
 
         plugins.ToArray()
-    
-    let registerPlugins (factory:ILoggerFactory) =
+
+    let registerPlugins (factory: ILoggerFactory) =
         pluginProviders |> Array.map (fun fnct -> fnct factory) |> plugins.AddRange
 
 
