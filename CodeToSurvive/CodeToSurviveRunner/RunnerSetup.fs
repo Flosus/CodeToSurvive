@@ -12,56 +12,52 @@ open Microsoft.Extensions.Logging
 module RunnerSetup =
 
     let getLoggerFactory () =
-        LoggerFactory.Create(fun builder ->
+        LoggerFactory.Create (fun builder ->
             builder
                 .AddFilter("Microsoft", LogLevel.Warning)
                 .AddFilter("System", LogLevel.Warning)
                 .AddFilter(fun (cat: string) (lvl: LogLevel) ->
-                    cat.StartsWith "CodeToSurvive" && lvl >= LogLevel.Debug)
+                    cat.StartsWith "CodeToSurvive"
+                    && lvl >= LogLevel.Debug)
                 .AddSimpleConsole(fun opt ->
                     opt.SingleLine <- true
                     opt.IncludeScopes <- true
                     opt.TimestampFormat <- "[yyyy-MM-dd HH:mm:ss]")
-                .AddDebug()
+            // .AddDebug()
             |> ignore)
 
     let setupContext (factory: ILoggerFactory) =
-        let defaultCtx = WorldContextUtil.createDefaultCtx factory
+        let defaultCtx =
+            WorldContextUtil.createDefaultCtx factory
 
-        let doJobProgress: PlayerTask * WorldState -> WorldState =
-            let log = defaultCtx.CreateLogger "doJobProgress"
+        let log = defaultCtx.CreateLogger "Runner"
 
-            fun (_, state) ->
+        let doJobProgress: PlayerTask * WorldContext -> WorldContext =
+            fun (_, ctx) ->
                 log.LogDebug "doJobProgress"
-                state
+                ctx
 
-        let runCharacterScripts: WorldState -> WorldState =
-            let log = defaultCtx.CreateLogger "runCharacterScripts"
-
-            fun state ->
+        let runCharacterScripts (ori: (WorldContext -> WorldContext)) : WorldContext -> WorldContext =
+            fun ctx ->
                 log.LogDebug "runCharacterScripts"
-                state
+                ori ctx
 
-        let preTickUpdate: WorldState -> WorldState =
-            let log = defaultCtx.CreateLogger "preTickUpdate"
-
-            fun state ->
+        let preTickUpdate (ori: (WorldContext -> WorldContext)) : WorldContext -> WorldContext =
+            fun ctx ->
                 log.LogDebug "preTickUpdate"
-                state
+                ori ctx
 
-        let postTickUpdate: WorldState -> WorldState =
-            let log = defaultCtx.CreateLogger "postTickUpdate"
-
-            fun state ->
+        let postTickUpdate (ori: (WorldContext -> WorldContext)) : WorldContext -> WorldContext =
+            fun ctx ->
                 log.LogDebug "postTickUpdate"
-                state
+                ori ctx
 
         let context: WorldContext =
             { defaultCtx with
                 ProgressJob = doJobProgress
-                RunCharacterScripts = runCharacterScripts
-                PreTickUpdate = preTickUpdate
-                PostTickUpdate = postTickUpdate }
+                RunCharacterScripts = runCharacterScripts defaultCtx.RunCharacterScripts
+                PreTickUpdate = preTickUpdate defaultCtx.PreTickUpdate
+                PostTickUpdate = postTickUpdate defaultCtx.PostTickUpdate }
 
         context
 
@@ -71,14 +67,13 @@ module RunnerSetup =
         DebugPlugin.register ()
 
     let getStateCallback (storage: StoragePreference) (logProvider: string -> ILogger) =
-        let log = logProvider "stateCallback"
+        let log = logProvider "Runner"
         let statisticsLogger = logProvider "Statistics"
 
         fun (subCtx: WorldContext) ->
-            Statistics.printReport statisticsLogger
-
             match subCtx.State.Timestamp.Second with
             | 0 ->
+                Statistics.printReport statisticsLogger
                 log.LogInformation "Creating backup"
                 StorageManagement.save storage subCtx.State
             | _ -> log.LogTrace "Skipping backup"

@@ -9,53 +9,44 @@ open Microsoft.FSharp.Collections
 
 module Tick =
 
-    let rec doWithStateUpdate
+    let rec private doWithContextUpdate
         (char: CharacterState[])
-        (state: WorldState)
-        (act: CharacterState * WorldState -> WorldState)
-        : WorldState =
+        (ctx: WorldContext)
+        (act: CharacterState * WorldContext -> WorldContext)
+        : WorldContext =
         match char.Length with
-        | 0 -> state
+        | 0 -> ctx
         | _ ->
             let currentPlayer = char[0]
-            let newState = act (currentPlayer, state)
+            let newState = act (currentPlayer, ctx)
             let remainingChars = char[1..]
-            doWithStateUpdate remainingChars newState act
+            doWithContextUpdate remainingChars newState act
 
-    let doJobProgress (character: CharacterState[]) (state: WorldState) (act: DoJobProgress) : WorldState =
-        let dJP (cha: CharacterState, state: WorldState) : WorldState =
+    let private doJobProgress (character: CharacterState[]) (ctx: WorldContext) (act) : WorldContext =
+        let dJP (cha: CharacterState, ctx: WorldContext) : WorldContext =
             let findPlayerTask = fun (cur: PlayerTask) -> cha.Character.Id = cur.Character.Id
-            let currentTask = state.Tasks |> Array.find findPlayerTask
-            act (currentTask, state)
+            let currentTask = ctx.State.Tasks |> Array.find findPlayerTask
+            act (currentTask, ctx)
 
-        doWithStateUpdate character state dJP
-
-    let getPlayersWithoutJob (state: WorldState) =
-        let filterPlayerHasNoJob (entry: CharacterState) =
-            state.Tasks
-            |> Array.filter (fun pt -> pt.Character = entry.Character && not pt.Job.IsCancelable)
-            |> Array.isEmpty
-
-        state.Players |> Array.filter filterPlayerHasNoJob
+        doWithContextUpdate character ctx dJP
 
     let tick (context: WorldContext) : WorldContext =
-        let log = context.CreateLogger("tick")
+        let log = context.CreateLogger "Tick"
         log.LogDebug "Tick begin"
 
-        let progressJobs (curState: WorldState) : WorldState =
-            doJobProgress curState.Players curState context.ProgressJob
+        let progressJobs (ctx: WorldContext) : WorldContext =
+            let curState = ctx.State
+            doJobProgress curState.Players ctx ctx.ProgressJob
 
-        let removeFinishedJobs (curState: WorldState) : WorldState =
-            { curState with
-                Tasks = curState.Tasks |> Array.filter isPlayerTaskOpen }
+        let removeFinishedJobs (ctx: WorldContext) : WorldContext =
+            ctx.State.Tasks <- ctx.State.Tasks |> Array.filter isPlayerTaskOpen
+            ctx
 
         let logStep msg localState =
             log.LogTrace msg
             localState
 
-        let updateContext (state: WorldState) : WorldContext = { context with State = state }
-
-        context.State
+        context
         // Pre tick work
         |> context.PreTickUpdate
         |> logStep "PreTickUpdate finished"
@@ -71,6 +62,7 @@ module Tick =
         // Post tick work
         |> context.PostTickUpdate
         |> logStep "PostTickUpdate finished"
-        |> (fun state -> { state with Timestamp = DateTime.Now })
+        |> (fun ctx ->
+                                         ctx.State.Timestamp <- DateTime.Now
+                                         ctx)
         |> logStep "Tick finished"
-        |> updateContext

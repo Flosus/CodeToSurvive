@@ -20,6 +20,10 @@ module PluginRegistry =
         let _ = ResizeArray<Plugin>()
 
         plugins.ToArray()
+    
+    let registerPlugins (factory:ILoggerFactory) =
+        pluginProviders |> Array.map (fun fnct -> fnct factory) |> plugins.AddRange
+
 
     /// Returns the currently loaded plugins sorted by dependencies
     let getPlugins () =

@@ -11,7 +11,8 @@ module Job =
         { ID: Guid
           Name: JobName
           Duration: int
-          CurrentProgress: int
+          mutable CurrentProgress: int
+          mutable IsFinished: bool
           IsCancelable: bool }
 
     let IdleJob =
@@ -19,6 +20,7 @@ module Job =
           Name = "Idle"
           Duration = 5
           CurrentProgress = 0
+          IsFinished = false
           IsCancelable = false }
 
     let IsJobFinished (job: Job) =
