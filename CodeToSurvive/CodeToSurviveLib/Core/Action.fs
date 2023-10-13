@@ -3,19 +3,19 @@ namespace CodeToSurviveLib.Core
 open System
 open CodeToSurviveLib.Core.Character
 
-module Job =
+module Action =
 
-    type JobName = string
+    type ActionName = string
 
-    type Job =
+    type Action =
         { ID: Guid
-          Name: JobName
+          Name: ActionName
           Duration: int
           mutable CurrentProgress: int
           mutable IsFinished: bool
           IsCancelable: bool }
 
-    let IdleJob =
+    let IdleAction =
         { ID = Guid.Empty
           Name = "Idle"
           Duration = 5
@@ -23,9 +23,9 @@ module Job =
           IsFinished = false
           IsCancelable = false }
 
-    let IsJobFinished (job: Job) =
-        TimeSpan.FromSeconds(job.Duration) - TimeSpan.FromSeconds(job.CurrentProgress)
+    let IsActionFinished (action: Action) =
+        TimeSpan.FromSeconds(action.Duration) - TimeSpan.FromSeconds(action.CurrentProgress)
         <= TimeSpan.Zero
 
-    type PlayerTask = { Character: Character; Job: Job }
-    let isPlayerTaskOpen = fun pJob -> IsJobFinished pJob.Job |> not
+    type CharacterAction = { Character: Character; Action: Action }
+    let isPlayerActionOpen = fun pAction -> IsActionFinished pAction.Action |> not

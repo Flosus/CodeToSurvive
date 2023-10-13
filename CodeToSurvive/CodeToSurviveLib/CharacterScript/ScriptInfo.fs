@@ -1,7 +1,7 @@
 namespace CodeToSurviveLib.Script
 
 open CodeToSurviveLib.Core.GameState
-open CodeToSurviveLib.Core.Job
+open CodeToSurviveLib.Core.Action
 
 module ScriptInfo =
 
@@ -14,4 +14,4 @@ module ScriptInfo =
 
     type RunPlayerScript = CharacterState * WorldContext -> Async<CharacterState * ScriptResult>
     type GetScriptByPlayer = CharacterState -> RunPlayerScript
-    type GetJob = ScriptResult -> Job
+    type GetJob = ScriptResult -> Action

@@ -14,16 +14,18 @@
     
     <ItemGroup>
         <Compile Include="Statistics.fs" />
+        <Compile Include="Core\Player\PlayerManager.fs" />
         <Compile Include="Core\Item.fs" />
         <Compile Include="Core\Entity.fs" />
         <Compile Include="Core\World.fs" />
         <Compile Include="Core\Character.fs" />
-        <Compile Include="Core\Job.fs" />
+        <Compile Include="Core\Action.fs" />
         <Compile Include="Core\GameState.fs" />
         <Compile Include="Core\Tick.fs" />
-        <Compile Include="PlayerScript\ScriptInfo.fs" />
-        <Compile Include="PlayerScript\ScriptRunner.fs" />
-        <Compile Include="PlayerScript\LuaPlayerScript.fs" />
+        <Compile Include="Core\Player\CharacterManager.fs" />
+        <Compile Include="CharacterScript\ScriptInfo.fs" />
+        <Compile Include="CharacterScript\ScriptRunner.fs" />
+        <Compile Include="CharacterScript\LuaCharacterScript.fs" />
         <Compile Include="GameLoop.fs" />
         <Compile Include="Storage\StoragePreference.fs" />
         <Compile Include="Storage\StorageManagement.fs" />

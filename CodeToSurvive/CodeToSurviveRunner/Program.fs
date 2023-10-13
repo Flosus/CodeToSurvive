@@ -21,4 +21,3 @@ GameLoop.gameLoop context stateCallback shouldStop skipTimer
 |> (fun res -> printfn $"Finished gameLoop with ${res}")
 
 printfn "Finished"
-

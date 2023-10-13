@@ -1,24 +1,23 @@
 namespace CodeToSurviveResource
 
-open CodeToSurviveLib.Core.GameState
 open CodeToSurviveLib.Core.Plugin
 open CodeToSurviveLib.Core.Plugin.PluginApi
+open CodeToSurviveResource.DebugPlugin
 open Microsoft.Extensions.Logging
 
 module DebugPlugin =
 
-    let pluginName = "DebugPlugin"
-
-    let getLog ctx = ctx.CreateLogger pluginName
-
-    let onStartup (ctx: WorldContext) : WorldContext =
-        let log = getLog ctx
-        log.LogInformation $"Setup ${pluginName}"
-        ctx
-
     type DebugPlugin() as self =
-        inherit Plugin(pluginName, [| BasePlugin.pluginName |])
-        do self.OnStartup <- Some(onStartup)
+        inherit Plugin(Constants.pluginName, [| BasePlugin.Constants.pluginName |])
+
+        do
+            self.OnStartup <- Some(OnStartup.onStartup)
+            self.PreTickUpdate <- Some(PreTickUpdate.preTickUpdate)
+            self.PostTickUpdate <- Some(PostTickUpdate.postTickUpdate)
+            // TODO implement the following
+            self.GenerateChunk <- None
+            self.GetSpawnChunk <- None
+            self.ProgressJob <- None
 
     let pluginFactory (_: ILoggerFactory) : Plugin =
         let plugin = DebugPlugin()

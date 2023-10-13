@@ -13,7 +13,15 @@
     </ItemGroup>
 
     <ItemGroup>
+        <Compile Include="BasePlugin\Constants.fs" />
+        <Compile Include="BasePlugin\PreTickUpdate.fs" />
+        <Compile Include="BasePlugin\PostTickUpdate.fs" />
+        <Compile Include="BasePlugin\OnStartup.fs" />
         <Compile Include="BasePlugin.fs" />
+        <Compile Include="DebugPlugin\Constants.fs" />
+        <Compile Include="DebugPlugin\OnStartup.fs" />
+        <Compile Include="DebugPlugin\PostTickUpdate.fs" />
+        <Compile Include="DebugPlugin\PreTickUpdate.fs" />
         <Compile Include="DebugPlugin.fs" />
     </ItemGroup>
 

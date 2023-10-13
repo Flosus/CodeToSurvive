@@ -2,7 +2,7 @@ namespace CodeToSurviveLib.Core
 
 open System
 open CodeToSurviveLib.Core.GameState
-open CodeToSurviveLib.Core.Job
+open CodeToSurviveLib.Core.Action
 open CodeToSurviveLib.Core.Character
 open Microsoft.Extensions.Logging
 open Microsoft.FSharp.Collections
@@ -24,8 +24,8 @@ module Tick =
 
     let private doJobProgress (character: CharacterState[]) (ctx: WorldContext) (act) : WorldContext =
         let dJP (cha: CharacterState, ctx: WorldContext) : WorldContext =
-            let findPlayerTask = fun (cur: PlayerTask) -> cha.Character.Id = cur.Character.Id
-            let currentTask = ctx.State.Tasks |> Array.find findPlayerTask
+            let findPlayerTask = fun (cur: CharacterAction) -> cha.Character.Id = cur.Character.Id
+            let currentTask = ctx.State.ActiveActions |> Array.find findPlayerTask
             act (currentTask, ctx)
 
         doWithContextUpdate character ctx dJP
@@ -36,10 +36,10 @@ module Tick =
 
         let progressJobs (ctx: WorldContext) : WorldContext =
             let curState = ctx.State
-            doJobProgress curState.Players ctx ctx.ProgressJob
+            doJobProgress curState.CharacterStates ctx ctx.ProgressAction
 
         let removeFinishedJobs (ctx: WorldContext) : WorldContext =
-            ctx.State.Tasks <- ctx.State.Tasks |> Array.filter isPlayerTaskOpen
+            ctx.State.ActiveActions <- ctx.State.ActiveActions |> Array.filter isPlayerActionOpen
             ctx
 
         let logStep msg localState =
@@ -63,6 +63,6 @@ module Tick =
         |> context.PostTickUpdate
         |> logStep "PostTickUpdate finished"
         |> (fun ctx ->
-                                         ctx.State.Timestamp <- DateTime.Now
-                                         ctx)
+            ctx.State.Timestamp <- DateTime.Now
+            ctx)
         |> logStep "Tick finished"
