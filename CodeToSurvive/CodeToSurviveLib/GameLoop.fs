@@ -51,9 +51,12 @@ module GameLoop =
 
     let gameLoop context provideCurrentState shouldStop skipTimer =
         let log = context.CreateLogger "GameLoop"
+        
 
         try
-            _gameLoop context provideCurrentState shouldStop skipTimer
+            context
+            |> context.OnStartup
+            |> (fun newCtx -> _gameLoop newCtx provideCurrentState shouldStop skipTimer)
         with e ->
             log.LogError $"Error while running gameLoop; {e}"
             Error e

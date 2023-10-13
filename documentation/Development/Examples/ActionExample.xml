@@ -1,10 +1,10 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<?xml-model href="../Schema/ActionSchema.xsd"?>
 <!--
     An action a character can do. This can be an interactive map element or
     an item in the players inventory.
 -->
-<Action>
+<Action xmlns="https://aheffner.de/Schema"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="https://aheffner.de/Schema https://aheffner.de/Schema/CodeToSurvive.xsd">
     <!-- The internal id of the action -->
     <ActionId>doingSomething</ActionId>
     <!-- The description of the action, visible to the player -->
@@ -17,6 +17,6 @@
     <CheckHandler>CanPlayerDoSomethingCheck</CheckHandler>
     <!-- Optional parameters for the handler -->
     <HandlerParameter>
-        <test>Abc</test>    
+        <test>Abc</test>
     </HandlerParameter>
 </Action>

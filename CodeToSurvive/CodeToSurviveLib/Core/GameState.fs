@@ -11,19 +11,16 @@ module GameState =
     type CharacterState = { Character: Character }
 
     type WorldState =
-        { Timestamp: DateTime
-          Players: CharacterState[]
-          Tasks: PlayerTask[]
+        { mutable Timestamp: DateTime
+          mutable Players: CharacterState[]
+          mutable Tasks: PlayerTask[]
           Map: WorldMap }
-
-    type DoJobProgress = PlayerTask * WorldState -> WorldState
-    type RunCharacterScripts = WorldState -> WorldState
-    type StateUpdate = WorldState -> WorldState
-
+      
     type WorldContext =
         { CreateLogger: string -> ILogger
-          ProgressJob: DoJobProgress
-          RunCharacterScripts: RunCharacterScripts
-          PreTickUpdate: StateUpdate
-          PostTickUpdate: StateUpdate
+          ProgressJob: PlayerTask * WorldContext -> WorldContext
+          OnStartup: WorldContext -> WorldContext
+          RunCharacterScripts: WorldContext -> WorldContext
+          PreTickUpdate: WorldContext -> WorldContext
+          PostTickUpdate: WorldContext -> WorldContext
           State: WorldState }

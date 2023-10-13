@@ -2,7 +2,7 @@
 
 <Item xmlns="https://aheffner.de/Schema"
       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-      xsi:schemaLocation="https://aheffner.de/Schema https://aheffner.de/Schema/ItemSchema.xsd">
+      xsi:schemaLocation="https://aheffner.de/Schema https://aheffner.de/Schema/CodeToSurvive.xsd">
     <ItemId>adminStone</ItemId>
     <Name>Admin Stone</Name>
     <Description>The one and only magical admin Stone</Description>

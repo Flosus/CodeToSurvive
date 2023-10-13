@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Item xmlns="https://aheffner.de/Schema"
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    xsi:schemaLocation="https://aheffner.de/Schema https://aheffner.de/Schema/ItemSchema.xsd">
+    xsi:schemaLocation="https://aheffner.de/Schema https://aheffner.de/Schema/CodeToSurvive.xsd">
     <!-- The internal id of the item -->
     <ItemId>ironSword</ItemId>
     <!-- The name of the item, visible to the player -->

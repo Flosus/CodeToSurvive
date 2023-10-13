@@ -4,6 +4,7 @@ open CodeToSurviveLib.Core.GameState
 open CodeToSurviveLib.Core.World
 
 module PluginApi =
+    open CodeToSurviveLib.Core.Job
 
     //___________________________
     // Plugin-Definition
@@ -18,15 +19,13 @@ module PluginApi =
     /// <param name="ctx">The world state.</param>
     /// <param name="chunk">The source chunk, from which the chunk is reachable.</param>
     /// <param name="chunkId">The expected id of the new chunk</param>
+    /// <param name="chunk option">The already generated chunk by an other plugin.</param>
     /// <returns>Some chunk if the plugin was able to generate the chunk</returns>
-    type GenerateChunk = WorldState -> Chunk -> ChunkId -> Chunk option
+    type GenerateChunk = WorldState * Chunk * ChunkId * Chunk option -> Chunk option
 
     /// Returns the SpawnChunk.
     /// The last plugin that provides a SpawnChunk will get used.
-    type GetSpawnChunk = WorldState -> Chunk
-
-    type BeforeSave = WorldContext -> WorldContext
-    type AfterSave = WorldContext -> WorldContext
+    type GetSpawnChunk = CharacterState * WorldState * Chunk option -> Chunk option
 
     /// Represents a plugin
     type Plugin(pluginId: PluginId, dependencies) =
@@ -37,5 +36,9 @@ module PluginApi =
         member val OnStartup: Option<OnStartup> = None with get, set
         member val GenerateChunk: Option<GenerateChunk> = None with get, set
         member val GetSpawnChunk: Option<GetSpawnChunk> = None with get, set
-        member val BeforeSave: Option<BeforeSave> = None with get, set
-        member val AfterSave: Option<AfterSave> = None with get, set
+        member val BeforeSave: Option<WorldContext -> unit> = None with get, set
+        member val AfterSave: Option<WorldContext -> unit> = None with get, set
+        member val PreTickUpdate: Option<WorldContext -> WorldContext> = None with get, set
+        member val PostTickUpdate: Option<WorldContext -> WorldContext> = None with get, set
+        member val RunCharacterScripts: Option<WorldContext -> WorldContext> = None with get, set
+        member val ProgressJob: Option<PlayerTask * WorldContext -> WorldContext> = None with get, set
