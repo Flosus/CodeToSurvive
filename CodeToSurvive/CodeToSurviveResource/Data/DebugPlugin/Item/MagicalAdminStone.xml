@@ -13,8 +13,8 @@
         <Action>
             <ActionId>lick</ActionId>
             <Description>You lick the stone and taste the stone</Description>
-            <JobName>lickAdminStone</JobName>
-            <JobHandler>Debug_lickAdminStone</JobHandler>
+            <ActionName>lickAdminStone</ActionName>
+            <ActionHandler>Debug_lickAdminStone</ActionHandler>
         </Action>
     </Actions>
 </Item>

@@ -18,14 +18,14 @@
                     <xs:documentation> The description of the action, visible to the player </xs:documentation>
                 </xs:annotation>
             </xs:element>
-            <xs:element type="xs:string" name="JobName">
+            <xs:element type="xs:string" name="ActionName">
                 <xs:annotation>
-                    <xs:documentation> The name of the job, done by the player </xs:documentation>
+                    <xs:documentation> The name of the action, done by the character </xs:documentation>
                 </xs:annotation>
             </xs:element>
-            <xs:element type="xs:string" name="JobHandler" minOccurs="0">
+            <xs:element type="xs:string" name="ActionHandler" minOccurs="0">
                 <xs:annotation>
-                    <xs:documentation> The function name for overwriting the default job handler </xs:documentation>
+                    <xs:documentation> The function name for overwriting the default action handler </xs:documentation>
                 </xs:annotation>
             </xs:element>
             <xs:element type="xs:string" name="CheckHandler" minOccurs="0">

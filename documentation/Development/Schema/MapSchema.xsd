@@ -108,23 +108,6 @@
                                     <xs:documentation> Called when a character stays on a map. </xs:documentation>
                                 </xs:annotation>
                             </xs:element>
-                            <xs:element type="xs:string" name="OnMapSave" minOccurs="0">
-                                <xs:annotation>
-                                    <xs:documentation> Called when saving the map </xs:documentation>
-                                </xs:annotation>
-                            </xs:element>
-                            <xs:element type="xs:string" name="OnMapLoad" minOccurs="0">
-                                <xs:annotation>
-                                    <xs:documentation> Called when loading the map or generating a
-                                        new instance </xs:documentation>
-                                </xs:annotation>
-                            </xs:element>
-                            <xs:element type="xs:string" name="OnMapUnload" minOccurs="0">
-                                <xs:annotation>
-                                    <xs:documentation> Called when unloading/destroying a map
-                                        instance </xs:documentation>
-                                </xs:annotation>
-                            </xs:element>
                         </xs:sequence>
                     </xs:complexType>
                 </xs:element>

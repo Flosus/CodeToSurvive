@@ -45,12 +45,6 @@
         <OnMapExit>ExampleMap_OnMapExit</OnMapExit>
         <!-- Called when a character stays on a map. -->
         <OnMapStay>ExampleMap_OnMapStay</OnMapStay>
-        <!-- Called when saving the map -->
-        <OnMapSave>ExampleMap_OnMapSave</OnMapSave>
-        <!-- Called when loading the map or generating a new instance -->
-        <OnMapLoad>ExampleMap_OnMapLoad</OnMapLoad>
-        <!-- Called when unloading/destroying a map instance -->
-        <OnMapUnload>ExampleMap_OnMapUnload</OnMapUnload>
     </Trigger>
     <!-- Points of interest are things visible to the player. -->
     <POIs>
@@ -67,10 +61,10 @@
                     <ActionId>pullingTheLever</ActionId>
                     <!-- The description of the action, visible to the player -->
                     <Description>A lever near the gate. You could pull it and the gate might.</Description>
-                    <!-- The name of the job, done by the player -->
-                    <JobName>PullLever</JobName>
-                    <!-- The function name for overwriting the default job handler -->
-                    <JobHandler>ExampleMap_PullLever</JobHandler>
+                    <!-- The name of the action, done by the player -->
+                    <ActionName>PullLever</ActionName>
+                    <!-- The function name for overwriting the default action handler -->
+                    <ActionHandler>ExampleMap_PullLever</ActionHandler>
                     <!-- Optional parameters for the handler -->
                     <HandlerParameter>
                         <!-- Add custome parameters here. -->

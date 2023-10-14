@@ -27,7 +27,7 @@ module LuaCharacterScript =
                 lua.DoString("import = function () end") |> ignore
                 let scriptResult = lua.DoString(luaScript)
                 // TODO update characterState
-                // TODO parse script result for job
+                // TODO parse script result for action
                 let result = (characterState, ScriptResult.Continue)
                 return result
             }

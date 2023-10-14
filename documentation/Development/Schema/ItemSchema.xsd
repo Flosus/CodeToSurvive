@@ -89,23 +89,6 @@
                                     <xs:documentation> Called when the item is unequiped </xs:documentation>
                                 </xs:annotation>
                             </xs:element>
-                            <xs:element type="xs:string" name="OnLoad" minOccurs="0">
-                                <xs:annotation>
-                                    <xs:documentation> Called when loading the item is generated or
-                                        loaded </xs:documentation>
-                                </xs:annotation>
-                            </xs:element>
-                            <xs:element type="xs:string" name="OnUnload" minOccurs="0">
-                                <xs:annotation>
-                                    <xs:documentation> Called when unloading/destroying an item
-                                        instance </xs:documentation>
-                                </xs:annotation>
-                            </xs:element>
-                            <xs:element type="xs:string" name="OnSave" minOccurs="0">
-                                <xs:annotation>
-                                    <xs:documentation> Called when the item instance is saved </xs:documentation>
-                                </xs:annotation>
-                            </xs:element>
                         </xs:sequence>
                     </xs:complexType>
                 </xs:element>

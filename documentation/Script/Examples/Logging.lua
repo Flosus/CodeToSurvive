@@ -7,4 +7,4 @@ say("You and others in the map can read this")
 yell("You, other in the current map and the next adjacent map can read this message")
 whisper("NameOfTheOtherOne", "You and the other character can read this")
 
-return getIdleJob()
+return getIdleAction()

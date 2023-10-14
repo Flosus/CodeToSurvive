@@ -17,9 +17,9 @@ module WorldLoader =
           [<XmlElement>]
           Description: string
           [<XmlElement>]
-          JobName: string
+          ActionName: string
           [<XmlElement>]
-          JobHandler: string
+          ActionHandler: string
           [<XmlElement>]
           CheckHandler: string
           [<XmlAnyElement>]
@@ -35,13 +35,7 @@ module WorldLoader =
           [<XmlElement>]
           OnEquip: string
           [<XmlElement>]
-          OnUnequip: string
-          [<XmlElement>]
-          OnLoad: string
-          [<XmlElement>]
-          OnUnload: string
-          [<XmlElement>]
-          OnSave: string }
+          OnUnequip: string }
 
     [<CLIMutable>]
     [<XmlRoot("EquipmentInfo")>]
@@ -96,13 +90,7 @@ module WorldLoader =
           [<XmlElement>]
           OnMapExit: string
           [<XmlElement>]
-          OnMapStay: string
-          [<XmlElement>]
-          OnMapSave: string
-          [<XmlElement>]
-          OnMapLoad: string
-          [<XmlElement>]
-          OnMapUnload: string }
+          OnMapStay: string }
 
     [<CLIMutable>]
     [<XmlRoot("POI")>]
@@ -147,7 +135,7 @@ module WorldLoader =
         let deserializedObj = deserializer.Deserialize(xmlReader)
         deserializedObj
 
-    let private load (pluginId: PluginId) (folder:string) =
+    let private load (pluginId: PluginId) (folder: string) =
         let readFile path = File.ReadAllText(path, Encoding.UTF8)
 
         Directory.EnumerateFiles($"./Data/{pluginId}/{folder}", "*.xml", SearchOption.AllDirectories)
