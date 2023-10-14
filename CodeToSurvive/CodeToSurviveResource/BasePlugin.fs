@@ -18,7 +18,7 @@ module BasePlugin =
             // TODO implement the following
             self.GenerateChunk <- Some(ChunkGeneration.generateChunk)
             self.GetSpawnChunk <- Some(ChunkGeneration.getSpawnChunk)
-            self.ProgressJob <- None
+            self.ProgressAction <- None
 
     let pluginFactory (_: ILoggerFactory) : Plugin =
         let plugin = BasePlugin()

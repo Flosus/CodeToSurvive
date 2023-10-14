@@ -32,7 +32,7 @@ module ScriptRunner =
     let RunScripts
         (ctx: WorldContext)
         (getScriptByPlayer: GetScriptByPlayer)
-        (getActionByName: GetJob)
+        (getActionByName: GetAction)
         (scriptRunTime: int)
         : WorldContext =
         let cancellationTime = TimeSpan.FromSeconds(scriptRunTime)
@@ -59,10 +59,10 @@ module ScriptRunner =
                     Action = action })))
 
         let playerStates = newStateData |> Array.map fst
-        let PlayerJobStates = newStateData |> Array.map snd
+        let PlayerActionStates = newStateData |> Array.map snd
 
         { ctx with
             State =
                 { ctx.State with
                     CharacterStates = playerStates
-                    ActiveActions = PlayerJobStates } }
+                    ActiveActions = PlayerActionStates } }

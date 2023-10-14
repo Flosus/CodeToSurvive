@@ -73,8 +73,8 @@
                 <Action>
                     <ActionId>lickingTheLever</ActionId>
                     <Description>You could lick the lever. Why would you do this?</Description>
-                    <JobName>LickLever</JobName>
-                    <JobHandler>ExampleMap_LickLever</JobHandler>
+                    <ActionName>LickLever</ActionName>
+                    <ActionHandler>ExampleMap_LickLever</ActionHandler>
                 </Action>
             </Actions>
         </POI>

@@ -43,4 +43,4 @@ module PluginApi =
         member val PreTickUpdate: Option<WorldContext -> WorldContext> = None with get, set
         member val PostTickUpdate: Option<WorldContext -> WorldContext> = None with get, set
         member val RunCharacterScripts: Option<WorldContext -> WorldContext> = None with get, set
-        member val ProgressJob: Option<CharacterAction * WorldContext -> WorldContext> = None with get, set
+        member val ProgressAction: Option<CharacterAction * WorldContext -> WorldContext> = None with get, set

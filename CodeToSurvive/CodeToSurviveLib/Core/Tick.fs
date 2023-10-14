@@ -22,7 +22,7 @@ module Tick =
             let remainingChars = char[1..]
             doWithContextUpdate remainingChars newState act
 
-    let private doJobProgress (characters: CharacterState[]) (ctx: WorldContext) act : WorldContext =
+    let private doActionProgress (characters: CharacterState[]) (ctx: WorldContext) act : WorldContext =
         let dJP (cha: CharacterState, ctx: WorldContext) : WorldContext =
             let findPlayerTask =
                 fun (cur: CharacterAction) -> cha.Character.Id = cur.Character.Id
@@ -39,11 +39,11 @@ module Tick =
         let log = context.CreateLogger "Tick"
         log.LogDebug "Tick begin"
 
-        let progressJobs (ctx: WorldContext) : WorldContext =
+        let progressActions (ctx: WorldContext) : WorldContext =
             let curState = ctx.State
-            doJobProgress curState.CharacterStates ctx ctx.ProgressAction
+            doActionProgress curState.CharacterStates ctx ctx.ProgressAction
 
-        let removeFinishedJobs (ctx: WorldContext) : WorldContext =
+        let removeFinishedActions (ctx: WorldContext) : WorldContext =
             ctx.State.ActiveActions <- ctx.State.ActiveActions |> Array.filter isPlayerActionOpen
             ctx
 
@@ -58,12 +58,12 @@ module Tick =
         // Run player scripts on what to do
         |> context.RunCharacterScripts
         |> logStep "RunCharacterScripts finished"
-        // Execute the Jobs the player want to do
-        |> progressJobs
-        |> logStep "progressJobs finished"
+        // Execute the Actions the player want to do
+        |> progressActions
+        |> logStep "progressActions finished"
         // Find not finished tasks
-        |> removeFinishedJobs
-        |> logStep "removeFinishedJobs finished"
+        |> removeFinishedActions
+        |> logStep "removeFinishedActions finished"
         // Post tick work
         |> context.PostTickUpdate
         |> logStep "PostTickUpdate finished"
