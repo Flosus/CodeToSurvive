@@ -10,8 +10,8 @@ module World =
     type Action =
         { ActionId: string
           Description: string
-          JobName: string
-          JobHandler: string
+          ActionName: string
+          ActionHandler: string
           CheckHandler: string
           HandlerParameter: Dictionary<string, obj> }
 

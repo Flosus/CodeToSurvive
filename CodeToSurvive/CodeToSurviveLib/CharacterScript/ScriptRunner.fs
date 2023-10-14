@@ -32,7 +32,7 @@ module ScriptRunner =
     let RunScripts
         (ctx: WorldContext)
         (getScriptByPlayer: GetScriptByPlayer)
-        (getJobByName: GetJob)
+        (getActionByName: GetJob)
         (scriptRunTime: int)
         : WorldContext =
         let cancellationTime = TimeSpan.FromSeconds(scriptRunTime)
@@ -52,11 +52,11 @@ module ScriptRunner =
         let newStateData =
             results
             |> Array.map (fun (playerState, scriptResult) ->
-                (let job = getJobByName scriptResult
+                (let action = getActionByName scriptResult
 
                  (playerState,
                   { Character = playerState.Character
-                    Action = job })))
+                    Action = action })))
 
         let playerStates = newStateData |> Array.map fst
         let PlayerJobStates = newStateData |> Array.map snd

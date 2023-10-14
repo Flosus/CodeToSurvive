@@ -17,7 +17,7 @@ module ChunkGeneration =
         let newChunk = Chunk(spawnMapId, pluginName, spawnMapId, silentGladeDefinition.Description)
         Some(newChunk)
 
-    let generateChunk (ctx: WorldContext) (chunkId: ChunkId) : Chunk option =
+    let generateChunk (ctx: WorldContext) (char:CharacterState) (chunkId: ChunkId) : Chunk option =
         let log = ctx.CreateLogger $"{pluginName}.ChunkGeneration"
         log.LogInformation $"generateChunk called"
         

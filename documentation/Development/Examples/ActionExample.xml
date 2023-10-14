@@ -9,10 +9,10 @@
     <ActionId>doingSomething</ActionId>
     <!-- The description of the action, visible to the player -->
     <Description>This is an action you can do.</Description>
-    <!-- The name of the job, done by the player -->
-    <JobName>PullLever</JobName>
-    <!-- The function name for overwriting the default job handler -->
-    <JobHandler>DoSomethingHandler</JobHandler>
+    <!-- The name of the action, done by the player -->
+    <ActionName>PullLever</ActionName>
+    <!-- The function name for overwriting the default action handler -->
+    <ActionHandler>DoSomethingHandler</ActionHandler>
     <!-- The function name for checking if a character is even able to do this action -->
     <CheckHandler>CanPlayerDoSomethingCheck</CheckHandler>
     <!-- Optional parameters for the handler -->

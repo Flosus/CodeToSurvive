@@ -6,7 +6,7 @@ open CodeToSurviveLib.Core.Action
 module ScriptInfo =
 
     type ScriptResult =
-        // TODO fix job parameter
+        // TODO fix action parameter
         | Job of (string * string option)
         | Continue
         | Error

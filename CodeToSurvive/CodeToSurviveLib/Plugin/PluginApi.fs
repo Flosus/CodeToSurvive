@@ -21,7 +21,7 @@ module PluginApi =
     /// <param name="ctx">The world state.</param>
     /// <param name="chunkId">The expected id of the new chunk</param>
     /// <returns>Some chunk if the plugin was able to generate the chunk</returns>
-    type GenerateChunk = WorldContext -> ChunkId -> Chunk option
+    type GenerateChunk = WorldContext -> CharacterState -> ChunkId -> Chunk option
 
     /// Returns the SpawnChunk.
     /// The first plugin that provides a SpawnChunk will get used, but the list of plugin is reversed!
