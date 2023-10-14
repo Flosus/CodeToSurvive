@@ -50,7 +50,7 @@ module WorldLoader =
           Slot: string }
 
     [<CLIMutable>]
-    [<XmlRoot("Item")>]
+    [<XmlRoot(ElementName = "Item", Namespace = "https://aheffner.de/Schema")>]
     type ItemDefinition =
         { [<XmlElement>]
           ItemId: string

@@ -34,7 +34,7 @@ module WorldUtil =
         | None -> ctx.State.Map.Chunks.Add chunk
 
 
-    let getChunk (chunkId: ChunkId) (ctx: WorldContext) =
+    let getChunk (chunkId: ChunkId) (ctx: WorldContext) (char: CharacterState) =
         let log = ctx.CreateLogger "WorldUtil"
 
         let chunkInMapOpt =
@@ -48,7 +48,7 @@ module WorldUtil =
                 |> Array.filter (fun plugin -> plugin.GenerateChunk.IsSome)
                 |> Array.map (fun plugin -> plugin.GenerateChunk.Value)
                 |> Array.rev
-                |> tryFindFirstOption (fun genChunk -> genChunk ctx chunkId)
+                |> tryFindFirstOption (fun genChunk -> genChunk ctx char chunkId)
 
             match generatedChunk with
             | None ->
@@ -84,7 +84,8 @@ module WorldUtil =
         let spawnChunkOpt =
             match spawnChunk with
             | Some spawnChunkId ->
-                let foundSpawnChunk = getChunk spawnChunkId ctx
+                let foundSpawnChunk =
+                    ctx.State.Map.Chunks |> Seq.tryFind (fun (cnk: Chunk) -> cnk.Id = spawnChunkId)
 
                 match foundSpawnChunk with
                 | Some _ -> foundSpawnChunk
@@ -97,9 +98,9 @@ module WorldUtil =
 
 
 
-    let getChunkOrDefault (chunkId: ChunkId) (ctx: WorldContext) =
+    let getChunkOrDefault (chunkId: ChunkId) (ctx: WorldContext) (char: CharacterState) =
         let log = ctx.CreateLogger "WorldUtil"
-        let chunkOpt = getChunk chunkId ctx
+        let chunkOpt = getChunk chunkId ctx char
 
         match chunkOpt with
         | Some foundChunk -> foundChunk
