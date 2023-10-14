@@ -9,7 +9,10 @@ module PostTickUpdate =
 
     let postTickUpdate (ctx: WorldContext) : WorldContext =
         let log = ctx.CreateLogger $"{pluginName}.PostTickUpdate"
-        log.LogTrace $"Did something"
+        log.LogTrace "Did something"
         let logEntry = (LogType.System, "BasePlugin", DateTime.Now, "A message")
-        ctx.State.CharacterStates |> Array.iter (fun char -> char.HandleLogEntry logEntry)
+
+        ctx.State.CharacterStates
+        |> Array.iter (fun char -> char.HandleLogEntry logEntry)
+
         ctx

@@ -8,5 +8,5 @@ module PostTickUpdate =
 
     let postTickUpdate (ctx: WorldContext) : WorldContext =
         let log = ctx.CreateLogger $"{pluginName}.PostTickUpdate"
-        log.LogTrace $"Did something"
+        log.LogTrace "Did something"
         ctx

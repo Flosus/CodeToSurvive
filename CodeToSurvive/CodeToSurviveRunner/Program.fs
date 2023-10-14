@@ -26,7 +26,9 @@ printfn "Run"
 
 Task.Run(fun () ->
     gameLoop context stateCallback shouldStop skipTimer
-    |> (fun res -> printfn $"Finished gameLoop with {res}"))
+    |> (fun res ->
+        printfn $"Finished gameLoop with {res}"
+        finalState = Some(res)))
 |> ignore
 
 
@@ -41,12 +43,9 @@ let rec cliHandler () =
     match input with
     | "exit" ->
         shouldStopState <- true
-        printfn "Waiting for exit"
-
-        while finalState.IsNone do
-            Thread.Sleep(200)
-
-        printfn $"Finished with {finalState.Value}"
     | _ -> cliHandler ()
 
 cliHandler ()
+printfn "Waiting for exit"
+Thread.Sleep(6000)
+printfn $"Finished with {finalState.Value}"

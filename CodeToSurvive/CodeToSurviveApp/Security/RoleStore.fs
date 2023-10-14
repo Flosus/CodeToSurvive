@@ -5,17 +5,17 @@ open Microsoft.AspNetCore.Identity
 
 type RoleStore() =
     interface IRoleStore<IdentityRole> with
-        member this.CreateAsync(role, cancellationToken) = Task.FromResult(IdentityResult.Success)
-        member this.DeleteAsync(role, cancellationToken) = Task.FromResult(IdentityResult.Success)
+        member this.CreateAsync(_, _) = Task.FromResult(IdentityResult.Success)
+        member this.DeleteAsync(_, _) = Task.FromResult(IdentityResult.Success)
         member this.Dispose() = ()
-        member this.FindByIdAsync(roleId, cancellationToken) = Task.FromResult(IdentityRole())
-        member this.FindByNameAsync(normalizedRoleName, cancellationToken) = Task.FromResult(IdentityRole())
-        member this.GetNormalizedRoleNameAsync(role, cancellationToken) = Task.FromResult("")
-        member this.GetRoleIdAsync(role, cancellationToken) = Task.FromResult("")
-        member this.GetRoleNameAsync(role, cancellationToken) = Task.FromResult("")
+        member this.FindByIdAsync(_, _) = Task.FromResult(IdentityRole())
+        member this.FindByNameAsync(_, _) = Task.FromResult(IdentityRole())
+        member this.GetNormalizedRoleNameAsync(_, _) = Task.FromResult("")
+        member this.GetRoleIdAsync(_, _) = Task.FromResult("")
+        member this.GetRoleNameAsync(_, _) = Task.FromResult("")
 
-        member this.SetNormalizedRoleNameAsync(role, normalizedName, cancellationToken) =
+        member this.SetNormalizedRoleNameAsync(_, _, _) =
             Task.FromResult(IdentityRole())
 
-        member this.SetRoleNameAsync(role, roleName, cancellationToken) = Task.FromResult(IdentityRole())
-        member this.UpdateAsync(role, cancellationToken) = Task.FromResult(IdentityResult.Success)
+        member this.SetRoleNameAsync(_, _, _) = Task.FromResult(IdentityRole())
+        member this.UpdateAsync(_, _) = Task.FromResult(IdentityResult.Success)

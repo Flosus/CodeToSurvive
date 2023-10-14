@@ -22,7 +22,7 @@ module PluginRegistry =
         plugins.ToArray()
 
     let registerPlugins (factory: ILoggerFactory) =
-        pluginProviders |> Array.map (fun fnct -> fnct factory) |> plugins.AddRange
+        pluginProviders |> Array.map (fun func -> func factory) |> plugins.AddRange
 
 
     /// Returns the currently loaded plugins sorted by dependencies
