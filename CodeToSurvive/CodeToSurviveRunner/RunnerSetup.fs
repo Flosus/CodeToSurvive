@@ -13,6 +13,10 @@ open Microsoft.Extensions.Logging
 
 module RunnerSetup =
 
+    let storagePath = "./"
+
+    let storage = StoragePreference(storagePath)
+
     let getLoggerFactory () =
         LoggerFactory.Create(fun builder ->
             builder
@@ -27,7 +31,7 @@ module RunnerSetup =
             |> ignore)
 
     let setupContext (factory: ILoggerFactory) =
-        let defaultCtx = WorldContextDefaults.createDefaultCtx factory
+        let defaultCtx = WorldContextDefaults.createDefaultCtx factory (fun () -> storage)
 
         let log = defaultCtx.CreateLogger "Runner"
 

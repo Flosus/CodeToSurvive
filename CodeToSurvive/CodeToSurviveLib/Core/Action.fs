@@ -1,18 +1,27 @@
 namespace CodeToSurviveLib.Core
 
 open System
-open CodeToSurviveLib.Core.Character
+open System.Runtime.Serialization
 
 module Action =
 
     type ActionName = string
 
+    type CharacterId = Guid
+
+    [<DataContract>]
     type Action =
-        { ID: Guid
+        { [<DataMember>]
+          ID: CharacterId
+          [<DataMember>]
           Name: ActionName
+          [<DataMember>]
           Duration: int
+          [<DataMember>]
           mutable CurrentProgress: int
+          [<DataMember>]
           mutable IsFinished: bool
+          [<DataMember>]
           IsCancelable: bool }
 
     let IdleAction =
@@ -28,7 +37,11 @@ module Action =
         - TimeSpan.FromSeconds(action.CurrentProgress)
         <= TimeSpan.Zero
 
+    [<DataContract>]
     type CharacterAction =
-        { Character: Character; Action: Action }
+        { [<DataMember>]
+          CharacterId: CharacterId
+          [<DataMember>]
+          Action: Action }
 
     let isPlayerActionOpen = fun pAction -> IsActionFinished pAction.Action |> not

@@ -14,6 +14,7 @@
     
     <ItemGroup>
         <Compile Include="Statistics.fs" />
+        <Compile Include="Storage\StoragePreference.fs" />
         <Compile Include="Core\Player\PlayerManager.fs" />
         <Compile Include="Core\Item.fs" />
         <Compile Include="Core\Entity.fs" />
@@ -26,7 +27,6 @@
         <Compile Include="CharacterScript\ScriptRunner.fs" />
         <Compile Include="CharacterScript\LuaCharacterScript.fs" />
         <Compile Include="GameLoop.fs" />
-        <Compile Include="Storage\StoragePreference.fs" />
         <Compile Include="Storage\StorageManagement.fs" />
         <Compile Include="Plugin\PluginApi.fs" />
         <Compile Include="Plugin\PluginRegistry.fs" />

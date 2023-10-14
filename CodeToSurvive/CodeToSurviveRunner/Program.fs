@@ -1,11 +1,9 @@
 ﻿open System
 open System.Threading
 open System.Threading.Tasks
-open CodeToSurviveLib
 open CodeToSurviveLib.Core.GameState
 open CodeToSurviveLib.Core.Player
 open CodeToSurviveLib.GameLoop
-open CodeToSurviveLib.Storage.StoragePreference
 open CodeToSurviveRunner
 
 
@@ -15,12 +13,13 @@ let mutable shouldStopState = false
 let mutable finalState: RunResult option = None
 let shouldStop () = shouldStopState
 let skipTimer = false
-let storagePath = "./"
 let playerName = "admin"
 let characterName = "AdminCharacter"
-let storage = StoragePreference(storagePath)
 let context = RunnerSetup.getLoggerFactory () |> RunnerSetup.setupContext
-let stateCallback = RunnerSetup.getStateCallback storage context.CreateLogger
+
+let stateCallback =
+    RunnerSetup.getStateCallback RunnerSetup.storage context.CreateLogger
+
 RunnerSetup.setupPlugins ()
 
 printfn "Run"

@@ -55,7 +55,7 @@ module ScriptRunner =
                 (let action = getActionByName scriptResult
 
                  (playerState,
-                  { Character = playerState.Character
+                  { CharacterId = playerState.Character.Id
                     Action = action })))
 
         let playerStates = newStateData |> Array.map fst
