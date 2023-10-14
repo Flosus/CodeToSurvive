@@ -8,10 +8,10 @@ open NLua
 
 module LuaCharacterScript =
 
-    let getLuaPluginFiles () : string[] =
+    let getLuaPluginFiles subPath : string[] =
         let readFile path = File.ReadAllText(path, Encoding.UTF8)
 
-        Directory.EnumerateFiles("./Data", "*.lua", SearchOption.AllDirectories)
+        Directory.EnumerateFiles(subPath, "*.lua", SearchOption.AllDirectories)
         |> Seq.map readFile
         |> Seq.toArray
 
@@ -21,7 +21,7 @@ module LuaCharacterScript =
             async {
                 use lua = new Lua()
                 // TODO setup context
-                getLuaPluginFiles ()
+                getLuaPluginFiles "./Data"
                 |> Array.iter (fun libLua -> lua.DoString(libLua) |> ignore)
                 // Disable import in scripts
                 lua.DoString("import = function () end") |> ignore

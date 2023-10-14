@@ -1,23 +1,37 @@
 namespace CodeToSurviveLib.Core
 
 open System
+open System.Runtime.Serialization
 open CodeToSurviveLib.Core.Item
 open CodeToSurviveLib.Core.Player.PlayerManager
 open CodeToSurviveLib.Core.World
 
 module Character =
 
+    type CharacterId = Guid
+
+    [<DataContract>]
     type CharacterStats =
-        { Hunger: int
+        { [<DataMember>]
+          Hunger: int
+          [<DataMember>]
           Thirst: int
+          [<DataMember>]
           Fatigue: int }
 
+    [<DataContract>]
     type Character =
-        { Id: Guid
+        { [<DataMember>]
+          Id: CharacterId
+          [<DataMember>]
           Name: string
+          [<DataMember>]
           Player: Player
+          [<DataMember>]
           Location: ChunkId
+          [<DataMember>]
           mutable CharacterStats: CharacterStats
+          [<DataMember>]
           mutable Inventory: ItemEntity[] }
 
     let NewPlayerStats = { Hunger = 0; Thirst = 0; Fatigue = 0 }

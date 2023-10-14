@@ -17,7 +17,7 @@ module DebugPlugin =
             // TODO implement the following
             self.GenerateChunk <- None
             self.GetSpawnChunk <- None
-            self.ProgressJob <- None
+            self.ProgressAction <- None
 
     let pluginFactory (_: ILoggerFactory) : Plugin =
         let plugin = DebugPlugin()

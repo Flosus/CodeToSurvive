@@ -1,20 +1,27 @@
 namespace CodeToSurviveLib.Util
 
 open System
+open CodeToSurviveLib.Core
 open CodeToSurviveLib.Core.GameState
 open CodeToSurviveLib.Core.World
+open CodeToSurviveLib.PlayerScript
+open CodeToSurviveLib.Script
+open CodeToSurviveLib.Script.ScriptInfo
+open CodeToSurviveLib.Storage.StoragePreference
 open Microsoft.Extensions.Logging
 
 module WorldContextDefaults =
     open CodeToSurviveLib.Core.Plugin
 
-    let rec private stateUpdate ctx (fncs: (WorldContext -> WorldContext)[]) : WorldContext =
-        match fncs.Length with
+    let scriptRunTime = 2000
+
+    let rec private stateUpdate ctx (func: (WorldContext -> WorldContext)[]) : WorldContext =
+        match func.Length with
         | 0 -> ctx
         | _ ->
-            let headFunc = fncs[0]
+            let headFunc = func[0]
             let newCtx = headFunc ctx
-            stateUpdate newCtx fncs[1..]
+            stateUpdate newCtx func[1..]
 
     let private finPluginsWithAction
         (ctx: WorldContext)
@@ -24,25 +31,32 @@ module WorldContextDefaults =
 
         let newCtx =
             plugins
-            |> Array.map (funcMapper)
+            |> Array.map funcMapper
             |> Array.filter (fun funcOpt -> funcOpt.IsSome)
-            |> Array.map (fun (funcOpt) -> funcOpt.Value)
+            |> Array.map (fun funcOpt -> funcOpt.Value)
             |> stateUpdate ctx
 
         newCtx
 
     let defaultPreTickUpdate (ctx: WorldContext) =
-        finPluginsWithAction ctx (fun (plugin) -> plugin.PreTickUpdate)
+        finPluginsWithAction ctx (fun plugin -> plugin.PreTickUpdate)
 
     let defaultPostTickUpdate (ctx: WorldContext) =
-        finPluginsWithAction ctx (fun (plugin) -> plugin.PostTickUpdate)
+        finPluginsWithAction ctx (fun plugin -> plugin.PostTickUpdate)
 
     let defaultRunCharacterScripts (ctx: WorldContext) =
-        finPluginsWithAction ctx (fun (plugin) -> plugin.RunCharacterScripts)
+        let scriptByPlayer (charState: CharacterState) : RunPlayerScript =
+            charState.ScriptProvider () |> LuaCharacterScript.generateCharacterScript
+                        
+        let getAction (charState: CharacterState) (scriptResult: ScriptResult) : CharacterAction.Action =
+            CharacterAction.getIdleAction charState.Character.Id
+
+        let newCtx = ScriptRunner.runScripts ctx scriptByPlayer getAction scriptRunTime
+        finPluginsWithAction newCtx (fun plugin -> plugin.RunCharacterScripts)
 
     let defaultOnStartup (factory: ILoggerFactory) (ctx: WorldContext) =
         PluginRegistry.registerPlugins factory
-        finPluginsWithAction ctx (fun (plugin) -> plugin.OnStartup)
+        finPluginsWithAction ctx (fun plugin -> plugin.OnStartup)
 
     let createDefaultWorldState () : WorldState =
         let state =
@@ -56,7 +70,11 @@ module WorldContextDefaults =
     let loggerFactory (factory: ILoggerFactory) =
         fun (name: string) -> factory.CreateLogger $"CodeToSurvive.{name}"
 
-    let createDefaultWorldContext (stateProvider: unit -> WorldState) (factory: ILoggerFactory) : WorldContext =
+    let createDefaultWorldContext
+        (stateProvider: unit -> WorldState)
+        (factory: ILoggerFactory)
+        storageProvider
+        : WorldContext =
         let ctx =
             { CreateLogger = loggerFactory factory
               ProgressAction = fun (_, state) -> state
@@ -64,9 +82,10 @@ module WorldContextDefaults =
               RunCharacterScripts = defaultRunCharacterScripts
               PreTickUpdate = defaultPreTickUpdate
               PostTickUpdate = defaultPostTickUpdate
-              State = stateProvider () }
+              State = stateProvider ()
+              StorageProvider = storageProvider }
 
         ctx
 
-    let createDefaultCtx: ILoggerFactory -> WorldContext =
+    let createDefaultCtx: ILoggerFactory -> (unit -> IStoragePreference) -> WorldContext =
         createDefaultWorldContext createDefaultWorldState
