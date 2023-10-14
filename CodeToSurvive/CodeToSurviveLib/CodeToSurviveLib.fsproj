@@ -20,7 +20,7 @@
         <Compile Include="Core\Entity.fs" />
         <Compile Include="Core\World.fs" />
         <Compile Include="Core\Character.fs" />
-        <Compile Include="Core\Action.fs" />
+        <Compile Include="Core\CharacterAction.fs" />
         <Compile Include="Core\GameState.fs" />
         <Compile Include="Core\Tick.fs" />
         <Compile Include="CharacterScript\ScriptInfo.fs" />

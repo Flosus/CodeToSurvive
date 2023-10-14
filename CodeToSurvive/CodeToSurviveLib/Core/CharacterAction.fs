@@ -2,17 +2,18 @@ namespace CodeToSurviveLib.Core
 
 open System
 open System.Runtime.Serialization
+open CodeToSurviveLib.Core.Character
 
-module Action =
+module CharacterAction =
 
     type ActionName = string
-
-    type CharacterId = Guid
 
     [<DataContract>]
     type Action =
         { [<DataMember>]
-          ID: CharacterId
+          ActionId: String
+          [<DataMember>]
+          CharacterId: CharacterId
           [<DataMember>]
           Name: ActionName
           [<DataMember>]
@@ -24,8 +25,9 @@ module Action =
           [<DataMember>]
           IsCancelable: bool }
 
-    let IdleAction =
-        { ID = Guid.Empty
+    let getIdleAction charId =
+        { ActionId = Guid.Empty.ToString()
+          CharacterId = charId
           Name = "Idle"
           Duration = 5
           CurrentProgress = 0
@@ -37,11 +39,4 @@ module Action =
         - TimeSpan.FromSeconds(action.CurrentProgress)
         <= TimeSpan.Zero
 
-    [<DataContract>]
-    type CharacterAction =
-        { [<DataMember>]
-          CharacterId: CharacterId
-          [<DataMember>]
-          Action: Action }
-
-    let isPlayerActionOpen = fun pAction -> IsActionFinished pAction.Action |> not
+    let isPlayerActionOpen = fun pAction -> IsActionFinished pAction |> not

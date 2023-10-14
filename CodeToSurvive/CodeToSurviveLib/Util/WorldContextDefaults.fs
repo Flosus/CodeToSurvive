@@ -1,13 +1,19 @@
 namespace CodeToSurviveLib.Util
 
 open System
+open CodeToSurviveLib.Core
 open CodeToSurviveLib.Core.GameState
 open CodeToSurviveLib.Core.World
+open CodeToSurviveLib.PlayerScript
+open CodeToSurviveLib.Script
+open CodeToSurviveLib.Script.ScriptInfo
 open CodeToSurviveLib.Storage.StoragePreference
 open Microsoft.Extensions.Logging
 
 module WorldContextDefaults =
     open CodeToSurviveLib.Core.Plugin
+
+    let scriptRunTime = 2000
 
     let rec private stateUpdate ctx (func: (WorldContext -> WorldContext)[]) : WorldContext =
         match func.Length with
@@ -39,7 +45,14 @@ module WorldContextDefaults =
         finPluginsWithAction ctx (fun plugin -> plugin.PostTickUpdate)
 
     let defaultRunCharacterScripts (ctx: WorldContext) =
-        finPluginsWithAction ctx (fun plugin -> plugin.RunCharacterScripts)
+        let scriptByPlayer (charState: CharacterState) : RunPlayerScript =
+            charState.ScriptProvider () |> LuaCharacterScript.generateCharacterScript
+                        
+        let getAction (charState: CharacterState) (scriptResult: ScriptResult) : CharacterAction.Action =
+            CharacterAction.getIdleAction charState.Character.Id
+
+        let newCtx = ScriptRunner.runScripts ctx scriptByPlayer getAction scriptRunTime
+        finPluginsWithAction newCtx (fun plugin -> plugin.RunCharacterScripts)
 
     let defaultOnStartup (factory: ILoggerFactory) (ctx: WorldContext) =
         PluginRegistry.registerPlugins factory

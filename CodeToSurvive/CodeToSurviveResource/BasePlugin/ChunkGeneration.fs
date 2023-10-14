@@ -12,7 +12,7 @@ module ChunkGeneration =
 
     let getSpawnChunk (ctx: WorldContext) : Chunk option =
         let log = ctx.CreateLogger $"{pluginName}.ChunkGeneration"
-        log.LogInformation $"getSpawnChunk called {mapDefinitions}"
+        log.LogInformation $"getSpawnChunk called"
 
         let silentGladeDefinition =
             mapDefinitions |> Array.find (fun def -> def.MapId = spawnMapId)

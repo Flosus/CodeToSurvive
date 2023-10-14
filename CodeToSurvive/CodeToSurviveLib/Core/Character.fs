@@ -8,6 +8,8 @@ open CodeToSurviveLib.Core.World
 
 module Character =
 
+    type CharacterId = Guid
+
     [<DataContract>]
     type CharacterStats =
         { [<DataMember>]
@@ -20,7 +22,7 @@ module Character =
     [<DataContract>]
     type Character =
         { [<DataMember>]
-          Id: Guid
+          Id: CharacterId
           [<DataMember>]
           Name: string
           [<DataMember>]

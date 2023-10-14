@@ -7,7 +7,7 @@ module World =
 
     type ChunkState = Dictionary<string, obj>
 
-    type Action =
+    type WorldAction =
         { ActionId: string
           Description: string
           ActionName: string
@@ -24,7 +24,7 @@ module World =
     type POI =
         { Name: string
           Description: string
-          Actions: Action[] }
+          Actions: WorldAction[] }
 
     // TODO create real function references
     type Trigger =
