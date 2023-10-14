@@ -8,5 +8,5 @@ module PreTickUpdate =
 
     let preTickUpdate (ctx: WorldContext) : WorldContext =
         let log = ctx.CreateLogger $"{pluginName}.PreTickUpdate"
-        log.LogTrace $"Did something"
+        log.LogTrace "Did something"
         ctx

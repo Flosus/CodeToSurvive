@@ -5,6 +5,8 @@ open System.Text
 open CodeToSurviveLib.Core.GameState
 open CodeToSurviveLib.Script.ScriptInfo
 open NLua
+open NLua.Exceptions
+open Microsoft.Extensions.Logging
 
 module LuaCharacterScript =
 
@@ -17,19 +19,26 @@ module LuaCharacterScript =
 
     let generateCharacterScript (luaScript: string) : RunPlayerScript =
 
-        let runScript (characterState: CharacterState, ctx: WorldContext) =
+        let runScript (characterState: CharacterState,
+                       ctx: WorldContext) =
             async {
+                let log = ctx.CreateLogger "LuaCharacterScript"
                 use lua = new Lua()
                 // TODO setup context
                 getLuaPluginFiles "./Data"
                 |> Array.iter (fun libLua -> lua.DoString(libLua) |> ignore)
                 // Disable import in scripts
                 lua.DoString("import = function () end") |> ignore
-                let scriptResult = lua.DoString(luaScript)
-                // TODO update characterState
-                // TODO parse script result for action
-                let result = (characterState, ScriptResult.Continue)
-                return result
+                try
+                    let scriptResult = lua.DoString(luaScript)
+                    // TODO update characterState
+                    // TODO parse script result for action
+                    let result = (characterState, ScriptResult.Continue)
+                    return result
+                with :? LuaScriptException as lse ->
+                    log.LogError (lse, $"Error while running script for user {characterState.Character.Name}@{characterState.Character.Id}")
+                    // TODO add message to user
+                    return (characterState, ScriptResult.Error)
             }
 
         runScript

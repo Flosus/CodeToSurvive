@@ -24,8 +24,7 @@ module Tick =
 
     let private doActionProgress (characters: CharacterState[]) (ctx: WorldContext) act : WorldContext =
         let dJP (cha: CharacterState, ctx: WorldContext) : WorldContext =
-            let findPlayerTask =
-                fun (cur: Action) -> cha.Character.Id = cur.CharacterId
+            let findPlayerTask = fun (cur: Action) -> cha.Character.Id = cur.CharacterId
 
             let currentTaskOpt = ctx.State.ActiveActions |> Array.tryFind findPlayerTask
 

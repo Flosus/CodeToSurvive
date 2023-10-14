@@ -10,7 +10,7 @@ open Microsoft.Extensions.Logging
 
 module CharacterManager =
 
-    let logEntryToText entry = "${entry}"
+    let logEntryToText entry = $"{entry}\n"
 
     let createCharacter (ctx: WorldContext) name player =
         let log = ctx.CreateLogger "CharacterManager"
@@ -27,16 +27,17 @@ module CharacterManager =
             storage.PlayerStorageFolder.CreateSubdirectory $"{newCharacter.Name}"
 
         let logHandler (entry: LogEntry) =
-            let logStorage = playerStorage.CreateSubdirectory $"Log"
+            let logStorage = playerStorage.CreateSubdirectory "Log"
             let logFile = Path.Join(logStorage.FullName, "player.log")
             let entryTxt = logEntryToText entry
             File.AppendAllText(logFile, entryTxt, Encoding.UTF8)
             ()
 
         let scriptProvider () =
-            let scriptStorage = playerStorage.CreateSubdirectory $"Script"
+            let scriptStorage = playerStorage.CreateSubdirectory "Script"
+
             LuaCharacterScript.getLuaPluginFiles scriptStorage.FullName
-                                    |> String.concat "\n"
+            |> String.concat "\n"
 
         let newCharacterState =
             { Character = newCharacter

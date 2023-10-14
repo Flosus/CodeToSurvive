@@ -8,5 +8,5 @@ module OnStartup =
 
     let onStartup (ctx: WorldContext) : WorldContext =
         let log = ctx.CreateLogger $"{pluginName}.OnStartup"
-        log.LogInformation $"Did something"
+        log.LogInformation "Did something"
         ctx

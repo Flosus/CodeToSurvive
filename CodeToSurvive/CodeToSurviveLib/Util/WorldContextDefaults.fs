@@ -19,8 +19,7 @@ module WorldContextDefaults =
         match func.Length with
         | 0 -> ctx
         | _ ->
-            let headFunc = func[0]
-            let newCtx = headFunc ctx
+            let newCtx = func[0] ctx
             stateUpdate newCtx func[1..]
 
     let private finPluginsWithAction
@@ -46,9 +45,10 @@ module WorldContextDefaults =
 
     let defaultRunCharacterScripts (ctx: WorldContext) =
         let scriptByPlayer (charState: CharacterState) : RunPlayerScript =
-            charState.ScriptProvider () |> LuaCharacterScript.generateCharacterScript
-                        
+            charState.ScriptProvider() |> LuaCharacterScript.generateCharacterScript
+
         let getAction (charState: CharacterState) (scriptResult: ScriptResult) : CharacterAction.Action =
+            // TODO get action from script result
             CharacterAction.getIdleAction charState.Character.Id
 
         let newCtx = ScriptRunner.runScripts ctx scriptByPlayer getAction scriptRunTime
@@ -77,7 +77,7 @@ module WorldContextDefaults =
         : WorldContext =
         let ctx =
             { CreateLogger = loggerFactory factory
-              ProgressAction = fun (_, state) -> state
+              ProgressAction = snd
               OnStartup = defaultOnStartup factory
               RunCharacterScripts = defaultRunCharacterScripts
               PreTickUpdate = defaultPreTickUpdate
