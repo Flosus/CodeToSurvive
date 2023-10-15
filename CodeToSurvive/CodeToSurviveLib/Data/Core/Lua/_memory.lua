@@ -11,7 +11,8 @@ function Memory:getKnowledge()
 end
 
 function Memory:getMemory()
-    return _api_memory:getMemory()
+    local memoryDict = _api_memory:getMemory()
+    return toLuaType(memoryDict)
 end
 
 function Memory:getMemoryKeys()
@@ -20,7 +21,8 @@ end
 
 ---@param key string
 function Memory:getMemoryValue(key)
-    return _api_memory:getMemoryValue(key)
+    local memoryDict = _api_memory:getMemoryValue(key)
+    return toLuaType(memoryDict)
 end
 
 ---@param key string

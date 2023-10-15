@@ -6,6 +6,7 @@ open CodeToSurviveLib.Core.CharacterAction
 open CodeToSurviveLib.Core.Character
 open CodeToSurviveLib.Core.World
 open CodeToSurviveLib.Storage.StoragePreference
+open KeraLua
 open Microsoft.Extensions.Logging
 
 module GameState =
@@ -49,8 +50,8 @@ module GameState =
         { CreateLogger: string -> ILogger
           ProgressAction: Action * WorldContext -> WorldContext
           OnStartup: WorldContext -> WorldContext
-          RunCharacterScripts: WorldContext -> WorldContext
           PreTickUpdate: WorldContext -> WorldContext
+          RunCharacterScripts: WorldContext -> Lua -> WorldContext
           PostTickUpdate: WorldContext -> WorldContext
           State: WorldState
           StorageProvider: unit -> IStoragePreference }

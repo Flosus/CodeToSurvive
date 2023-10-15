@@ -38,7 +38,6 @@ module CharacterManager =
             let scriptStorage = playerStorage.CreateSubdirectory "Script"
 
             LuaCharacterScript.getLuaPluginFiles scriptStorage.FullName
-            |> Array.sortBy snd
             |> Array.map fst
             |> String.concat "\n"
 

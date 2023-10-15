@@ -58,3 +58,12 @@ module ScriptApi =
 
         member this.setMemory(key, value: Object) =
             character.Memory.PlayerMemory[key] <- ensureType value
+
+    type WorldApi(character: CharacterState, ctx: WorldContext) =
+        member this.getWorld() = ()
+
+    type CharacterApi(character: CharacterState, ctx: WorldContext) =   
+        member this.getCharacter() = ()
+
+    type ActionApi(character: CharacterState, ctx: WorldContext) =
+        member this.getCurrentAction() = ()
