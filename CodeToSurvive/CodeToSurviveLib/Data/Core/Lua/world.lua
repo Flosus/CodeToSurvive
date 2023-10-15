@@ -3,7 +3,7 @@
 -----------------------------------------------------------------------------------
 ---Access the world around you
 ---@class World
-local World = {}
+World = {}
 
 function World:getCurrentMap()
 end

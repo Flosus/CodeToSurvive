@@ -27,6 +27,7 @@ module GameState =
     type CharacterState =
         { [<DataMember>]
           Character: Character
+          Memory: CharacterMemory
           // TODO recreate functions on restore
           [<IgnoreDataMember>]
           HandleLogEntry: HandleLogEntry
