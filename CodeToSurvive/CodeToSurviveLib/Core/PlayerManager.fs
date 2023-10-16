@@ -1,8 +1,7 @@
 namespace CodeToSurviveLib.Core.Player
 
+open CodeToSurviveLib.Core.Domain
 module PlayerManager =
-
-    type Player = string
 
     let mutable players: Player[] = [||]
 

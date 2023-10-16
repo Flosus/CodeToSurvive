@@ -1,10 +1,8 @@
 namespace CodeToSurviveLib.CharacterScript.Api
 
 open System
-open System.Linq
 open System.Collections.Generic
-open CodeToSurviveLib.Core.GameState
-open Microsoft.Extensions.Logging
+open CodeToSurviveLib.Core.Domain
 open NLua
 
 module ScriptApi =

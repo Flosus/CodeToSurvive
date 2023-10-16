@@ -1,7 +1,7 @@
 ﻿open System
 open System.Threading
 open System.Threading.Tasks
-open CodeToSurviveLib.Core.GameState
+open CodeToSurviveLib.Core.Domain
 open CodeToSurviveLib.Core.Player
 open CodeToSurviveLib.GameLoop
 open CodeToSurviveRunner

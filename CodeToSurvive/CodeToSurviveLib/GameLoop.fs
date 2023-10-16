@@ -3,7 +3,7 @@ namespace CodeToSurviveLib
 open System
 open System.Threading
 open CodeToSurviveLib.Core.Tick
-open CodeToSurviveLib.Core.GameState
+open CodeToSurviveLib.Core.Domain
 open Microsoft.Extensions.Logging
 
 module GameLoop =

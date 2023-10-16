@@ -6,7 +6,7 @@ open System.Net.WebSockets
 open System.Text
 open CodeToSurviveLib.CharacterScript.Api
 open CodeToSurviveLib.CharacterScript.Api.ScriptApi
-open CodeToSurviveLib.Core.GameState
+open CodeToSurviveLib.Core.Domain
 open CodeToSurviveLib.Script.ScriptInfo
 open NLua
 open NLua.Exceptions

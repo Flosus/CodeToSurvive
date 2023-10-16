@@ -4,7 +4,7 @@ open System.Collections.Generic
 open System.IO
 open System.Text
 open CodeToSurviveLib.Core
-open CodeToSurviveLib.Core.GameState
+open CodeToSurviveLib.Core.Domain
 open CodeToSurviveLib.Script
 open CodeToSurviveLib.Util
 open Microsoft.Extensions.Logging

@@ -1,6 +1,6 @@
 namespace CodeToSurviveResource.DebugPlugin
 
-open CodeToSurviveLib.Core.GameState
+open CodeToSurviveLib.Core.Domain
 open CodeToSurviveResource.DebugPlugin.Constants
 open Microsoft.Extensions.Logging
 
