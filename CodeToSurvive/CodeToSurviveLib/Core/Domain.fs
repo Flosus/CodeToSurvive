@@ -66,8 +66,6 @@ module Domain =
           Other: ItemEntity }
 
     // World
-
-
     type ChunkState = Dictionary<string, obj>
 
     type WorldAction =
@@ -146,13 +144,6 @@ module Domain =
           [<DataMember>]
           mutable Inventory: ItemEntity[] }
 
-    [<DataContract>]
-    type CharacterMemory =
-        { [<DataMember>]
-          mutable Knowledge: (string * string)[]
-          [<DataMember>]
-          mutable PlayerMemory: Dictionary<string, Object> }
-
     // Action
     type ActionParameter =
         | POI of POI
@@ -163,6 +154,27 @@ module Domain =
         | Text of string
         // TODO ItemSlot Enum?
         | ItemSlot of string
+
+    // Log Messages
+
+    type LogType =
+        | Whisper
+        | Say
+        | Yell
+        | System
+        | Thought
+        | Thonk
+
+    type LogSource = string
+    type LogMessage = string
+    type LogEntry = LogType * LogSource * DateTime * LogMessage
+    (*
+    ___________
+    World state    
+    ___________
+    This should get moved into it's own file after creating all missing states
+    *)
+    type HandleLogEntry = LogEntry -> unit
 
     [<DataContract>]
     type CharacterAction =
@@ -183,18 +195,12 @@ module Domain =
           // Ignore
           Parameter: ActionParameter[] }
 
-    type LogType =
-        | Whisper
-        | Say
-        | Yell
-        | System
-        | Thought
-        | Thonk
-
-    type LogSource = string
-    type LogMessage = string
-    type LogEntry = LogType * LogSource * DateTime * LogMessage
-    type HandleLogEntry = LogEntry -> unit
+    [<DataContract>]
+    type CharacterMemory =
+        { [<DataMember>]
+          mutable Knowledge: (string * string)[]
+          [<DataMember>]
+          mutable PlayerMemory: Dictionary<string, Object> }
 
     [<DataContract>]
     type CharacterState =
