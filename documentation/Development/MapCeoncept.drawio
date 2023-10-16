@@ -1,6 +1,6 @@
-<mxfile host="app.diagrams.net" modified="2023-10-16T09:36:55.789Z" agent="5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/118.0.0.0 Safari/537.36" etag="WzPWf5Jg0vZhO2Vp2iql" version="20.8.20" type="github">
+<mxfile host="app.diagrams.net" modified="2023-10-16T09:37:41.962Z" agent="5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/118.0.0.0 Safari/537.36" etag="TewYvJ42AKSldUnKrbf0" version="20.8.20" type="github">
   <diagram name="Page-1" id="H2c29JP2JWiowa3AiWOg">
-    <mxGraphModel dx="2514" dy="904" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
+    <mxGraphModel dx="3217" dy="1280" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
       <root>
         <mxCell id="0" />
         <mxCell id="1" parent="0" />
@@ -8,7 +8,7 @@
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
         <mxCell id="REdWLembcpuqLBjRhoRA-1" value="SilentGlade" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
-          <mxGeometry x="-120" y="550" width="120" height="60" as="geometry" />
+          <mxGeometry x="-490" y="731" width="120" height="60" as="geometry" />
         </mxCell>
         <mxCell id="REdWLembcpuqLBjRhoRA-6" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;startArrow=classic;startFill=1;" edge="1" parent="1" source="REdWLembcpuqLBjRhoRA-3" target="REdWLembcpuqLBjRhoRA-5">
           <mxGeometry relative="1" as="geometry" />
@@ -17,19 +17,19 @@
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
         <mxCell id="REdWLembcpuqLBjRhoRA-3" value="SmallPathBetweenTrees" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
-          <mxGeometry x="40" y="550" width="160" height="60" as="geometry" />
+          <mxGeometry x="-330" y="731" width="160" height="60" as="geometry" />
         </mxCell>
         <mxCell id="REdWLembcpuqLBjRhoRA-8" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;startArrow=classic;startFill=1;" edge="1" parent="1" source="REdWLembcpuqLBjRhoRA-5" target="REdWLembcpuqLBjRhoRA-7">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
         <mxCell id="REdWLembcpuqLBjRhoRA-5" value="PathWithBeach" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
-          <mxGeometry x="240" y="550" width="120" height="60" as="geometry" />
+          <mxGeometry x="-130" y="731" width="120" height="60" as="geometry" />
         </mxCell>
         <mxCell id="REdWLembcpuqLBjRhoRA-10" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0;entryY=0.5;entryDx=0;entryDy=0;startArrow=classic;startFill=1;" edge="1" parent="1" source="REdWLembcpuqLBjRhoRA-7" target="REdWLembcpuqLBjRhoRA-9">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
         <mxCell id="REdWLembcpuqLBjRhoRA-7" value="Crossroads" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
-          <mxGeometry x="240" y="310" width="120" height="60" as="geometry" />
+          <mxGeometry x="-130" y="491" width="120" height="60" as="geometry" />
         </mxCell>
         <mxCell id="REdWLembcpuqLBjRhoRA-12" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;startArrow=classic;startFill=1;" edge="1" parent="1" source="REdWLembcpuqLBjRhoRA-9" target="REdWLembcpuqLBjRhoRA-11">
           <mxGeometry relative="1" as="geometry" />
@@ -41,31 +41,31 @@
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
         <mxCell id="REdWLembcpuqLBjRhoRA-9" value="AbandonedVillageSquare" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
-          <mxGeometry x="500" y="310" width="170" height="60" as="geometry" />
+          <mxGeometry x="130" y="491" width="170" height="60" as="geometry" />
         </mxCell>
         <mxCell id="REdWLembcpuqLBjRhoRA-11" value="RoadWithPlots" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
-          <mxGeometry x="525" y="179" width="120" height="60" as="geometry" />
+          <mxGeometry x="155" y="360" width="120" height="60" as="geometry" />
         </mxCell>
         <mxCell id="REdWLembcpuqLBjRhoRA-16" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;startArrow=classic;startFill=1;" edge="1" parent="1" source="REdWLembcpuqLBjRhoRA-13" target="REdWLembcpuqLBjRhoRA-15">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
         <mxCell id="REdWLembcpuqLBjRhoRA-13" value="CrossroadsByTheFields" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
-          <mxGeometry x="862.5" y="310" width="150" height="60" as="geometry" />
+          <mxGeometry x="492.5" y="491" width="150" height="60" as="geometry" />
         </mxCell>
         <mxCell id="REdWLembcpuqLBjRhoRA-29" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;startArrow=classic;startFill=1;" edge="1" parent="1" source="REdWLembcpuqLBjRhoRA-15" target="REdWLembcpuqLBjRhoRA-27">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
         <mxCell id="REdWLembcpuqLBjRhoRA-15" value="BeachByTheCrossroads" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
-          <mxGeometry x="850" y="410" width="175" height="60" as="geometry" />
+          <mxGeometry x="480" y="591" width="175" height="60" as="geometry" />
         </mxCell>
         <mxCell id="REdWLembcpuqLBjRhoRA-18" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;startArrow=classic;startFill=1;" edge="1" parent="1" source="REdWLembcpuqLBjRhoRA-17" target="REdWLembcpuqLBjRhoRA-11">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
         <mxCell id="REdWLembcpuqLBjRhoRA-17" value="GroupPlot" style="ellipse;whiteSpace=wrap;html=1;" vertex="1" parent="1">
-          <mxGeometry x="354" y="169" width="120" height="80" as="geometry" />
+          <mxGeometry x="-16" y="350" width="120" height="80" as="geometry" />
         </mxCell>
         <mxCell id="REdWLembcpuqLBjRhoRA-19" value="VillageHouse1 - 5" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
-          <mxGeometry x="520" y="410" width="130" height="60" as="geometry" />
+          <mxGeometry x="150" y="591" width="130" height="60" as="geometry" />
         </mxCell>
         <mxCell id="REdWLembcpuqLBjRhoRA-22" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;startArrow=classic;startFill=1;" edge="1" parent="1" source="REdWLembcpuqLBjRhoRA-21" target="REdWLembcpuqLBjRhoRA-13">
           <mxGeometry relative="1" as="geometry" />
@@ -74,10 +74,10 @@
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
         <mxCell id="REdWLembcpuqLBjRhoRA-21" value="Fields" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
-          <mxGeometry x="877.5" y="179" width="120" height="60" as="geometry" />
+          <mxGeometry x="507.5" y="360" width="120" height="60" as="geometry" />
         </mxCell>
         <mxCell id="REdWLembcpuqLBjRhoRA-23" value="SecludedPartInTheFields" style="ellipse;whiteSpace=wrap;html=1;" vertex="1" parent="1">
-          <mxGeometry x="670" y="169" width="155" height="80" as="geometry" />
+          <mxGeometry x="300" y="350" width="155" height="80" as="geometry" />
         </mxCell>
         <mxCell id="REdWLembcpuqLBjRhoRA-32" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;startArrow=classic;startFill=1;" edge="1" parent="1" source="REdWLembcpuqLBjRhoRA-26" target="REdWLembcpuqLBjRhoRA-13">
           <mxGeometry relative="1" as="geometry" />
@@ -86,28 +86,28 @@
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
         <mxCell id="REdWLembcpuqLBjRhoRA-26" value="RoadAtTheFootOfAMountain" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
-          <mxGeometry x="1210" y="310" width="200" height="60" as="geometry" />
+          <mxGeometry x="840" y="491" width="200" height="60" as="geometry" />
         </mxCell>
         <mxCell id="REdWLembcpuqLBjRhoRA-30" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;startArrow=classic;startFill=1;" edge="1" parent="1" source="REdWLembcpuqLBjRhoRA-27" target="REdWLembcpuqLBjRhoRA-28">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
         <mxCell id="REdWLembcpuqLBjRhoRA-27" value="Beach" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
-          <mxGeometry x="1060" y="410" width="120" height="60" as="geometry" />
+          <mxGeometry x="690" y="591" width="120" height="60" as="geometry" />
         </mxCell>
         <mxCell id="REdWLembcpuqLBjRhoRA-31" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;startArrow=classic;startFill=1;" edge="1" parent="1" source="REdWLembcpuqLBjRhoRA-28" target="REdWLembcpuqLBjRhoRA-26">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
         <mxCell id="REdWLembcpuqLBjRhoRA-28" value="BeachAtTheFootOfAMountan" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
-          <mxGeometry x="1220" y="410" width="180" height="60" as="geometry" />
+          <mxGeometry x="850" y="591" width="180" height="60" as="geometry" />
         </mxCell>
         <mxCell id="REdWLembcpuqLBjRhoRA-36" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;startArrow=classic;startFill=1;" edge="1" parent="1" source="REdWLembcpuqLBjRhoRA-33" target="REdWLembcpuqLBjRhoRA-34">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
         <mxCell id="REdWLembcpuqLBjRhoRA-33" value="RoadUpTheMountain" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
-          <mxGeometry x="1250" y="179" width="120" height="60" as="geometry" />
+          <mxGeometry x="880" y="360" width="120" height="60" as="geometry" />
         </mxCell>
         <mxCell id="REdWLembcpuqLBjRhoRA-34" value="MineEntrance" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
-          <mxGeometry x="1460" y="179" width="120" height="60" as="geometry" />
+          <mxGeometry x="1090" y="360" width="120" height="60" as="geometry" />
         </mxCell>
         <mxCell id="REdWLembcpuqLBjRhoRA-40" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;startArrow=classic;startFill=1;" edge="1" parent="1" source="REdWLembcpuqLBjRhoRA-37" target="REdWLembcpuqLBjRhoRA-38">
           <mxGeometry relative="1" as="geometry" />
@@ -116,7 +116,7 @@
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
         <mxCell id="REdWLembcpuqLBjRhoRA-37" value="Forest1" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
-          <mxGeometry x="60" y="430" width="120" height="60" as="geometry" />
+          <mxGeometry x="-310" y="611" width="120" height="60" as="geometry" />
         </mxCell>
         <mxCell id="REdWLembcpuqLBjRhoRA-45" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;startArrow=classic;startFill=1;" edge="1" parent="1" source="REdWLembcpuqLBjRhoRA-38" target="REdWLembcpuqLBjRhoRA-7">
           <mxGeometry relative="1" as="geometry" />
@@ -125,16 +125,16 @@
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
         <mxCell id="REdWLembcpuqLBjRhoRA-38" value="PathByTheForest" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
-          <mxGeometry x="60" y="310" width="120" height="60" as="geometry" />
+          <mxGeometry x="-310" y="491" width="120" height="60" as="geometry" />
         </mxCell>
         <mxCell id="REdWLembcpuqLBjRhoRA-41" value="LumberjacksRetreat" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
-          <mxGeometry x="-120" y="310" width="120" height="60" as="geometry" />
+          <mxGeometry x="-490" y="491" width="120" height="60" as="geometry" />
         </mxCell>
         <mxCell id="REdWLembcpuqLBjRhoRA-44" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;startArrow=classic;startFill=1;" edge="1" parent="1" source="REdWLembcpuqLBjRhoRA-42" target="REdWLembcpuqLBjRhoRA-41">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
         <mxCell id="REdWLembcpuqLBjRhoRA-42" value="Forest2" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
-          <mxGeometry x="-120" y="430" width="120" height="60" as="geometry" />
+          <mxGeometry x="-490" y="611" width="120" height="60" as="geometry" />
         </mxCell>
       </root>
     </mxGraphModel>
