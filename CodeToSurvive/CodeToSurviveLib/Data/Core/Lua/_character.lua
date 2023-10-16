@@ -4,7 +4,7 @@
 ---This is you. Access information about you, your equipment, inventory, stats and
 ---and everything you-related
 ---@class Character
-local Character = {}
+Character = {}
 
 ---TODO implementation
 function Character:getInformation()

@@ -36,6 +36,20 @@ PlayerManager.addPlayer playerName
 
 let createdCharacter =
     CharacterManager.createCharacter context characterName playerName
+(*let createdCharacter2 =
+    CharacterManager.createCharacter context $"{characterName}2" playerName
+let createdCharacter3 =
+    CharacterManager.createCharacter context $"{characterName}3" playerName
+let createdCharacter4 =
+    CharacterManager.createCharacter context $"{characterName}4" playerName
+let createdCharacter5 =
+    CharacterManager.createCharacter context $"{characterName}5" playerName
+let createdCharacter6 =
+    CharacterManager.createCharacter context $"{characterName}6" playerName
+let createdCharacter7 =
+    CharacterManager.createCharacter context $"{characterName}7" playerName
+let createdCharacter8 =
+    CharacterManager.createCharacter context $"{characterName}8" playerName*)
 
 let rec cliHandler () =
     let input = Console.ReadLine()

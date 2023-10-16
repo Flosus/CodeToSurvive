@@ -1,5 +1,6 @@
 namespace CodeToSurviveLib.Core.Player
 
+open System.Collections.Generic
 open System.IO
 open System.Text
 open CodeToSurviveLib.Core
@@ -37,12 +38,17 @@ module CharacterManager =
             let scriptStorage = playerStorage.CreateSubdirectory "Script"
 
             LuaCharacterScript.getLuaPluginFiles scriptStorage.FullName
+            |> Array.map fst
             |> String.concat "\n"
 
         let newCharacterState =
             { Character = newCharacter
               HandleLogEntry = logHandler
-              ScriptProvider = scriptProvider }
+              ScriptProvider = scriptProvider
+              Memory = {
+                  Knowledge = [|("Entry1", "Data")|]
+                  PlayerMemory = Dictionary() 
+              } }
 
         ctx.State.CharacterStates <- ctx.State.CharacterStates |> Array.append [| newCharacterState |]
         log.LogInformation "Character created successfully"

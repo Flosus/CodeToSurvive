@@ -1,9 +1,12 @@
 -----------------------------------------------------------------------------------
----# Memory-Api
+---# World-Api
 -----------------------------------------------------------------------------------
----You can read and write to the memory of the character.
----@class Memory
-local Memory = {}
+---Access the world around you
+---@class World
+World = {}
 
-function Memory:getMemory()
+function World:getCurrentMap()
+end
+
+function World:getCurrentTime()
 end

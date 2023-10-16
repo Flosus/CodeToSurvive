@@ -5,7 +5,7 @@
 ---@class Action 
 ---@field Name string The name of the Action, your character should do
 ---@field Parameter any Parameters for the Action. WIP, this will change and the definition will be improved
-local Action = {}
+Action = {}
 
 ---@return Action
 function Action:new (o)
