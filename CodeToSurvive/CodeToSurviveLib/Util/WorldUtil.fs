@@ -1,8 +1,7 @@
 namespace CodeToSurviveLib.Util
 
-open CodeToSurviveLib.Core.GameState
+open CodeToSurviveLib.Core.Domain
 open CodeToSurviveLib.Core.Plugin
-open CodeToSurviveLib.Core.World
 open Microsoft.Extensions.Logging
 
 module WorldUtil =

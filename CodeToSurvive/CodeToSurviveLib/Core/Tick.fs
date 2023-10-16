@@ -1,9 +1,8 @@
 namespace CodeToSurviveLib.Core
 
 open System
-open CodeToSurviveLib.Core.GameState
+open CodeToSurviveLib.Core.Domain
 open CodeToSurviveLib.Core.CharacterAction
-open CodeToSurviveLib.Core.Character
 open Microsoft.Extensions.Logging
 open Microsoft.FSharp.Collections
 
@@ -24,7 +23,7 @@ module Tick =
 
     let private doActionProgress (characters: CharacterState[]) (ctx: WorldContext) act : WorldContext =
         let dJP (cha: CharacterState, ctx: WorldContext) : WorldContext =
-            let findPlayerTask = fun (cur: Action) -> cha.Character.Id = cur.CharacterId
+            let findPlayerTask = fun (cur: CharacterAction) -> cha.Character.Id = cur.CharacterId
 
             let currentTaskOpt = ctx.State.ActiveActions |> Array.tryFind findPlayerTask
 

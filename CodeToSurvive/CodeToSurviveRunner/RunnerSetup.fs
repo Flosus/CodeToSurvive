@@ -1,8 +1,7 @@
 namespace CodeToSurviveRunner
 
 open CodeToSurviveLib
-open CodeToSurviveLib.Core.GameState
-open CodeToSurviveLib.Core.CharacterAction
+open CodeToSurviveLib.Core.Domain
 open CodeToSurviveLib.Storage
 open CodeToSurviveLib.Storage.StoragePreference
 open CodeToSurviveLib.Util
@@ -35,7 +34,7 @@ module RunnerSetup =
 
         let log = defaultCtx.CreateLogger "Runner"
 
-        let doActionProgress: Action * WorldContext -> WorldContext =
+        let doActionProgress: CharacterAction * WorldContext -> WorldContext =
             fun (_, ctx) ->
                 log.LogTrace "doActionProgress"
                 ctx

@@ -1,10 +1,8 @@
 namespace CodeToSurviveLib.Core.Plugin
 
-open CodeToSurviveLib.Core.GameState
-open CodeToSurviveLib.Core.World
+open CodeToSurviveLib.Core.Domain
 
 module PluginApi =
-    open CodeToSurviveLib.Core.CharacterAction
 
     //___________________________
     // Plugin-Definition
@@ -43,4 +41,4 @@ module PluginApi =
         member val PreTickUpdate: Option<WorldContext -> WorldContext> = None with get, set
         member val PostTickUpdate: Option<WorldContext -> WorldContext> = None with get, set
         member val RunCharacterScripts: Option<WorldContext -> WorldContext> = None with get, set
-        member val ProgressAction: Option<Action * WorldContext -> WorldContext> = None with get, set
+        member val ProgressAction: Option<CharacterAction * WorldContext -> WorldContext> = None with get, set

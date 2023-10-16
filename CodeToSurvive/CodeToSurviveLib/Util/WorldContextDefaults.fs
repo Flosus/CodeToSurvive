@@ -2,8 +2,7 @@ namespace CodeToSurviveLib.Util
 
 open System
 open CodeToSurviveLib.Core
-open CodeToSurviveLib.Core.GameState
-open CodeToSurviveLib.Core.World
+open CodeToSurviveLib.Core.Domain
 open CodeToSurviveLib.PlayerScript
 open CodeToSurviveLib.Script
 open CodeToSurviveLib.Script.ScriptInfo
@@ -47,7 +46,7 @@ module WorldContextDefaults =
         let scriptByPlayer (charState: CharacterState) : RunPlayerScript =
             charState.ScriptProvider() |> LuaCharacterScript.generateCharacterScript
 
-        let getAction (charState: CharacterState) (scriptResult: ScriptResult) : CharacterAction.Action =
+        let getAction (charState: CharacterState) (scriptResult: ScriptResult) : CharacterAction =
             // TODO get action from script result
             CharacterAction.getIdleAction charState.Character.Id
 

@@ -3,8 +3,7 @@ namespace CodeToSurviveLib.PlayerScript
 open System
 open System.Threading
 open System.Threading.Tasks
-open CodeToSurviveLib.Core
-open CodeToSurviveLib.Core.GameState
+open CodeToSurviveLib.Core.Domain
 open CodeToSurviveLib.Script.ScriptInfo
 
 module ScriptRunner =
@@ -53,12 +52,12 @@ module ScriptRunner =
             (
                 charState: CharacterState,
                 scriptResult: ScriptResult
-            ) : CharacterState * CharacterAction.Action =
-            let action: CharacterAction.Action = getActionByName charState scriptResult
+            ) : CharacterState * CharacterAction =
+            let action: CharacterAction = getActionByName charState scriptResult
 
             (charState, action)
 
-        let newStateData: (CharacterState * CharacterAction.Action)[] =
+        let newStateData: (CharacterState * CharacterAction)[] =
             results |> Array.map scriptResultToAction
 
         let playerStates = newStateData |> Array.map fst

@@ -5,7 +5,7 @@ open System.IO
 open System.Runtime.Serialization.Json
 open System.Text
 open System.Text.RegularExpressions
-open CodeToSurviveLib.Core.GameState
+open CodeToSurviveLib.Core.Domain
 open CodeToSurviveLib.Storage.StoragePreference
 
 module StorageManagement =

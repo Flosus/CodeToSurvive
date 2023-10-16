@@ -5,42 +5,39 @@
         <GenerateDocumentationFile>true</GenerateDocumentationFile>
         <RootNamespace>CodeToSurviveLib</RootNamespace>
     </PropertyGroup>
-    
+
     <ItemGroup>
         <Content Include="Data\**\*">
             <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
         </Content>
     </ItemGroup>
-    
+
     <ItemGroup>
-        <Compile Include="Statistics.fs" />
-        <Compile Include="Storage\StoragePreference.fs" />
-        <Compile Include="Core\Player\PlayerManager.fs" />
-        <Compile Include="Core\Item.fs" />
-        <Compile Include="Core\Entity.fs" />
-        <Compile Include="Core\World.fs" />
-        <Compile Include="Core\Character.fs" />
-        <Compile Include="Core\CharacterAction.fs" />
-        <Compile Include="Core\GameState.fs" />
-        <Compile Include="Core\Tick.fs" />
-        <Compile Include="CharacterScript\Api\ScriptApi.fs" />
-        <Compile Include="CharacterScript\ScriptInfo.fs" />
-        <Compile Include="CharacterScript\ScriptRunner.fs" />
-        <Compile Include="CharacterScript\LuaCharacterScript.fs" />
-        <Compile Include="GameLoop.fs" />
-        <Compile Include="Storage\StorageManagement.fs" />
-        <Compile Include="Plugin\PluginApi.fs" />
-        <Compile Include="Plugin\PluginRegistry.fs" />
-        <Compile Include="Plugin\WorldGenRegistry.fs" />
-        <Compile Include="Plugin\Util\WorldLoader.fs" />
-        <Compile Include="Util\WorldUtil.fs" />
-        <Compile Include="Core\Player\CharacterManager.fs" />
-        <Compile Include="Util\WorldContextDefaults.fs" />
+        <Compile Include="Statistics.fs"/>
+        <Compile Include="Storage\StoragePreference.fs"/>
+        <Compile Include="Core\Domain.fs"/>
+        <Compile Include="Core\Character.fs"/>
+        <Compile Include="Core\CharacterAction.fs"/>
+        <Compile Include="Core\Tick.fs"/>
+        <Compile Include="Core\PlayerManager.fs" />
+        <Compile Include="CharacterScript\Api\ScriptApi.fs"/>
+        <Compile Include="CharacterScript\ScriptInfo.fs"/>
+        <Compile Include="CharacterScript\ScriptRunner.fs"/>
+        <Compile Include="CharacterScript\LuaCharacterScript.fs"/>
+        <Compile Include="GameLoop.fs"/>
+        <Compile Include="Storage\StorageManagement.fs"/>
+        <Compile Include="Plugin\PluginApi.fs"/>
+        <Compile Include="Plugin\PluginRegistry.fs"/>
+        <Compile Include="Plugin\WorldGenRegistry.fs"/>
+        <Compile Include="Plugin\WorldLoader.fs" />
+        <Compile Include="Util\WorldUtil.fs"/>
+        <Compile Include="Util\CharacterManager.fs" />
+        <Compile Include="Util\WorldContextDefaults.fs"/>
     </ItemGroup>
 
     <ItemGroup>
-        <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="7.0.1" />
-        <PackageReference Include="NLua" Version="1.6.3" />
+        <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="7.0.1"/>
+        <PackageReference Include="NLua" Version="1.6.3"/>
     </ItemGroup>
 
 </Project>
