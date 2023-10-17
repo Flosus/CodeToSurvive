@@ -9,6 +9,7 @@ module CharacterAction =
         { ActionId = Guid.Empty.ToString()
           CharacterId = charId
           Name = "Idle"
+          ActionHandler = "Idle"
           Duration = 5
           CurrentProgress = 0
           IsFinished = false

@@ -1,6 +1,8 @@
 namespace CodeToSurviveLib.Util
 
 open System
+open System.IO
+open System.Text
 open CodeToSurviveLib.Core
 open CodeToSurviveLib.Core.Domain
 open CodeToSurviveLib.PlayerScript
@@ -11,6 +13,10 @@ open Microsoft.Extensions.Logging
 
 module WorldContextDefaults =
     open CodeToSurviveLib.Core.Plugin
+    open System.IO
+    open System.Text
+
+    let logEntryToText entry = $"{entry}\n"
 
     let scriptRunTime = 2000
 
@@ -44,7 +50,7 @@ module WorldContextDefaults =
 
     let defaultRunCharacterScripts (ctx: WorldContext) =
         let scriptByPlayer (charState: CharacterState) : RunPlayerScript =
-            charState.ScriptProvider() |> LuaCharacterScript.generateCharacterScript
+            charState |> ctx.ScriptProvider |> LuaCharacterScript.generateCharacterScript
 
         let getAction (charState: CharacterState) (scriptResult: ScriptResult) : CharacterAction =
             // TODO get action from script result
@@ -74,6 +80,24 @@ module WorldContextDefaults =
         (factory: ILoggerFactory)
         storageProvider
         : WorldContext =
+
+        let logHandler (charState:CharacterState) (entry: LogEntry) =
+            let (storage: IStoragePreference) = storageProvider()
+            let playerStorage = storage.PlayerStorageFolder.CreateSubdirectory $"{charState.Character.Name}"
+            let logStorage = playerStorage.CreateSubdirectory "Log"
+            let logFile = Path.Join(logStorage.FullName, "player.log")
+            let entryTxt = logEntryToText entry
+            File.AppendAllText(logFile, entryTxt, Encoding.UTF8)
+            ()
+
+        let scriptProvider (charState:CharacterState) =
+            let storage = storageProvider()
+            let playerStorage = storage.PlayerStorageFolder.CreateSubdirectory $"{charState.Character.Name}"
+            let scriptStorage = playerStorage.CreateSubdirectory "Script"
+            LuaCharacterScript.getLuaPluginFiles scriptStorage.FullName
+            |> Array.map fst
+            |> String.concat "\n"
+
         let ctx =
             { CreateLogger = loggerFactory factory
               ProgressAction = snd
@@ -82,7 +106,10 @@ module WorldContextDefaults =
               PreTickUpdate = defaultPreTickUpdate
               PostTickUpdate = defaultPostTickUpdate
               State = stateProvider ()
-              StorageProvider = storageProvider }
+              StorageProvider = storageProvider
+              HandleLogEntry = logHandler
+              ScriptProvider = scriptProvider
+               }
 
         ctx
 

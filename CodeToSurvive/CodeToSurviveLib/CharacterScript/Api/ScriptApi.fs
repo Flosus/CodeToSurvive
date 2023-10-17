@@ -9,20 +9,25 @@ module ScriptApi =
 
     type LoggingApi(character: CharacterState, ctx: WorldContext) =
         member this.think(message: string) =
-            character.HandleLogEntry(LogType.Thought, character.Character.Name, DateTime.Now, message)
+            let entry = (LogType.Thought, character.Character.Name, DateTime.Now, message)
+            ctx.HandleLogEntry character entry
 
         member this.thonk(message: string) =
-            character.HandleLogEntry(LogType.Thonk, character.Character.Name, DateTime.Now, message)
+            let entry = (LogType.Thonk, character.Character.Name, DateTime.Now, message)
+            ctx.HandleLogEntry character entry
 
     type CommunicationApi(character: CharacterState, ctx: WorldContext) =
         member this.say(message: string) =
-            character.HandleLogEntry(LogType.Say, character.Character.Name, DateTime.Now, message)
+            let entry = (LogType.Say, character.Character.Name, DateTime.Now, message)
+            ctx.HandleLogEntry character entry
 
         member this.yell(message: string) =
-            character.HandleLogEntry(LogType.Yell, character.Character.Name, DateTime.Now, message)
+            let entry = (LogType.Yell, character.Character.Name, DateTime.Now, message)
+            ctx.HandleLogEntry character entry
 
         member this.whisper(target: string, message: string) =
-            character.HandleLogEntry(LogType.Whisper, character.Character.Name, DateTime.Now, message)
+            let entry = (LogType.Whisper, character.Character.Name, DateTime.Now, message)
+            ctx.HandleLogEntry character entry
 
         member this.getLastWords() =
             // TODO get this somewhere?!
