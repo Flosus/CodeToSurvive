@@ -1,5 +1,6 @@
 namespace CodeToSurviveResource.BasePlugin
 
+open System.Collections.Generic
 open CodeToSurviveLib.Core.Domain
 open CodeToSurviveLib.Core.Plugin.Util
 open CodeToSurviveResource.BasePlugin.Constants
@@ -16,8 +17,18 @@ module ChunkGeneration =
         let silentGladeDefinition =
             mapDefinitions |> Array.find (fun def -> def.MapId = spawnMapId)
 
-        let newChunk =
-            Chunk(spawnMapId, pluginName, spawnMapId, silentGladeDefinition.Description)
+        let newChunk: Chunk = {
+            Id = spawnMapId
+            PluginId = pluginName
+            Name = spawnMapId
+            Description =  silentGladeDefinition.Description
+            Instanced = false
+            Persistent = false
+            PersistencePool = None
+            Transitions = [||]
+            POIs = [||]
+            State = Dictionary<string, obj>()
+        }
 
         Some(newChunk)
 

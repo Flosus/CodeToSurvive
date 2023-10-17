@@ -2,14 +2,11 @@ namespace CodeToSurviveLib.Script
 
 open System
 open System.IO
-open System.Net.WebSockets
 open System.Text
-open CodeToSurviveLib.CharacterScript.Api
 open CodeToSurviveLib.CharacterScript.Api.ScriptApi
 open CodeToSurviveLib.Core.Domain
 open CodeToSurviveLib.Script.ScriptInfo
 open NLua
-open NLua.Exceptions
 open Microsoft.Extensions.Logging
 
 module LuaCharacterScript =
@@ -54,7 +51,8 @@ module LuaCharacterScript =
                 with ex ->
                     log.LogError (ex, $"Error while running script for user {characterState.Character.Name}@{characterState.Character.Id}")
                     log.LogError $"StackTrace: {ex.StackTrace}"
-                    characterState.HandleLogEntry (LogType.System, "Script", DateTime.Now, ex.Message)
+                    let entry = (LogType.System, "Script", DateTime.Now, ex.Message)
+                    ctx.HandleLogEntry characterState entry
                     return (characterState, ScriptResult.Error)
             }
 

@@ -11,116 +11,82 @@ module Domain =
     // General
 
     type Player = string
-
-    type Intelligence = int
-    type Strength = int
-    type Agility = int
+    
+    type ChunkId = string
+    
+    /// The name of the action. E.g. "Drink"
+    type ActionName = string
+    type CharacterId = Guid
+    type CheckHandler = string option
 
     type Stats =
-        | Intelligence
-        | Strength
-        | Agility
-
-    type ChunkId = string
-    type ActionName = string
+        | Intelligence of int
+        | Strength of int
+        | Agility of int
+        | BonusHealth of int
+        | BonusEnergy of int
+        | BonusMana of int
 
     // ITEM
 
-    type Item(name: string) =
-        member this.Name = name
-        member this.Type = ""
-        member this.DefaultWeight = 0.0
-        member this.DefaultStackSize = 1
+    type ItemTrigger = { OnDrop: string }
+
+    type Item =
+        { Name: string
+          Type: string
+          DefaultWeight: float
+          DefaultStackSize: int }
 
     type ItemEntity =
         { Item: Item
           Amount: double
           Weight: double
           StackSize: int
-          // TODO how to save metadata
+          Trigger: ItemTrigger
           Metadata: Dictionary<string, string> }
-
-    // Equipment
-
-    type EntityStats =
-        { Intelligence: Intelligence
-          Strength: Strength
-          Agility: Agility }
-
-    type EntityEquipment =
-        { Chest: ItemEntity
-          Head: ItemEntity
-          Shoes: ItemEntity
-          // LeftArm + RightArm OR Arms
-          LeftArm: ItemEntity
-          RightArm: ItemEntity
-          Arms: ItemEntity
-          // LeftLeg + RightLeg OR Legs
-          LeftLeg: ItemEntity
-          RightLeg: ItemEntity
-          Legs: ItemEntity
-          Back: ItemEntity
-          LeftHand: ItemEntity
-          RightHand: ItemEntity
-          // Rings? Amulet? Glasses?
-          Other: ItemEntity }
 
     // World
 
-
-    type ChunkState = Dictionary<string, obj>
+    type Transition =
+        { TargetMapId: string
+          Description: string
+          DescriptionHandler: string
+          CheckHandler: CheckHandler }
 
     type WorldAction =
         { ActionId: string
           Description: string
           ActionName: ActionName
-          ActionHandler: string
-          CheckHandler: string
+          ActionHandler: string option
+          CheckHandler: CheckHandler
           HandlerParameter: Dictionary<string, obj> }
-
-    type TransitionDefinition =
-        { TargetMapId: string
-          Description: string
-          DescriptionHandler: string
-          Check: string }
 
     type POI =
         { Name: string
           Description: string
-          Actions: WorldAction[] }
+          Actions: WorldAction [] }
 
-    // TODO create real function references
-    type Trigger =
-        { mutable OnMapEnter: string
-          mutable OnMapExit: string
-          mutable OnMapStay: string
-          mutable OnMapSave: string
-          mutable OnMapLoad: string
-          mutable OnMapUnload: string }
+    type ChunkState = Dictionary<string, obj>
 
     /// The abstract class of a chunk.
     /// Game Resource Plugins have to implement the specific Chunks
-    type Chunk(id: ChunkId, pluginId: string, name: string, description: string) =
-        member this.Id = id
-        member this.PluginId = pluginId
-        member this.Name = name
-        member this.Description = description
-        // member val Instanced: bool = false with get, set
-        // member val Persistent: bool = false with get, set
-        // member val PersistencePool: string option = None with get, set
-        // member val Transitions: TransitionDefinition[] = [||] with get, set
-        // // member val   Trigger: Trigger with get, set
-        // member val POIs: POI[] = [||] with get, set
+    type Chunk =
+        { Id: ChunkId
+          PluginId: string
+          Name: string
+          Description: string
+          Instanced: bool
+          Persistent: bool
+          PersistencePool: string option
+          Transitions: Transition []
+          POIs: POI []
+          State: ChunkState }
 
-        member this.State = ChunkState()
 
     /// A wrapper type used to contain the world, e.g. all chunks
     type WorldMap = { Chunks: ResizeArray<Chunk> }
 
-
     // Character
-
-    type CharacterId = Guid
 
     [<DataContract>]
     type CharacterStats =
@@ -132,6 +98,31 @@ module Domain =
           Fatigue: int }
 
     [<DataContract>]
+    type CharacterMemory =
+        { [<DataMember>]
+          mutable Knowledge: (string * string) []
+          [<DataMember>]
+          mutable PlayerMemory: Dictionary<string, Object> }
+
+    type EntityEquipment =
+        { Chest: ItemEntity option
+          Head: ItemEntity option
+          Shoes: ItemEntity option
+          // LeftArm + RightArm OR Arms
+          LeftArm: ItemEntity option
+          RightArm: ItemEntity option
+          Arms: ItemEntity option
+          // LeftLeg + RightLeg OR Legs
+          LeftLeg: ItemEntity option
+          RightLeg: ItemEntity option
+          Legs: ItemEntity option
+          Back: ItemEntity option
+          LeftHand: ItemEntity option
+          RightHand: ItemEntity option
+          // Rings? Amulet? Glasses?
+          Other: ItemEntity option }
+
+    [<DataContract>]
     type Character =
         { [<DataMember>]
           Id: CharacterId
@@ -140,48 +131,21 @@ module Domain =
           [<DataMember>]
           Player: Player
           [<DataMember>]
-          Location: ChunkId
+          mutable Location: ChunkId
           [<DataMember>]
           mutable CharacterStats: CharacterStats
           [<DataMember>]
-          mutable Inventory: ItemEntity[] }
+          mutable Inventory: ItemEntity []
+          [<DataMember>]
+          mutable Equipment: EntityEquipment }
 
     [<DataContract>]
-    type CharacterMemory =
+    type CharacterState =
         { [<DataMember>]
-          mutable Knowledge: (string * string)[]
-          [<DataMember>]
-          mutable PlayerMemory: Dictionary<string, Object> }
+          Character: Character
+          Memory: CharacterMemory }
 
-    // Action
-    type ActionParameter =
-        | POI of POI
-        | Item of Item
-        // TODO change this to entity when NPCs are added?
-        | Character of CharacterId
-        | Transition of TransitionDefinition
-        | Text of string
-        // TODO ItemSlot Enum?
-        | ItemSlot of string
-
-    [<DataContract>]
-    type CharacterAction =
-        { [<DataMember>]
-          ActionId: String
-          [<DataMember>]
-          CharacterId: CharacterId
-          [<DataMember>]
-          Name: ActionName
-          [<DataMember>]
-          Duration: int
-          [<DataMember>]
-          mutable CurrentProgress: int
-          [<DataMember>]
-          mutable IsFinished: bool
-          [<DataMember>]
-          IsCancelable: bool
-          // Ignore
-          Parameter: ActionParameter[] }
+    // Log Messages
 
     type LogType =
         | Whisper
@@ -194,36 +158,64 @@ module Domain =
     type LogSource = string
     type LogMessage = string
     type LogEntry = LogType * LogSource * DateTime * LogMessage
-    type HandleLogEntry = LogEntry -> unit
+
+    // Actions
+
+    type ActionParameter =
+        | POI
+        | Item
+        // TODO change this to entity when NPCs are added?
+        | Character
+        | Transition
+        | Text
+        | ItemSlot
 
     [<DataContract>]
-    type CharacterState =
+    type CharacterAction =
         { [<DataMember>]
-          Character: Character
-          Memory: CharacterMemory
-          // TODO recreate functions on restore
-          [<IgnoreDataMember>]
-          HandleLogEntry: HandleLogEntry
-          [<IgnoreDataMember>]
-          ScriptProvider: unit -> string }
+          ActionId: String
+          [<DataMember>]
+          Name: ActionName
+          [<DataMember>]
+          ActionHandler: ActionName
+          [<DataMember>]
+          CharacterId: CharacterId
+          [<DataMember>]
+          Duration: int
+          [<DataMember>]
+          mutable CurrentProgress: int
+          [<DataMember>]
+          mutable IsFinished: bool
+          [<DataMember>]
+          IsCancelable: bool
+          // Ignore
+          Parameter: ActionParameter [] }
 
+    (*
+    ___________
+    World state
+    ___________
+    This should get moved into it's own file after creating all missing states
+    *)
     [<DataContract>]
     type WorldState =
         { [<DataMember>]
           mutable Timestamp: DateTime
           [<DataMember>]
-          mutable CharacterStates: CharacterState[]
+          mutable CharacterStates: CharacterState []
           [<DataMember>]
-          mutable ActiveActions: CharacterAction[]
+          mutable ActiveActions: CharacterAction []
           [<DataMember>]
           Map: WorldMap }
 
     type WorldContext =
-        { CreateLogger: string -> ILogger
+        { State: WorldState
+          CreateLogger: string -> ILogger
           ProgressAction: CharacterAction * WorldContext -> WorldContext
           OnStartup: WorldContext -> WorldContext
           PreTickUpdate: WorldContext -> WorldContext
           RunCharacterScripts: WorldContext -> WorldContext
           PostTickUpdate: WorldContext -> WorldContext
-          State: WorldState
-          StorageProvider: unit -> IStoragePreference }
+          StorageProvider: unit -> IStoragePreference
+          HandleLogEntry: CharacterState -> LogEntry -> unit
+          ScriptProvider: CharacterState -> string }
