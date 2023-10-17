@@ -1,6 +1,5 @@
 namespace CodeToSurviveLib.Core.Plugin
 
-open CodeToSurviveLib.Core.Domain
 open CodeToSurviveLib.Core.Plugin.PluginApi
 
 module PluginRegistry =
@@ -38,7 +37,11 @@ module PluginRegistry =
 
     let mutable private actionRegistry: (ActionHandlerKey * ActionHandler)[] = [||]
     
-    // TODO add handlers
+    let addAction key (handler:ActionHandler) =
+        let findBy ent =
+            let entKey, _ = ent
+            entKey <> key
+        actionRegistry <- actionRegistry |> Array.filter findBy |> Array.append [|(key, handler)|]
     
     let findAction (findBy: ActionHandlerKey) : ActionHandler option =
         let findBy ent =

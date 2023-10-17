@@ -11,7 +11,9 @@ module Domain =
     // General
 
     type Player = string
+    
     type ChunkId = string
+    
     /// The name of the action. E.g. "Drink"
     type ActionName = string
     type CharacterId = Guid
@@ -160,14 +162,13 @@ module Domain =
     // Actions
 
     type ActionParameter =
-        | POI of POI
-        | Item of Item
+        | POI
+        | Item
         // TODO change this to entity when NPCs are added?
-        | Character of CharacterId
-        | Transition of Transition
-        | Text of string
-        // TODO ItemSlot Enum?
-        | ItemSlot of string
+        | Character
+        | Transition
+        | Text
+        | ItemSlot
 
     [<DataContract>]
     type CharacterAction =
