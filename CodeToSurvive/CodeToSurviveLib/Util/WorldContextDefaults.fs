@@ -87,7 +87,7 @@ module WorldContextDefaults =
             let logStorage = playerStorage.CreateSubdirectory "Log"
             let logFile = Path.Join(logStorage.FullName, "player.log")
             let entryTxt = logEntryToText entry
-            File.AppendAllText(logFile, entryTxt, Encoding.UTF8)
+            lock charState (fun () -> File.AppendAllText(logFile, entryTxt, Encoding.UTF8))
             ()
 
         let scriptProvider (charState:CharacterState) =

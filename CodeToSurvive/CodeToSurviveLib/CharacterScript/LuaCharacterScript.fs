@@ -28,6 +28,7 @@ module LuaCharacterScript =
             let log = ctx.CreateLogger "LuaCharacterScript"
             use lua = new Lua()
             lua.LoadCLRPackage()
+            lua.State.Encoding <- Encoding.UTF8
             // Setup Api implementation
             lua.SetObjectToPath("_api_log", LoggingApi(characterState, ctx))
             lua.SetObjectToPath("_api_communication", CommunicationApi(characterState, ctx))
@@ -47,9 +48,9 @@ module LuaCharacterScript =
             try
                 lua.DebugHook.Add(fun _ ->
                     if cancellationToken.IsCancellationRequested then
-                        lua.State.Error() |> ignore)
+                        lua.State.Error("abort") |> ignore)
 
-                lua.SetDebugHook(LuaHookMask.Count, 100) |> ignore
+                lua.SetDebugHook(LuaHookMask.Count, 10000) |> ignore
                 let scriptResult = lua.DoString(luaScript, "playerScript")
                 // TODO update characterState
                 // TODO parse script result for action

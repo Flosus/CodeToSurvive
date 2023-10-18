@@ -46,7 +46,6 @@ module ScriptRunner =
                 match result.IsCompleted with
                 | true -> return! result
                 | false ->
-                    printfn "still not completed"
                     return handleTimeout state
             with ex ->
                 printfn $"Ex handled {ex}"
