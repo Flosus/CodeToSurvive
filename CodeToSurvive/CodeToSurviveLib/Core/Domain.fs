@@ -160,7 +160,7 @@ module Domain =
     type LogEntry = LogType * LogSource * DateTime * LogMessage
 
     // Actions
-
+    
     type ActionParameter =
         | POI
         | Item

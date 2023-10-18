@@ -1,5 +1,6 @@
 namespace CodeToSurviveLib.Script
 
+open System.Threading
 open CodeToSurviveLib.Core
 open CodeToSurviveLib.Core.Domain
 
@@ -12,6 +13,6 @@ module ScriptInfo =
         | Error
         | Timeout
 
-    type RunPlayerScript = CharacterState * WorldContext -> Async<CharacterState * ScriptResult>
+    type RunPlayerScript = CharacterState -> WorldContext -> CancellationToken -> CharacterState * ScriptResult
     type GetScriptByPlayer = CharacterState -> RunPlayerScript
     type GetAction = CharacterState -> ScriptResult -> CharacterAction

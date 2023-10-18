@@ -15,6 +15,7 @@
     <ItemGroup>
         <Compile Include="Statistics.fs"/>
         <Compile Include="Storage\StoragePreference.fs"/>
+        <Compile Include="Storage\StorageManagement.fs"/>
         <Compile Include="Core\Domain.fs"/>
         <Compile Include="Core\Character.fs"/>
         <Compile Include="Core\CharacterAction.fs"/>
@@ -25,7 +26,6 @@
         <Compile Include="CharacterScript\ScriptRunner.fs"/>
         <Compile Include="CharacterScript\LuaCharacterScript.fs"/>
         <Compile Include="GameLoop.fs"/>
-        <Compile Include="Storage\StorageManagement.fs"/>
         <Compile Include="Plugin\PluginApi.fs"/>
         <Compile Include="Plugin\PluginRegistry.fs"/>
         <Compile Include="Plugin\WorldGenRegistry.fs"/>

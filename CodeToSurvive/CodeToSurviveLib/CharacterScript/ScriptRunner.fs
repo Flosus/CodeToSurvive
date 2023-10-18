@@ -5,28 +5,53 @@ open System.Threading
 open System.Threading.Tasks
 open CodeToSurviveLib.Core.Domain
 open CodeToSurviveLib.Script.ScriptInfo
+open Microsoft.Extensions.Logging
 
 module ScriptRunner =
 
     let handleTimeout (states: CharacterState * WorldContext) : CharacterState * ScriptResult =
-        let playerState, _ = states
-        // TODO write messages, etc
-        (playerState, Timeout)
+        let charState, worldState = states
+        let log = worldState.CreateLogger "ScriptTimeoutHandler"
 
-    let runScript
-        (state: CharacterState * WorldContext)
-        (playScript: RunPlayerScript)
-        (cancellationTime: TimeSpan)
-        : Async<CharacterState * ScriptResult> =
+        let message =
+            $"CharScript timeout. CharacterId={charState.Character.Id}; Name={charState.Character.Name}"
 
-        try
-            async {
-                use cancellationTokenSource: CancellationTokenSource = new CancellationTokenSource()
-                cancellationTokenSource.CancelAfter(cancellationTime)
-                return! playScript state
-            }
-        with :? TaskCanceledException ->
-            async { return handleTimeout state }
+        log.LogWarning message
+        let entry = (LogType.System, "System", DateTime.Now, message)
+        worldState.HandleLogEntry charState entry
+        (charState, Timeout)
+
+    let runScript (state: CharacterState * WorldContext) (playScript: RunPlayerScript) (timeout: int) =
+        task {
+            let playerScriptAsync =
+                async {
+                    use cancellationTokenSource = new CancellationTokenSource()
+                    let cancellationTime = TimeSpan.FromMilliseconds(timeout)
+                    cancellationTokenSource.CancelAfter(cancellationTime)
+                    let token = cancellationTokenSource.Token
+                    let charState, worldState = state
+                    return playScript charState worldState token
+                }
+
+            use cancellationTokenSource = new CancellationTokenSource()
+            let cancellationTime = TimeSpan.FromMilliseconds(timeout)
+            cancellationTokenSource.CancelAfter(cancellationTime)
+            let token = cancellationTokenSource.Token
+
+            let result = Async.StartAsTask(playerScriptAsync, TaskCreationOptions.None, token)
+
+            let! res = Task.WhenAny(result, Task.Delay(Timeout.Infinite, token))
+
+            try
+                match result.IsCompleted with
+                | true -> return! result
+                | false ->
+                    printfn "still not completed"
+                    return handleTimeout state
+            with ex ->
+                printfn $"Ex handled {ex}"
+                return handleTimeout state
+        }
 
     let runScripts
         (ctx: WorldContext)
@@ -34,7 +59,6 @@ module ScriptRunner =
         (getActionByName: GetAction)
         (scriptTimeout: int)
         : WorldContext =
-        let cancellationTime = TimeSpan.FromSeconds(scriptTimeout)
 
         let playerScripts =
             ctx.State.CharacterStates
@@ -44,9 +68,9 @@ module ScriptRunner =
 
         let asyncResults =
             playerScripts
-            |> Array.map (fun (pState, pScript) -> runScript (pState, ctx) pScript cancellationTime)
+            |> Array.map (fun (pState, pScript) -> runScript (pState, ctx) pScript scriptTimeout)
 
-        let results = asyncResults |> Async.Parallel |> Async.RunSynchronously
+        Task.WaitAll(asyncResults |> Seq.cast<Task> |> Array.ofSeq) |> ignore
 
         let scriptResultToAction
             (
@@ -58,7 +82,9 @@ module ScriptRunner =
             (charState, action)
 
         let newStateData: (CharacterState * CharacterAction)[] =
-            results |> Array.map scriptResultToAction
+            asyncResults
+            |> Array.map (fun task -> task.Result)
+            |> Array.map scriptResultToAction
 
         let playerStates = newStateData |> Array.map fst
         let PlayerActionStates = newStateData |> Array.map snd

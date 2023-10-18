@@ -5,7 +5,6 @@ open System.IO
 open System.Runtime.Serialization.Json
 open System.Text
 open System.Text.RegularExpressions
-open CodeToSurviveLib.Core.Domain
 open CodeToSurviveLib.Storage.StoragePreference
 
 module StorageManagement =
@@ -30,13 +29,13 @@ module StorageManagement =
         let deserializedObj = deserializer.ReadObject(ms)
         deserializedObj :?> 'a
 
-    let save (storage: IStoragePreference) (state: WorldState) =
+    let save (storage: IStoragePreference) state =
         let fileName = DateTime.Now.ToString dateTimeFormat |> storageFileName
         let savePath = Path.Join(storage.StateStorageFolder.FullName, fileName)
         let content = serialize state
         File.WriteAllText(savePath, content)
 
-    let loadNewest (storage: IStoragePreference) : WorldState =
+    let loadNewest (storage: IStoragePreference) =
         storage.StateStorageFolder.GetFiles()
         |> Array.filter (fun dir -> Regex.IsMatch(dir.Name, filePattern))
         |> Array.map (fun dir -> (dir, Regex.Match(dir.Name, filePattern).Value))
