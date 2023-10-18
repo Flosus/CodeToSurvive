@@ -10,8 +10,15 @@ open Microsoft.Extensions.Logging
 module ScriptRunner =
 
     let handleTimeout (states: CharacterState * WorldContext) : CharacterState * ScriptResult =
-            async { return handleTimeout state }
+        let charState, worldState = states
+        let log = worldState.CreateLogger "ScriptTimeoutHandler"
+
+        let message =
+            $"CharScript timeout. CharacterId={charState.Character.Id}; Name={charState.Character.Name}"
+
+        log.LogWarning message
         let entry = (LogType.System, "System", DateTime.Now, message)
+        worldState.HandleLogEntry charState entry
         (charState, Timeout)
 
     let runScript (state: CharacterState * WorldContext) (playScript: RunPlayerScript) (timeout: int) =
