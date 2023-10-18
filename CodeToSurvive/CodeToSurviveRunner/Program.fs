@@ -8,6 +8,8 @@ open CodeToSurviveRunner
 
 
 
+
+
 printfn "Setting up"
 let mutable shouldStopState = false
 let mutable finalState: RunResult option = None
@@ -55,8 +57,7 @@ let rec cliHandler () =
     let input = Console.ReadLine()
 
     match input with
-    | "exit" ->
-        shouldStopState <- true
+    | "exit" -> shouldStopState <- true
     | _ -> cliHandler ()
 
 cliHandler ()
