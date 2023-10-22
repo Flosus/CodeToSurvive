@@ -1,6 +1,7 @@
 namespace CodeToSurviveLib.Core.Plugin
 
 open CodeToSurviveLib.Core.Domain
+open CodeToSurviveLib.Script.ScriptInfo
 
 module PluginApi =
 
@@ -26,9 +27,10 @@ module PluginApi =
     /// Take care to not duplicate spawn chunks, as this method might be called multiple times. When a chunk with
     /// an existing chunkId already exist it will get dropped.
     type GetSpawnChunk = WorldContext -> Chunk option
-    
+
     type ActionHandler = WorldContext -> CharacterAction -> WorldContext
     type ActionHandlerKey = ActionName * ActionParameter[]
+    type ActionProvider = CharacterState * ScriptResult -> CharacterAction option
 
     /// Represents a plugin
     type Plugin(pluginId: PluginId, dependencies) =

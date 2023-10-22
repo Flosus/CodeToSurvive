@@ -1,9 +1,8 @@
 namespace CodeToSurviveLib.CharacterScript.Api
 
 open System
-open System.Collections.Generic
+open CodeToSurviveLib.CharacterScript
 open CodeToSurviveLib.Core.Domain
-open NLua
 
 module ScriptApi =
 
@@ -31,26 +30,10 @@ module ScriptApi =
 
         member this.getLastWords() =
             // TODO get this somewhere?!
+            // TODO with parameter? How many ticks in the past?!?
             [| "Test" |]
 
     type MemoryApi(character: CharacterState, ctx: WorldContext) =
-
-        let luaTableToDict (luaTable: LuaTable) typeEnsurer : Dictionary<string, Object> =
-            let dict = Dictionary<string, Object>()
-
-            luaTable.Keys
-            |> Seq.cast
-            |> Seq.map (fun k -> (k, typeEnsurer luaTable[k]))
-            |> Seq.iter dict.Add
-
-            dict
-
-        let rec ensureType (input: Object) : Object =
-            if input :? LuaTable then
-                let luaTable = input :?> LuaTable
-                luaTableToDict luaTable ensureType
-            else
-                input
 
         member this.getKnowledge() = character.Memory.Knowledge
 
@@ -60,12 +43,12 @@ module ScriptApi =
         member this.getMemoryValue key = character.Memory.PlayerMemory[key]
 
         member this.setMemory(key, value: Object) =
-            character.Memory.PlayerMemory[key] <- ensureType value
+            character.Memory.PlayerMemory[key] <- LuaUtil.ensureType value
 
     type WorldApi(character: CharacterState, ctx: WorldContext) =
         member this.getWorld() = ()
 
-    type CharacterApi(character: CharacterState, ctx: WorldContext) =   
+    type CharacterApi(character: CharacterState, ctx: WorldContext) =
         member this.getCharacter() = ()
 
     type ActionApi(character: CharacterState, ctx: WorldContext) =

@@ -4,6 +4,7 @@ open System
 open System.IO
 open System.Text
 open System.Threading
+open CodeToSurviveLib.CharacterScript
 open CodeToSurviveLib.CharacterScript.Api.ScriptApi
 open CodeToSurviveLib.Core.Domain
 open CodeToSurviveLib.Script.ScriptInfo
@@ -21,6 +22,31 @@ module LuaCharacterScript =
         |> Seq.map readFile
         |> Seq.sortBy snd
         |> Seq.toArray
+
+    let parseScriptResult (log: ILogger) (scriptResult: Object[]) : ScriptResult =
+        match scriptResult.Length with
+        | 0 ->
+            log.LogDebug "Script has empty result"
+            ScriptResult.Error
+        | _ ->
+            let firstEntry = scriptResult[0] :?> LuaTable
+            let actionName = firstEntry["Name"] :?> string
+
+            match actionName with
+            | null -> ScriptResult.Error
+            | _ ->
+                let actionParameter = firstEntry["Parameter"] :?> LuaTable
+
+                match actionParameter with
+                | null -> ScriptResult.Action(actionName, None)
+                | _ ->
+                    let mutable actionParams: Object[] = [||]
+
+                    for param in actionParameter do
+                        let paramDict = LuaUtil.ensureType param
+                        actionParams <- actionParams |> Array.append [| paramDict |]
+
+                    ScriptResult.Action(actionName, Some(actionParams))
 
     let generateCharacterScript (luaScript: string) : RunPlayerScript =
 
@@ -51,10 +77,9 @@ module LuaCharacterScript =
                         lua.State.Error("abort") |> ignore)
 
                 lua.SetDebugHook(LuaHookMask.Count, 10000) |> ignore
-                let scriptResult = lua.DoString(luaScript, "playerScript")
-                // TODO update characterState
-                // TODO parse script result for action
-                let result = (characterState, ScriptResult.Continue)
+                let scriptResultObj = lua.DoString(luaScript, "playerScript")
+                let scriptResult = scriptResultObj |> parseScriptResult log
+                let result = (characterState, scriptResult)
                 result
             with ex when not cancellationToken.IsCancellationRequested ->
                 log.LogError(

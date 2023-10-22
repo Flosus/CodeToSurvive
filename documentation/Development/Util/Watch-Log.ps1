@@ -1,0 +1,1 @@
+Get-Content -Path .\CodeToSurviveDevWorkingDir\Storage\PlayerStorage\AdminCharacter\Log\player.log -Wait

@@ -40,13 +40,12 @@ module ScriptRunner =
 
             let result = Async.StartAsTask(playerScriptAsync, TaskCreationOptions.None, token)
 
-            let! res = Task.WhenAny(result, Task.Delay(Timeout.Infinite, token))
+            let! _ = Task.WhenAny(result, Task.Delay(Timeout.Infinite, token))
 
             try
                 match result.IsCompleted with
                 | true -> return! result
-                | false ->
-                    return handleTimeout state
+                | false -> return handleTimeout state
             with ex ->
                 printfn $"Ex handled {ex}"
                 return handleTimeout state
@@ -71,13 +70,8 @@ module ScriptRunner =
 
         Task.WaitAll(asyncResults |> Seq.cast<Task> |> Array.ofSeq) |> ignore
 
-        let scriptResultToAction
-            (
-                charState: CharacterState,
-                scriptResult: ScriptResult
-            ) : CharacterState * CharacterAction =
-            let action: CharacterAction = getActionByName charState scriptResult
-
+        let scriptResultToAction (charState, scriptResult) =
+            let action = getActionByName charState scriptResult
             (charState, action)
 
         let newStateData: (CharacterState * CharacterAction)[] =

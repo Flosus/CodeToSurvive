@@ -20,10 +20,9 @@ module CharacterManager =
 
         let newCharacterState =
             { Character = newCharacter
-              Memory = {
-                  Knowledge = [|("Entry1", "Data")|]
-                  PlayerMemory = Dictionary() 
-              } }
+              Memory =
+                { Knowledge = [| ("Entry1", "Data") |]
+                  PlayerMemory = Dictionary() } }
 
         ctx.State.CharacterStates <- ctx.State.CharacterStates |> Array.append [| newCharacterState |]
         log.LogInformation "Character created successfully"
