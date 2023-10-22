@@ -27,13 +27,13 @@ module LuaCharacterScript =
         match scriptResult.Length with
         | 0 ->
             log.LogDebug "Script has empty result"
-            ScriptResult.Error
+            ScriptResult.Error "Script has returned no valid action."
         | _ ->
             let firstEntry = scriptResult[0] :?> LuaTable
             let actionName = firstEntry["Name"] :?> string
 
             match actionName with
-            | null -> ScriptResult.Error
+            | null -> ScriptResult.Error "No Name found in the Result"
             | _ ->
                 let actionParameter = firstEntry["Parameter"] :?> LuaTable
 
@@ -86,10 +86,7 @@ module LuaCharacterScript =
                     ex,
                     $"Error while running script for user {characterState.Character.Name}@{characterState.Character.Id}"
                 )
-
                 log.LogError $"StackTrace: {ex.StackTrace}"
-                let entry = (LogType.System, "Script", DateTime.Now, ex.Message)
-                ctx.HandleLogEntry characterState entry
-                (characterState, ScriptResult.Error)
+                (characterState, ScriptResult.Error ex.Message)
 
         runScript

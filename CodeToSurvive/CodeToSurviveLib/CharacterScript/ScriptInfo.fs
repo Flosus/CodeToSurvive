@@ -9,7 +9,7 @@ module ScriptInfo =
     type ScriptResult =
         | Action of (string * Object[] option)
         | Continue
-        | Error
+        | Error of string
         | Timeout
 
     type RunPlayerScript = CharacterState -> WorldContext -> CancellationToken -> CharacterState * ScriptResult

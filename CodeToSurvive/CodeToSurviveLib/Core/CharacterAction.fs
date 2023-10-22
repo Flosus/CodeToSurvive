@@ -6,15 +6,15 @@ open CodeToSurviveLib.Core.Domain
 module CharacterAction =
 
     let getIdleAction charId =
-        { ActionId = Guid.Empty.ToString()
+        { ActionId = Guid.NewGuid()
           CharacterId = charId
           Name = "Idle"
           ActionHandler = "Idle"
-          Duration = 5
+          Duration = 1
           CurrentProgress = 0
           IsFinished = false
           IsCancelable = false
-          Parameter = [||] }
+          Parameter = None }
 
     let IsActionFinished (action: CharacterAction) =
         TimeSpan.FromSeconds(action.Duration)

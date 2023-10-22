@@ -1,5 +1,6 @@
 namespace CodeToSurviveLib.Core.Plugin
 
+open System
 open CodeToSurviveLib.Core.Domain
 open CodeToSurviveLib.Core.Plugin.PluginApi
 open CodeToSurviveLib.Script.ScriptInfo
@@ -43,7 +44,7 @@ module PluginRegistry =
     let mutable private actionHandlerRegistry: (ActionHandlerKey * ActionHandler)[] =
         [||]
 
-    let addAction key (handler: ActionHandler) =
+    let addActionHandler key (handler: ActionHandler) =
         let findBy ent =
             let entKey, _ = ent
             entKey <> key
@@ -67,7 +68,7 @@ module PluginRegistry =
     let addActionProvider provider =
         actionProvider <- actionProvider |> Array.append [| provider |]
 
-    let getActionProvider (input: CharacterState * ScriptResult) =
+    let getActionProvider (input: CharacterState * (string * Object[] option)) =
         let rec getAction index =
             match index >= actionProvider.Length with
             | true -> None
