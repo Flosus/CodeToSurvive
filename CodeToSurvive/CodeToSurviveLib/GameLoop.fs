@@ -31,7 +31,6 @@ module GameLoop =
 
     let rec _gameLoop context consumeCurrentContext shouldStop (skipTimer: bool) =
         let log = context.CreateLogger "GameLoop"
-
         if skipTimer then
             log.LogTrace "Skipping wait time;"
         else
@@ -47,7 +46,7 @@ module GameLoop =
 
         match shouldStop () with
         | true -> Finished
-        | false -> _gameLoop context consumeCurrentContext shouldStop skipTimer
+        | false -> _gameLoop newContext consumeCurrentContext shouldStop skipTimer
 
     let gameLoop context provideCurrentState shouldStop skipTimer =
         let log = context.CreateLogger "GameLoop"

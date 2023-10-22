@@ -3,7 +3,6 @@ namespace CodeToSurviveLib.Core.Plugin
 open System
 open CodeToSurviveLib.Core.Domain
 open CodeToSurviveLib.Core.Plugin.PluginApi
-open CodeToSurviveLib.Script.ScriptInfo
 open Microsoft.Extensions.Logging
 
 module PluginRegistry =
@@ -41,7 +40,7 @@ module PluginRegistry =
     Action Registry
     *)
 
-    let mutable private actionHandlerRegistry: (ActionHandlerKey * ActionHandler)[] =
+    let mutable private actionHandlerRegistry: (ActionName * ActionHandler)[] =
         [||]
 
     let addActionHandler key (handler: ActionHandler) =
@@ -54,7 +53,7 @@ module PluginRegistry =
             |> Array.filter findBy
             |> Array.append [| (key, handler) |]
 
-    let findAction (findBy: ActionHandlerKey) : ActionHandler option =
+    let findAction (findBy: ActionName) : ActionHandler option =
         let findBy ent =
             let key, _ = ent
             key = findBy

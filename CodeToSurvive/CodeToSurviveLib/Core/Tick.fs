@@ -11,26 +11,28 @@ module Tick =
     let rec private doWithContextUpdate
         (char: CharacterState[])
         (ctx: WorldContext)
-        (act: CharacterState * WorldContext -> WorldContext)
+        (act: CharacterState -> WorldContext -> WorldContext)
         : WorldContext =
         match char.Length with
         | 0 -> ctx
         | _ ->
             let currentPlayer = char[0]
-            let newState = act (currentPlayer, ctx)
+            let newState = act currentPlayer ctx
             let remainingChars = char[1..]
             doWithContextUpdate remainingChars newState act
 
     let private doActionProgress (characters: CharacterState[]) (ctx: WorldContext) act : WorldContext =
-        let dJP (cha: CharacterState, ctx: WorldContext) : WorldContext =
+        let dJP (cha: CharacterState) (currentCtx: WorldContext) : WorldContext =
             let findPlayerTask =
                 fun (cur: CharacterAction) -> cha.Character.Id = cur.CharacterId
 
-            let currentTaskOpt = ctx.State.ActiveActions |> Array.tryFind findPlayerTask
-
+            let currentTaskOpt = currentCtx.State.ActiveActions |> Array.tryFind findPlayerTask
+            
             match currentTaskOpt with
-            | Some currentTask -> act (currentTask, ctx)
-            | None -> ctx
+            | Some currentTask ->
+                let res = act currentTask currentCtx
+                res
+            | None -> currentCtx
 
         doWithContextUpdate characters ctx dJP
 
@@ -43,7 +45,11 @@ module Tick =
             doActionProgress curState.CharacterStates ctx ctx.ProgressAction
 
         let removeFinishedActions (ctx: WorldContext) : WorldContext =
+            let preCount = ctx.State.ActiveActions.Length
             ctx.State.ActiveActions <- ctx.State.ActiveActions |> Array.filter isPlayerActionOpen
+            let postCount = ctx.State.ActiveActions.Length
+            // TODO call handler for "finish" actions?
+            log.LogTrace $"Removed {preCount - postCount} finished actions"
             ctx
 
         let logStep msg localState =

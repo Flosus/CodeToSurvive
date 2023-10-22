@@ -57,6 +57,7 @@ module ScriptRunner =
         (getActionByName: GetAction)
         (scriptTimeout: int)
         : WorldContext =
+        let log = ctx.CreateLogger "ScriptRunner"
 
         let playerScripts =
             ctx.State.CharacterStates
@@ -68,11 +69,26 @@ module ScriptRunner =
             playerScripts
             |> Array.map (fun (pState, pScript) -> runScript (pState, ctx) pScript scriptTimeout)
 
-        Task.WaitAll(asyncResults |> Seq.cast<Task> |> Array.ofSeq) |> ignore
+        Task.WaitAll(asyncResults |> Seq.cast<Task> |> Array.ofSeq)
 
         let scriptResultToAction (charState, scriptResult) =
-            let action = getActionByName charState scriptResult
-            (charState, action)
+            let existing =
+                ctx.State.ActiveActions
+                |> Array.tryFind (fun actSub -> actSub.CharacterId = charState.Character.Id)
+
+            match existing with
+            | None ->
+                let action = getActionByName charState scriptResult
+                (charState, action)
+            | Some existingAction when existingAction.IsCancelable ->
+                log.LogInformation "Canceling existing action."
+                // TODO notify cancel action
+                let action = getActionByName charState scriptResult
+                (charState, action)
+            | Some existingAction ->
+                // We can't cancel the action, please continue
+                (charState, existingAction)
+
 
         let newStateData: (CharacterState * CharacterAction)[] =
             asyncResults
@@ -80,10 +96,19 @@ module ScriptRunner =
             |> Array.map scriptResultToAction
 
         let playerStates = newStateData |> Array.map fst
-        let PlayerActionStates = newStateData |> Array.map snd
+
+        let mewPlayerActionStates = newStateData |> Array.map snd
+
+        let playerActionStates =
+            ctx.State.ActiveActions
+            |> Array.filter (fun oldActions ->
+                mewPlayerActionStates
+                |> Array.exists (fun actSub -> actSub.CharacterId = oldActions.CharacterId)
+                |> not)
+            |> Array.append mewPlayerActionStates
 
         { ctx with
             State =
                 { ctx.State with
                     CharacterStates = playerStates
-                    ActiveActions = PlayerActionStates } }
+                    ActiveActions = playerActionStates } }
