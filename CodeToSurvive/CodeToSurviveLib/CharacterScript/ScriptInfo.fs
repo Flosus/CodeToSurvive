@@ -1,14 +1,13 @@
 namespace CodeToSurviveLib.Script
 
+open System
 open System.Threading
-open CodeToSurviveLib.Core
 open CodeToSurviveLib.Core.Domain
 
 module ScriptInfo =
 
     type ScriptResult =
-        // TODO fix action parameter
-        | Action of (string * string option)
+        | Action of (string * Object[] option)
         | Continue
         | Error
         | Timeout

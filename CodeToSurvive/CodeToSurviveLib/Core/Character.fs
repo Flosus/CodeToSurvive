@@ -1,8 +1,6 @@
 namespace CodeToSurviveLib.Core
 
 open System
-open System.Collections.Generic
-open System.Runtime.Serialization
 open CodeToSurviveLib.Core.Domain
 
 module Character =
@@ -17,7 +15,7 @@ module Character =
           Location = getSpawnChunk ()
           Inventory = [||]
           Equipment =
-            { Chest = None 
+            { Chest = None
               Head = None
               Shoes = None
               LeftArm = None

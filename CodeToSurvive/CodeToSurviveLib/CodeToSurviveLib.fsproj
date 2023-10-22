@@ -21,14 +21,14 @@
         <Compile Include="Core\CharacterAction.fs"/>
         <Compile Include="Core\Tick.fs"/>
         <Compile Include="Core\PlayerManager.fs" />
-        <Compile Include="CharacterScript\Api\ScriptApi.fs"/>
+        <Compile Include="CharacterScript\LuaUtil.fs" />
         <Compile Include="CharacterScript\ScriptInfo.fs"/>
         <Compile Include="CharacterScript\ScriptRunner.fs"/>
+        <Compile Include="CharacterScript\ScriptApi.fs" />
         <Compile Include="CharacterScript\LuaCharacterScript.fs"/>
         <Compile Include="GameLoop.fs"/>
         <Compile Include="Plugin\PluginApi.fs"/>
         <Compile Include="Plugin\PluginRegistry.fs"/>
-        <Compile Include="Plugin\WorldGenRegistry.fs"/>
         <Compile Include="Plugin\WorldLoader.fs" />
         <Compile Include="Util\WorldUtil.fs"/>
         <Compile Include="Util\CharacterManager.fs" />

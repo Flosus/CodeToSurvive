@@ -11,9 +11,9 @@ module Domain =
     // General
 
     type Player = string
-    
+
     type ChunkId = string
-    
+
     /// The name of the action. E.g. "Drink"
     type ActionName = string
     type CharacterId = Guid
@@ -64,7 +64,7 @@ module Domain =
     type POI =
         { Name: string
           Description: string
-          Actions: WorldAction [] }
+          Actions: WorldAction[] }
 
     type ChunkState = Dictionary<string, obj>
 
@@ -78,8 +78,8 @@ module Domain =
           Instanced: bool
           Persistent: bool
           PersistencePool: string option
-          Transitions: Transition []
-          POIs: POI []
+          Transitions: Transition[]
+          POIs: POI[]
           State: ChunkState }
 
 
@@ -100,7 +100,7 @@ module Domain =
     [<DataContract>]
     type CharacterMemory =
         { [<DataMember>]
-          mutable Knowledge: (string * string) []
+          mutable Knowledge: (string * string)[]
           [<DataMember>]
           mutable PlayerMemory: Dictionary<string, Object> }
 
@@ -135,7 +135,7 @@ module Domain =
           [<DataMember>]
           mutable CharacterStats: CharacterStats
           [<DataMember>]
-          mutable Inventory: ItemEntity []
+          mutable Inventory: ItemEntity[]
           [<DataMember>]
           mutable Equipment: EntityEquipment }
 
@@ -160,7 +160,7 @@ module Domain =
     type LogEntry = LogType * LogSource * DateTime * LogMessage
 
     // Actions
-    
+
     type ActionParameter =
         | POI
         | Item
@@ -189,7 +189,7 @@ module Domain =
           [<DataMember>]
           IsCancelable: bool
           // Ignore
-          Parameter: ActionParameter [] }
+          Parameter: ActionParameter[] }
 
     (*
     ___________
@@ -202,9 +202,9 @@ module Domain =
         { [<DataMember>]
           mutable Timestamp: DateTime
           [<DataMember>]
-          mutable CharacterStates: CharacterState []
+          mutable CharacterStates: CharacterState[]
           [<DataMember>]
-          mutable ActiveActions: CharacterAction []
+          mutable ActiveActions: CharacterAction[]
           [<DataMember>]
           Map: WorldMap }
 

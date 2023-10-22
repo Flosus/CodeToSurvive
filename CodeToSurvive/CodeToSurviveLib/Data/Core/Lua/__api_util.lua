@@ -16,3 +16,14 @@ function toLuaType(val)
     end
     return val
 end
+
+local _pcall_bak = pcall
+local abort = false
+pcall = function(fun)
+    local status, error = _pcall_bak(fun)
+    print(tostring(status) .. "_" .. tostring(error))
+    if error == "abort" then
+        abort = true
+        error("abort")
+    end
+end

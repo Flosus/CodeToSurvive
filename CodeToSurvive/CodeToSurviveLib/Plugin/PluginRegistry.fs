@@ -1,10 +1,11 @@
 namespace CodeToSurviveLib.Core.Plugin
 
+open CodeToSurviveLib.Core.Domain
 open CodeToSurviveLib.Core.Plugin.PluginApi
+open CodeToSurviveLib.Script.ScriptInfo
+open Microsoft.Extensions.Logging
 
 module PluginRegistry =
-    open Microsoft.Extensions.Logging
-
     type PluginProvider = ILoggerFactory -> Plugin
 
     let plugins = ResizeArray<Plugin>()
@@ -35,16 +36,44 @@ module PluginRegistry =
 
         sortedPlugins.Value
 
-    let mutable private actionRegistry: (ActionHandlerKey * ActionHandler)[] = [||]
-    
-    let addAction key (handler:ActionHandler) =
+    (*
+    Action Registry
+    *)
+
+    let mutable private actionHandlerRegistry: (ActionHandlerKey * ActionHandler)[] =
+        [||]
+
+    let addAction key (handler: ActionHandler) =
         let findBy ent =
             let entKey, _ = ent
             entKey <> key
-        actionRegistry <- actionRegistry |> Array.filter findBy |> Array.append [|(key, handler)|]
-    
+
+        actionHandlerRegistry <-
+            actionHandlerRegistry
+            |> Array.filter findBy
+            |> Array.append [| (key, handler) |]
+
     let findAction (findBy: ActionHandlerKey) : ActionHandler option =
         let findBy ent =
             let key, _ = ent
             key = findBy
-        actionRegistry |> Array.rev |> Array.tryFind findBy |> Option.map snd
+
+        actionHandlerRegistry |> Array.rev |> Array.tryFind findBy |> Option.map snd
+
+
+
+    let mutable private actionProvider: ActionProvider[] = [||]
+
+    let addActionProvider provider =
+        actionProvider <- actionProvider |> Array.append [| provider |]
+
+    let getActionProvider (input: CharacterState * ScriptResult) =
+        let rec getAction index =
+            match index >= actionProvider.Length with
+            | true -> None
+            | false ->
+                match actionProvider[index]input with
+                | Some res -> Some(res)
+                | None -> getAction (index + 1)
+
+        getAction 0

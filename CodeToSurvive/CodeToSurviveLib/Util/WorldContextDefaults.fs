@@ -10,11 +10,9 @@ open CodeToSurviveLib.Script
 open CodeToSurviveLib.Script.ScriptInfo
 open CodeToSurviveLib.Storage.StoragePreference
 open Microsoft.Extensions.Logging
+open CodeToSurviveLib.Core.Plugin
 
 module WorldContextDefaults =
-    open CodeToSurviveLib.Core.Plugin
-    open System.IO
-    open System.Text
 
     let logEntryToText entry = $"{entry}\n"
 
@@ -24,7 +22,7 @@ module WorldContextDefaults =
         match func.Length with
         | 0 -> ctx
         | _ ->
-            let newCtx = func[0] ctx
+            let newCtx = func[0]ctx
             stateUpdate newCtx func[1..]
 
     let private finPluginsWithAction
@@ -53,8 +51,11 @@ module WorldContextDefaults =
             charState |> ctx.ScriptProvider |> LuaCharacterScript.generateCharacterScript
 
         let getAction (charState: CharacterState) (scriptResult: ScriptResult) : CharacterAction =
-            // TODO get action from script result
-            CharacterAction.getIdleAction charState.Character.Id
+            match PluginRegistry.getActionProvider (charState, scriptResult) with
+            | None ->
+                // TODO log that character is idle?
+                CharacterAction.getIdleAction charState.Character.Id
+            | Some action -> action
 
         let newCtx = ScriptRunner.runScripts ctx scriptByPlayer getAction scriptRunTime
         finPluginsWithAction newCtx (fun plugin -> plugin.RunCharacterScripts)
@@ -81,19 +82,26 @@ module WorldContextDefaults =
         storageProvider
         : WorldContext =
 
-        let logHandler (charState:CharacterState) (entry: LogEntry) =
-            let (storage: IStoragePreference) = storageProvider()
-            let playerStorage = storage.PlayerStorageFolder.CreateSubdirectory $"{charState.Character.Name}"
+        let logHandler (charState: CharacterState) (entry: LogEntry) =
+            let (storage: IStoragePreference) = storageProvider ()
+
+            let playerStorage =
+                storage.PlayerStorageFolder.CreateSubdirectory $"{charState.Character.Name}"
+
             let logStorage = playerStorage.CreateSubdirectory "Log"
             let logFile = Path.Join(logStorage.FullName, "player.log")
             let entryTxt = logEntryToText entry
-            File.AppendAllText(logFile, entryTxt, Encoding.UTF8)
+            lock charState (fun () -> File.AppendAllText(logFile, entryTxt, Encoding.UTF8))
             ()
 
-        let scriptProvider (charState:CharacterState) =
-            let storage = storageProvider()
-            let playerStorage = storage.PlayerStorageFolder.CreateSubdirectory $"{charState.Character.Name}"
+        let scriptProvider (charState: CharacterState) =
+            let storage = storageProvider ()
+
+            let playerStorage =
+                storage.PlayerStorageFolder.CreateSubdirectory $"{charState.Character.Name}"
+
             let scriptStorage = playerStorage.CreateSubdirectory "Script"
+
             LuaCharacterScript.getLuaPluginFiles scriptStorage.FullName
             |> Array.map fst
             |> String.concat "\n"
@@ -108,8 +116,7 @@ module WorldContextDefaults =
               State = stateProvider ()
               StorageProvider = storageProvider
               HandleLogEntry = logHandler
-              ScriptProvider = scriptProvider
-               }
+              ScriptProvider = scriptProvider }
 
         ctx
 
