@@ -21,26 +21,26 @@ module WorldContextDefaults =
 
 
     let handleIdleAction (ctx: WorldContext) (charAction: CharacterAction) =
+        let log = ctx.CreateLogger "Idle handler"
+        charAction.CurrentProgress <- charAction.CurrentProgress + 1
+        log.LogTrace $"handleIdleAction {charAction.CurrentProgress} @ {charAction.ActionId}"
         ctx
 
     let provideIdleAction (ctx: WorldContext) : ActionProvider =
+        let log = ctx.CreateLogger "Idle provider"
         let produce (state, (name: string, parameter)) =
             match name.ToLower() with
             | "idle" ->
+                log.LogTrace $"providing idle action for {state.Character.Name}"
                 Some(
-                    { ActionId = Guid.NewGuid()
-                      Name = "Idle"
-                      ActionHandler = "Idle"
-                      CharacterId = state.Character.Id
-                      Duration = 1
-                      CurrentProgress = 0
-                      IsFinished = false
-                      IsCancelable = false
-                      Parameter = parameter }
+                    { defaultCharacterAction with
+                        Name = "Idle"
+                        ActionHandler = "Idle"
+                        CharacterId = state.Character.Id
+                        Duration = 1
+                        Parameter = parameter }
                 )
             | _ -> None
-
-
 
         produce
 
@@ -84,7 +84,12 @@ module WorldContextDefaults =
                 |> ctx.HandleLogEntry charState
 
             let getIdleState () =
-                CharacterAction.getIdleAction charState.Character.Id
+                let idleActionProvider = provideIdleAction ctx
+                let idle = idleActionProvider (charState, ("Idle", None))
+
+                match idle with
+                | None -> raise (Exception("Idle not found!"))
+                | Some x -> x
 
             match scriptResult with
             | Continue ->
@@ -105,7 +110,7 @@ module WorldContextDefaults =
                 | None ->
                     logMessage $"I can't do {name}. Parameter={actionParams}"
                     log.LogWarning $"Action not found: {name}; {actionParams}"
-                    CharacterAction.getIdleAction charState.Character.Id
+                    getIdleState ()
                 | Some action -> action
 
         let newCtx = ScriptRunner.runScripts ctx scriptByPlayer getAction scriptRunTime
@@ -157,10 +162,19 @@ module WorldContextDefaults =
             |> Array.map fst
             |> String.concat "\n"
 
+        let progressActions (charAction: CharacterAction) (ctx: WorldContext) : WorldContext =
+            let handlerOpt = PluginRegistry.findAction charAction.ActionHandler
+
+            match handlerOpt with
+            | Some handler -> handler ctx charAction
+            | None ->
+                let log = ctx.CreateLogger "Context"
+                log.LogWarning $"No handler found for action {charAction.ActionHandler}"
+                ctx
+
         let ctx =
             { CreateLogger = loggerFactory factory
-              // TODO action processing
-              ProgressAction = snd
+              ProgressAction = progressActions
               OnStartup = defaultOnStartup factory
               RunCharacterScripts = defaultRunCharacterScripts
               PreTickUpdate = defaultPreTickUpdate
@@ -171,7 +185,7 @@ module WorldContextDefaults =
               ScriptProvider = scriptProvider }
 
         ctx |> provideIdleAction |> PluginRegistry.addActionProvider
-        PluginRegistry.addActionHandler ("Drink", [| POI |]) handleIdleAction
+        PluginRegistry.addActionHandler "Idle" handleIdleAction
         ctx
 
     let createDefaultCtx: ILoggerFactory -> (unit -> IStoragePreference) -> WorldContext =

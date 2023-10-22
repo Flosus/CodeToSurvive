@@ -15,7 +15,6 @@ module BasePlugin =
             self.OnStartup <- Some(OnStartup.onStartup)
             self.PreTickUpdate <- Some(PreTickUpdate.preTickUpdate)
             self.PostTickUpdate <- Some(PostTickUpdate.postTickUpdate)
-            // TODO implement the following
             self.GenerateChunk <- Some(ChunkGeneration.generateChunk)
             self.GetSpawnChunk <- Some(ChunkGeneration.getSpawnChunk)
             self.ProgressAction <- None

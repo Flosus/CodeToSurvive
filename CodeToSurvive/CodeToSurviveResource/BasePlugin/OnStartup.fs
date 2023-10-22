@@ -9,11 +9,10 @@ open Microsoft.Extensions.Logging
 module OnStartup =
 
     let registerActions ctx =
-        ctx |> provideDrinkAction |> PluginRegistry.addActionProvider 
-        PluginRegistry.addActionHandler ("Drink", [| POI |]) handleDrinkAction
-        PluginRegistry.addActionHandler ("Drink", [| Item |]) handleDrinkAction
-        PluginRegistry.addActionHandler ("Eat", [| Item |]) handleEatAction
-        PluginRegistry.addActionHandler ("Walk", [| Transition |]) handleWalkAction
+        ctx |> provideDrinkAction |> PluginRegistry.addActionProvider
+        PluginRegistry.addActionHandler "Drink" handleDrinkAction
+        PluginRegistry.addActionHandler "Eat" handleEatAction
+        PluginRegistry.addActionHandler "Walk" handleWalkAction
 
 
     let onStartup (ctx: WorldContext) : WorldContext =

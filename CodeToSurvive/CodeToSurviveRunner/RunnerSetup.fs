@@ -34,8 +34,8 @@ module RunnerSetup =
 
         let log = defaultCtx.CreateLogger "Runner"
 
-        let doActionProgress: CharacterAction * WorldContext -> WorldContext =
-            fun (_, ctx) ->
+        let doActionProgress: CharacterAction -> WorldContext -> WorldContext =
+            fun _ ctx ->
                 log.LogTrace "doActionProgress"
                 ctx
 
@@ -56,7 +56,6 @@ module RunnerSetup =
 
         let context: WorldContext =
             { defaultCtx with
-                ProgressAction = doActionProgress
                 RunCharacterScripts = runCharacterScripts defaultCtx.RunCharacterScripts
                 PreTickUpdate = preTickUpdate defaultCtx.PreTickUpdate
                 PostTickUpdate = postTickUpdate defaultCtx.PostTickUpdate }

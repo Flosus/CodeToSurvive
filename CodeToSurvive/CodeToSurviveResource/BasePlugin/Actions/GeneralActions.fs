@@ -9,22 +9,27 @@ open Microsoft.Extensions.Logging
 module GeneralActions =
 
 
-    let handleDrinkAction (ctx: WorldContext) (charAction: CharacterAction) = ctx
+    let handleDrinkAction (ctx: WorldContext) (charAction: CharacterAction) =
+        charAction.CurrentProgress <- charAction.CurrentProgress + 1
+        ctx
 
     let provideDrinkAction (ctx: WorldContext) : ActionProvider =
-        let produce (state, (name, parameter)) =
-            let action: CharacterAction =
-                { ActionId = Guid.NewGuid()
-                  Name = name
-                  ActionHandler = name
-                  CharacterId = state.Character.Id
-                  Duration = 1
-                  CurrentProgress = 0
-                  IsFinished = false
-                  IsCancelable = false
-                  Parameter = parameter }
-
-            Some(action)
+        let produce (state, (name: string, parameter)) =
+            match name.ToLower() with
+            | "drink" ->
+                printfn "providing new drink action"
+                Some(
+                    { ActionId = Guid.NewGuid()
+                      Name = "Drink"
+                      ActionHandler = "Drink"
+                      CharacterId = state.Character.Id
+                      Duration = 1
+                      CurrentProgress = 0
+                      IsFinished = false
+                      IsCancelable = false
+                      Parameter = parameter }
+                )
+            | _ -> None
 
         produce
 

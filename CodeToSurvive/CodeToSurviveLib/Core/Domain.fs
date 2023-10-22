@@ -192,6 +192,17 @@ module Domain =
           // Ignore
           Parameter: Object[] option }
 
+    let defaultCharacterAction =
+        { ActionId = Guid.NewGuid()
+          Name = "TODO"
+          ActionHandler = "Idle"
+          CharacterId = Guid.Empty
+          Duration = 1
+          CurrentProgress = 0
+          IsFinished = false
+          IsCancelable = false
+          Parameter = None }
+
     (*
     ___________
     World state
@@ -212,7 +223,7 @@ module Domain =
     type WorldContext =
         { State: WorldState
           CreateLogger: string -> ILogger
-          ProgressAction: CharacterAction * WorldContext -> WorldContext
+          ProgressAction: CharacterAction -> WorldContext -> WorldContext
           OnStartup: WorldContext -> WorldContext
           PreTickUpdate: WorldContext -> WorldContext
           RunCharacterScripts: WorldContext -> WorldContext

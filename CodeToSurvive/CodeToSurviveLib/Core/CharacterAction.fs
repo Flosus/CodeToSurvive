@@ -5,20 +5,15 @@ open CodeToSurviveLib.Core.Domain
 
 module CharacterAction =
 
-    let getIdleAction charId =
-        { ActionId = Guid.NewGuid()
-          CharacterId = charId
-          Name = "Idle"
-          ActionHandler = "Idle"
-          Duration = 1
-          CurrentProgress = 0
-          IsFinished = false
-          IsCancelable = false
-          Parameter = None }
-
     let IsActionFinished (action: CharacterAction) =
-        TimeSpan.FromSeconds(action.Duration)
-        - TimeSpan.FromSeconds(action.CurrentProgress)
-        <= TimeSpan.Zero
+        action.CurrentProgress >= action.Duration
 
     let isPlayerActionOpen = fun pAction -> IsActionFinished pAction |> not
+
+    let updateContext (ctx: WorldContext) (charAction: CharacterAction) =
+        ctx.State.ActiveActions <-
+            ctx.State.ActiveActions
+            |> Array.filter (fun act -> act.ActionId = charAction.ActionId)
+            |> Array.append [| charAction |]
+
+        ctx
