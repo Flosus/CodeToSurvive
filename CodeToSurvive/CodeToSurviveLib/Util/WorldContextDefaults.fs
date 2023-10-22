@@ -5,6 +5,7 @@ open System.IO
 open System.Text
 open CodeToSurviveLib.Core
 open CodeToSurviveLib.Core.Domain
+open CodeToSurviveLib.Core.Plugin.PluginApi
 open CodeToSurviveLib.PlayerScript
 open CodeToSurviveLib.Script
 open CodeToSurviveLib.Script.ScriptInfo
@@ -17,6 +18,31 @@ module WorldContextDefaults =
     let logEntryToText entry = $"{entry}\n"
 
     let scriptRunTime = 2000
+
+
+    let handleIdleAction (ctx: WorldContext) (charAction: CharacterAction) =
+        ctx
+
+    let provideIdleAction (ctx: WorldContext) : ActionProvider =
+        let produce (state, (name: string, parameter)) =
+            match name.ToLower() with
+            | "idle" ->
+                Some(
+                    { ActionId = Guid.NewGuid()
+                      Name = "Idle"
+                      ActionHandler = "Idle"
+                      CharacterId = state.Character.Id
+                      Duration = 1
+                      CurrentProgress = 0
+                      IsFinished = false
+                      IsCancelable = false
+                      Parameter = parameter }
+                )
+            | _ -> None
+
+
+
+        produce
 
     let rec private stateUpdate ctx (func: (WorldContext -> WorldContext)[]) : WorldContext =
         match func.Length with
@@ -47,15 +73,40 @@ module WorldContextDefaults =
         finPluginsWithAction ctx (fun plugin -> plugin.PostTickUpdate)
 
     let defaultRunCharacterScripts (ctx: WorldContext) =
+        let log = ctx.CreateLogger "Context"
+
         let scriptByPlayer (charState: CharacterState) : RunPlayerScript =
             charState |> ctx.ScriptProvider |> LuaCharacterScript.generateCharacterScript
 
         let getAction (charState: CharacterState) (scriptResult: ScriptResult) : CharacterAction =
-            match PluginRegistry.getActionProvider (charState, scriptResult) with
-            | None ->
-                // TODO log that character is idle?
+            let logMessage msg =
+                (LogType.Thought, charState.Character.Name, DateTime.Now, msg)
+                |> ctx.HandleLogEntry charState
+
+            let getIdleState () =
                 CharacterAction.getIdleAction charState.Character.Id
-            | Some action -> action
+
+            match scriptResult with
+            | Continue ->
+                match
+                    ctx.State.ActiveActions
+                    |> Array.tryFind (fun activeAct -> activeAct.CharacterId = charState.Character.Id)
+                with
+                | Some activeAct -> activeAct
+                | None -> getIdleState ()
+            | Error errorMessage ->
+                logMessage $"I had a headache while trying to decide what to do: {errorMessage}"
+                getIdleState ()
+            | Timeout ->
+                logMessage "I couldn't decide what to do."
+                getIdleState ()
+            | Action(name, actionParams) ->
+                match PluginRegistry.getActionProvider (charState, (name, actionParams)) with
+                | None ->
+                    logMessage $"I can't do {name}. Parameter={actionParams}"
+                    log.LogWarning $"Action not found: {name}; {actionParams}"
+                    CharacterAction.getIdleAction charState.Character.Id
+                | Some action -> action
 
         let newCtx = ScriptRunner.runScripts ctx scriptByPlayer getAction scriptRunTime
         finPluginsWithAction newCtx (fun plugin -> plugin.RunCharacterScripts)
@@ -108,6 +159,7 @@ module WorldContextDefaults =
 
         let ctx =
             { CreateLogger = loggerFactory factory
+              // TODO action processing
               ProgressAction = snd
               OnStartup = defaultOnStartup factory
               RunCharacterScripts = defaultRunCharacterScripts
@@ -118,6 +170,8 @@ module WorldContextDefaults =
               HandleLogEntry = logHandler
               ScriptProvider = scriptProvider }
 
+        ctx |> provideIdleAction |> PluginRegistry.addActionProvider
+        PluginRegistry.addActionHandler ("Drink", [| POI |]) handleIdleAction
         ctx
 
     let createDefaultCtx: ILoggerFactory -> (unit -> IStoragePreference) -> WorldContext =

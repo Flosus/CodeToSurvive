@@ -2,6 +2,7 @@ namespace CodeToSurviveLib.Core
 
 open System
 open System.Collections.Generic
+open System.Runtime.InteropServices.JavaScript
 open System.Runtime.Serialization
 open CodeToSurviveLib.Storage.StoragePreference
 open Microsoft.Extensions.Logging
@@ -173,11 +174,11 @@ module Domain =
     [<DataContract>]
     type CharacterAction =
         { [<DataMember>]
-          ActionId: String
+          ActionId: Guid
           [<DataMember>]
           Name: ActionName
           [<DataMember>]
-          ActionHandler: ActionName
+          ActionHandler: string
           [<DataMember>]
           CharacterId: CharacterId
           [<DataMember>]
@@ -189,7 +190,7 @@ module Domain =
           [<DataMember>]
           IsCancelable: bool
           // Ignore
-          Parameter: ActionParameter[] }
+          Parameter: Object[] option }
 
     (*
     ___________

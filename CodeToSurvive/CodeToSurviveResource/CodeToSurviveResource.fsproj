@@ -4,6 +4,7 @@
         <OutputType>Library</OutputType>
         <TargetFramework>net7.0</TargetFramework>
         <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
+        <SatelliteResourceLanguages>en</SatelliteResourceLanguages>
     </PropertyGroup>
 
     <ItemGroup>
@@ -13,6 +14,7 @@
     </ItemGroup>
 
     <ItemGroup>
+        <Compile Include="BasePlugin\Actions\GeneralActions.fs" />
         <Compile Include="BasePlugin\Constants.fs" />
         <Compile Include="BasePlugin\PreTickUpdate.fs" />
         <Compile Include="BasePlugin\PostTickUpdate.fs" />
