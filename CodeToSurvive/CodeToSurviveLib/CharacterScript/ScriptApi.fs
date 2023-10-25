@@ -42,7 +42,7 @@ module ScriptApi =
         member this.getMemoryKeys() = character.Memory.PlayerMemory.Keys
         member this.getMemoryValue key = character.Memory.PlayerMemory[key]
 
-        member this.setMemory(key, value: Object) =
+        member this.setMemory(key, value: obj) =
             character.Memory.PlayerMemory[key] <- LuaUtil.ensureType value
 
     type WorldApi(character: CharacterState, ctx: WorldContext) =

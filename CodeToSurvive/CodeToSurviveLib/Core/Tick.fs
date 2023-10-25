@@ -27,7 +27,7 @@ module Tick =
                 fun (cur: CharacterAction) -> cha.Character.Id = cur.CharacterId
 
             let currentTaskOpt = currentCtx.State.ActiveActions |> Array.tryFind findPlayerTask
-            
+
             match currentTaskOpt with
             | Some currentTask ->
                 let res = act currentTask currentCtx

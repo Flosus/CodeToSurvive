@@ -1,13 +1,12 @@
 namespace CodeToSurviveLib.CharacterScript
 
-open System
 open System.Collections.Generic
 open NLua
 
 module LuaUtil =
 
-    let luaTableToDict (luaTable: LuaTable) typeEnsurer : Dictionary<string, Object> =
-        let dict = Dictionary<string, Object>()
+    let luaTableToDict (luaTable: LuaTable) typeEnsurer : Dictionary<string, obj> =
+        let dict = Dictionary<string, obj>()
 
         luaTable.Keys
         |> Seq.cast
@@ -16,7 +15,7 @@ module LuaUtil =
 
         dict
 
-    let rec ensureType (input: Object) : Object =
+    let rec ensureType (input: obj) : obj =
         if input :? LuaTable then
             let luaTable = input :?> LuaTable
             luaTableToDict luaTable ensureType

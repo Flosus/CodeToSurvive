@@ -1,10 +1,8 @@
 namespace CodeToSurviveResource.BasePlugin.Actions
 
 open System
-open CodeToSurviveLib.Core
 open CodeToSurviveLib.Core.Domain
 open CodeToSurviveLib.Core.Plugin.PluginApi
-open Microsoft.Extensions.Logging
 
 module GeneralActions =
 
@@ -18,6 +16,7 @@ module GeneralActions =
             match name.ToLower() with
             | "drink" ->
                 printfn "providing new drink action"
+
                 Some(
                     { ActionId = Guid.NewGuid()
                       Name = "Drink"

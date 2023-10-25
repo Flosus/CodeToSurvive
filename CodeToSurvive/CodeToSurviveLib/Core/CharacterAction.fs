@@ -1,6 +1,5 @@
 namespace CodeToSurviveLib.Core
 
-open System
 open CodeToSurviveLib.Core.Domain
 
 module CharacterAction =

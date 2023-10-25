@@ -2,8 +2,6 @@ namespace CodeToSurviveLib.Core
 
 open System
 open System.Collections.Generic
-open System.Runtime.InteropServices.JavaScript
-open System.Runtime.Serialization
 open CodeToSurviveLib.Storage.StoragePreference
 open Microsoft.Extensions.Logging
 
@@ -12,13 +10,10 @@ module Domain =
     // General
 
     type Player = string
-
     type ChunkId = string
-
-    /// The name of the action. E.g. "Drink"
-    type ActionName = string
     type CharacterId = Guid
-    type CheckHandler = string option
+    type ActionName = string
+    type CheckHandler = string
 
     type Stats =
         | Intelligence of int
@@ -28,23 +23,43 @@ module Domain =
         | BonusEnergy of int
         | BonusMana of int
 
+    type ActionDefinition =
+        {
+            ActionId: Guid
+            Description: string
+            DescriptionHandler: string
+            ActionName: ActionName
+            /// Optional specific action name
+            /// E.g. The action is "Drink" and the ActionHandler is "DrinkBeer"
+            ActionHandler: ActionName option
+            CheckHandler: CheckHandler option
+            HandlerParameter: Dictionary<string, obj>
+        }
+
     // ITEM
 
-    type ItemTrigger = { OnDrop: string }
-
     type Item =
-        { Name: string
-          Type: string
-          DefaultWeight: float
-          DefaultStackSize: int }
+        { ItemId: string
+          Name: string
+          Description: string
+          DescriptionHandler: string option
+          Weight: double
+          Value: double
+          Stateful: bool }
+
+    type ItemTrigger =
+        { OnPickup: string
+          OnDrop: string
+          OnEquip: string
+          OnUnequip: string }
 
     type ItemEntity =
-        { Item: Item
+        { ItemId: Guid
+          Item: Item
           Amount: double
-          Weight: double
-          StackSize: int
           Trigger: ItemTrigger
-          Metadata: Dictionary<string, string> }
+          Actions: ActionDefinition[]
+          State: Dictionary<string, string> }
 
     // World
 
@@ -54,18 +69,11 @@ module Domain =
           DescriptionHandler: string
           CheckHandler: CheckHandler }
 
-    type WorldAction =
-        { ActionId: string
-          Description: string
-          ActionName: ActionName
-          ActionHandler: string option
-          CheckHandler: CheckHandler
-          HandlerParameter: Dictionary<string, obj> }
-
     type POI =
         { Name: string
           Description: string
-          Actions: WorldAction[] }
+          DescriptionHandler: string
+          Actions: ActionDefinition[] }
 
     type ChunkState = Dictionary<string, obj>
 
@@ -89,21 +97,14 @@ module Domain =
 
     // Character
 
-    [<DataContract>]
     type CharacterStats =
-        { [<DataMember>]
-          Hunger: int
-          [<DataMember>]
+        { Hunger: int
           Thirst: int
-          [<DataMember>]
           Fatigue: int }
 
-    [<DataContract>]
     type CharacterMemory =
-        { [<DataMember>]
-          mutable Knowledge: (string * string)[]
-          [<DataMember>]
-          mutable PlayerMemory: Dictionary<string, Object> }
+        { mutable Knowledge: (string * string)[]
+          mutable PlayerMemory: Dictionary<string, obj> }
 
     type EntityEquipment =
         { Chest: ItemEntity option
@@ -123,27 +124,17 @@ module Domain =
           // Rings? Amulet? Glasses?
           Other: ItemEntity option }
 
-    [<DataContract>]
     type Character =
-        { [<DataMember>]
-          Id: CharacterId
-          [<DataMember>]
+        { Id: CharacterId
           Name: string
-          [<DataMember>]
           Player: Player
-          [<DataMember>]
           mutable Location: ChunkId
-          [<DataMember>]
           mutable CharacterStats: CharacterStats
-          [<DataMember>]
           mutable Inventory: ItemEntity[]
-          [<DataMember>]
           mutable Equipment: EntityEquipment }
 
-    [<DataContract>]
     type CharacterState =
-        { [<DataMember>]
-          Character: Character
+        { Character: Character
           Memory: CharacterMemory }
 
     // Log Messages
@@ -171,26 +162,17 @@ module Domain =
         | Text
         | ItemSlot
 
-    [<DataContract>]
     type CharacterAction =
-        { [<DataMember>]
-          ActionId: Guid
-          [<DataMember>]
+        { ActionId: Guid
           Name: ActionName
-          [<DataMember>]
           ActionHandler: string
-          [<DataMember>]
           CharacterId: CharacterId
-          [<DataMember>]
           Duration: int
-          [<DataMember>]
           mutable CurrentProgress: int
-          [<DataMember>]
           mutable IsFinished: bool
-          [<DataMember>]
           IsCancelable: bool
           // Ignore
-          Parameter: Object[] option }
+          Parameter: obj[] option }
 
     let defaultCharacterAction =
         { ActionId = Guid.NewGuid()
@@ -209,15 +191,10 @@ module Domain =
     ___________
     This should get moved into it's own file after creating all missing states
     *)
-    [<DataContract>]
     type WorldState =
-        { [<DataMember>]
-          mutable Timestamp: DateTime
-          [<DataMember>]
+        { mutable Timestamp: DateTime
           mutable CharacterStates: CharacterState[]
-          [<DataMember>]
           mutable ActiveActions: CharacterAction[]
-          [<DataMember>]
           Map: WorldMap }
 
     type WorldContext =

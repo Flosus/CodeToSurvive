@@ -14,8 +14,7 @@ type RoleStore() =
         member this.GetRoleIdAsync(_, _) = Task.FromResult("")
         member this.GetRoleNameAsync(_, _) = Task.FromResult("")
 
-        member this.SetNormalizedRoleNameAsync(_, _, _) =
-            Task.FromResult(IdentityRole())
+        member this.SetNormalizedRoleNameAsync(_, _, _) = Task.FromResult(IdentityRole())
 
         member this.SetRoleNameAsync(_, _, _) = Task.FromResult(IdentityRole())
         member this.UpdateAsync(_, _) = Task.FromResult(IdentityResult.Success)

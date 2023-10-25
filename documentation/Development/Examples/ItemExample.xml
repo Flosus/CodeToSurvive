@@ -19,14 +19,14 @@
         <Action>
             <ActionId>ironSwordLick</ActionId>
             <Description>Lick the sword, taste the sword.</Description>
-            <ActionName>Lick</ActionName>
-            <ActionHandler>Item_IronSword_Action_Lick</ActionHandler>
+            <JobName>Lick</JobName>
+            <JobHandler>Item_IronSword_Action_Lick</JobHandler>
         </Action>
         <Action>
             <ActionId>ironSwordLick2</ActionId>
             <Description>Lick the sword, taste the sword2.</Description>
-            <ActionName>Lick2</ActionName>
-            <ActionHandler>Item_IronSword_Action_Lick2</ActionHandler>
+            <JobName>Lick2</JobName>
+            <JobHandler>Item_IronSword_Action_Lick2</JobHandler>
         </Action>
     </Actions>
     <!--

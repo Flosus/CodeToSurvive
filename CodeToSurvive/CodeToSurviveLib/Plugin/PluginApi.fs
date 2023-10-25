@@ -1,8 +1,6 @@
 namespace CodeToSurviveLib.Core.Plugin
 
-open System
 open CodeToSurviveLib.Core.Domain
-open CodeToSurviveLib.Script.ScriptInfo
 
 module PluginApi =
 
@@ -31,7 +29,7 @@ module PluginApi =
 
     type ActionHandler = WorldContext -> CharacterAction -> WorldContext
     type ActionHandlerKey = ActionName * ActionParameter[]
-    type ActionProvider = CharacterState * (string * Object[] option) -> CharacterAction option
+    type ActionProvider = CharacterState * (string * obj[] option) -> CharacterAction option
 
     /// Represents a plugin
     type Plugin(pluginId: PluginId, dependencies) =

@@ -7,7 +7,11 @@ Features and TODOs of CodeToSurvive.
 The initial release requires the implementation of most internal features.
 
 * Item-Management
-* Map-Implementation
+    * Type changes
+    * Plugin-API changes
+* Map-Management
+    * Type changes
+    * Plugin-API changesl
 * Saving/Loading
   * WorldState-Save/Load
   * Plugin-Save/Load
@@ -37,6 +41,7 @@ The initial release requires the implementation of most internal features.
     * Grilled Fish
     * Waterskin
 * New Actions
+    * Transition
     * Fish
     * (Berry) Gather
     * Drink
