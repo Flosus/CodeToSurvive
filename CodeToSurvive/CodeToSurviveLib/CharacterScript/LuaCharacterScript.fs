@@ -1,6 +1,5 @@
 namespace CodeToSurviveLib.Script
 
-open System
 open System.IO
 open System.Text
 open System.Threading
@@ -23,7 +22,7 @@ module LuaCharacterScript =
         |> Seq.sortBy snd
         |> Seq.toArray
 
-    let parseScriptResult (log: ILogger) (scriptResult: Object[]) : ScriptResult =
+    let parseScriptResult (log: ILogger) (scriptResult: obj[]) : ScriptResult =
         match scriptResult.Length with
         | 0 ->
             log.LogDebug "Script has empty result"
@@ -40,7 +39,7 @@ module LuaCharacterScript =
                 match actionParameter with
                 | null -> ScriptResult.Action(actionName, None)
                 | _ ->
-                    let mutable actionParams: Object[] = [||]
+                    let mutable actionParams: obj[] = [||]
 
                     for param in actionParameter do
                         let paramDict = LuaUtil.ensureType param
@@ -86,6 +85,7 @@ module LuaCharacterScript =
                     ex,
                     $"Error while running script for user {characterState.Character.Name}@{characterState.Character.Id}"
                 )
+
                 log.LogError $"StackTrace: {ex.StackTrace}"
                 (characterState, ScriptResult.Error ex.Message)
 

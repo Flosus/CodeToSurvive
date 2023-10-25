@@ -62,9 +62,9 @@
                     <!-- The description of the action, visible to the player -->
                     <Description>A lever near the gate. You could pull it and the gate might.</Description>
                     <!-- The name of the action, done by the player -->
-                    <ActionName>PullLever</ActionName>
+                    <JobName>PullLever</JobName>
                     <!-- The function name for overwriting the default action handler -->
-                    <ActionHandler>ExampleMap_PullLever</ActionHandler>
+                    <JobHandler>ExampleMap_PullLever</JobHandler>
                     <!-- Optional parameters for the handler -->
                     <HandlerParameter>
                         <!-- Add custome parameters here. -->
@@ -73,8 +73,8 @@
                 <Action>
                     <ActionId>lickingTheLever</ActionId>
                     <Description>You could lick the lever. Why would you do this?</Description>
-                    <ActionName>LickLever</ActionName>
-                    <ActionHandler>ExampleMap_LickLever</ActionHandler>
+                    <JobName>LickLever</JobName>
+                    <JobHandler>ExampleMap_LickLever</JobHandler>
                 </Action>
             </Actions>
         </POI>

@@ -1,6 +1,5 @@
 namespace CodeToSurviveLib.Core.Plugin
 
-open System
 open CodeToSurviveLib.Core.Domain
 open CodeToSurviveLib.Core.Plugin.PluginApi
 open Microsoft.Extensions.Logging
@@ -40,8 +39,7 @@ module PluginRegistry =
     Action Registry
     *)
 
-    let mutable private actionHandlerRegistry: (ActionName * ActionHandler)[] =
-        [||]
+    let mutable private actionHandlerRegistry: (ActionName * ActionHandler)[] = [||]
 
     let addActionHandler key (handler: ActionHandler) =
         let findBy ent =
@@ -67,7 +65,7 @@ module PluginRegistry =
     let addActionProvider provider =
         actionProvider <- actionProvider |> Array.append [| provider |]
 
-    let getActionProvider (input: CharacterState * (string * Object[] option)) =
+    let getActionProvider (input: CharacterState * (string * obj[] option)) =
         let rec getAction index =
             match index >= actionProvider.Length with
             | true -> None
@@ -77,3 +75,18 @@ module PluginRegistry =
                 | None -> getAction (index + 1)
 
         getAction 0
+
+    type CanExecute = bool
+    type CheckHandler = WorldContext -> CharacterState -> CanExecute * WorldContext
+
+(*
+    Item Registry
+    *)
+
+// TODO ItemActionHandler?
+
+(*
+    Map Registry
+    *)
+
+// TODO MapJobHandler?

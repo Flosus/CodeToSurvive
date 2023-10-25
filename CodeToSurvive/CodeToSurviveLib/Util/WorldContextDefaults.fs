@@ -3,7 +3,6 @@ namespace CodeToSurviveLib.Util
 open System
 open System.IO
 open System.Text
-open CodeToSurviveLib.Core
 open CodeToSurviveLib.Core.Domain
 open CodeToSurviveLib.Core.Plugin.PluginApi
 open CodeToSurviveLib.PlayerScript
@@ -28,10 +27,12 @@ module WorldContextDefaults =
 
     let provideIdleAction (ctx: WorldContext) : ActionProvider =
         let log = ctx.CreateLogger "Idle provider"
+
         let produce (state, (name: string, parameter)) =
             match name.ToLower() with
             | "idle" ->
                 log.LogTrace $"providing idle action for {state.Character.Name}"
+
                 Some(
                     { defaultCharacterAction with
                         Name = "Idle"

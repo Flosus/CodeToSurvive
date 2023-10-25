@@ -1,6 +1,5 @@
 namespace CodeToSurviveResource.BasePlugin
 
-open System
 open CodeToSurviveLib.Core.Domain
 open CodeToSurviveResource.BasePlugin.Constants
 open Microsoft.Extensions.Logging

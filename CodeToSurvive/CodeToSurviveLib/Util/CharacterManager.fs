@@ -21,7 +21,7 @@ module CharacterManager =
         let newCharacterState =
             { Character = newCharacter
               Memory =
-                { Knowledge = [| ("Entry1", "Data") |]
+                { Knowledge = [||]
                   PlayerMemory = Dictionary() } }
 
         ctx.State.CharacterStates <- ctx.State.CharacterStates |> Array.append [| newCharacterState |]
