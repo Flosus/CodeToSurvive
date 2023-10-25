@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<Map xmlns="https://aheffner.de/Schema"
+     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+     xsi:schemaLocation="https://aheffner.de/Schema https://aheffner.de/Schema/CodeToSurvive.xsd">
+    <MapId>AbandonedVillageSquare</MapId>
+    <Instanced>false</Instanced>
+    <Persistent>true</Persistent>
+    <Description></Description>
+    <Transitions>
+        <Transition>
+            <TargetMapId>CrossroadsByTheForest</TargetMapId>
+            <Description></Description>
+        </Transition>
+        <Transition>
+            <TargetMapId>CrossroadsByTheFields</TargetMapId>
+            <Description></Description>
+        </Transition>
+        <Transition>
+            <TargetMapId>RoadWithPlots</TargetMapId>
+            <Description></Description>
+        </Transition>
+        <Transition>
+            <TargetMapId>VillageHouse1</TargetMapId>
+            <Description></Description>
+        </Transition>
+        <Transition>
+            <TargetMapId>VillageHouse2</TargetMapId>
+            <Description></Description>
+        </Transition>
+        <Transition>
+            <TargetMapId>VillageHouse3</TargetMapId>
+            <Description></Description>
+        </Transition>
+        <Transition>
+            <TargetMapId>VillageHouse4</TargetMapId>
+            <Description></Description>
+        </Transition>
+        <Transition>
+            <TargetMapId>VillageHouse5</TargetMapId>
+            <Description></Description>
+        </Transition>
+    </Transitions>
+</Map>

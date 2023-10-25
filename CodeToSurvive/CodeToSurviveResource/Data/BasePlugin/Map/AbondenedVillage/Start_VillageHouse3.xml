@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<Map xmlns="https://aheffner.de/Schema"
+     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+     xsi:schemaLocation="https://aheffner.de/Schema https://aheffner.de/Schema/CodeToSurvive.xsd">
+    <MapId>VillageHouse3</MapId>
+    <Instanced>false</Instanced>
+    <Persistent>true</Persistent>
+    <Description></Description>
+    <Transitions>
+        <Transition>
+            <TargetMapId>AbandonedVillageSquare</TargetMapId>
+            <Description></Description>
+        </Transition>
+    </Transitions>
+</Map>

@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<Map xmlns="https://aheffner.de/Schema"
+     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+     xsi:schemaLocation="https://aheffner.de/Schema https://aheffner.de/Schema/CodeToSurvive.xsd">
+    <MapId>SmallPathBetweenTrees</MapId>
+    <Instanced>false</Instanced>
+    <Persistent>true</Persistent>
+    <Description>You walk on a small, trampled path in the forest.</Description>
+    <Transitions>
+        <Transition>
+            <TargetMapId>SilentGlade</TargetMapId>
+            <Description>The path ends on a clearing in the forest.</Description>
+        </Transition>
+        <Transition>
+            <TargetMapId>Forest1</TargetMapId>
+            <Description></Description>
+        </Transition>
+    </Transitions>
+</Map>
