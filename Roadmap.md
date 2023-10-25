@@ -6,9 +6,13 @@ Features and TODOs of CodeToSurvive.
 
 The initial release requires the implementation of most internal features.
 
-* Saving/Loading
-* Items
+* Item-Management
 * Map-Implementation
+* Saving/Loading
+  * WorldState-Save/Load
+  * Plugin-Save/Load
+  * Restore Handlers with Load
+  * Validate Handlers after Load
 * Finish Script-API
 * Finish starting World
     * A few maps
@@ -51,6 +55,9 @@ This release adds multi-char support and preparations for combat.
 It's fighting time.
 
 * Add combat v1
+* NPCs/Entities
+* Documentation
+  * HowTo-Combat
 
 # Future Features
 
