@@ -3,15 +3,14 @@
 <Map xmlns="https://aheffner.de/Schema"
      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
      xsi:schemaLocation="https://aheffner.de/Schema https://aheffner.de/Schema/CodeToSurvive.xsd">
-    <MapId>SilentGlade</MapId>
+    <MapId>VillageHouse1</MapId>
     <Instanced>false</Instanced>
-    <Persistent>false</Persistent>
-    <Description>You find yourself on a glade. There is an eerie silence.</Description>
+    <Persistent>true</Persistent>
+    <Description></Description>
     <Transitions>
         <Transition>
-            <TargetMapId>SmallPathBetweenTrees</TargetMapId>
-            <Description>A small path between the trees.</Description>
+            <TargetMapId>AbandonedVillageSquare</TargetMapId>
+            <Description></Description>
         </Transition>
-        <!-- Go into the woods? -->
     </Transitions>
 </Map>

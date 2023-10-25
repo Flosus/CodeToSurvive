@@ -13,12 +13,36 @@ The initial release requires the implementation of most internal features.
   * Plugin-Save/Load
   * Restore Handlers with Load
   * Validate Handlers after Load
+* Implement Log-Management for Character-Logs
 * Finish Script-API
+    * CommunicationApi
+        * getLastWords
+    * WorldApi
+        * getMap
+        * getActions
+        * getPOIs
+        * getItems?
+    * CharacterApi
+        * getInventory
+        * getEquipment
+        * getStatus
+    * ActionApi
+        * getActiveAction
+        * createAction
 * Finish starting World
-    * A few maps
-    * Fishing, berry gathering and drinking
+    * (/) A few maps
+    * POIs on the map (Requires Actions)
+* New Items
+    * Fish
+    * Grilled Fish
+    * Waterskin
+* New Actions
+    * Fish
+    * (Berry) Gather
+    * Drink
+    * FillWithWater
+    * Eat
 * Write Tests and create a framework for easy testing
-* Create a simple, initial World with some items, actions and maps
 
 # V 0.2 - The "Frontend"-Release
 
@@ -65,5 +89,6 @@ It's fighting time.
     * Random skill/ability unlocks
     * Improve them by using the associated ability
 * CLI-Client
+* Interactive Mode in browser.
 
 
