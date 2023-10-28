@@ -11,8 +11,13 @@ module OnStartup =
     let registerActions ctx =
         ctx |> provideDrinkAction |> PluginRegistry.addActionProvider
         PluginRegistry.addActionHandler "Drink" handleDrinkAction
+        // TODO provide drink action
         PluginRegistry.addActionHandler "Eat" handleEatAction
-        PluginRegistry.addActionHandler "Walk" handleWalkAction
+        // TODO provide transition action
+        PluginRegistry.addActionHandler "Walk" handleTransitionAction
+        // TODO fish action
+        // TODO gather
+        // TODO fill
 
 
     let onStartup (ctx: WorldContext) : WorldContext =

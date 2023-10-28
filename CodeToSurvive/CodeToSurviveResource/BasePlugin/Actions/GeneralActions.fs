@@ -34,6 +34,6 @@ module GeneralActions =
 
     let handleEatAction (ctx: WorldContext) (charAction: CharacterAction) = ctx
 
-    let handleWalkAction (ctx: WorldContext) (charAction: CharacterAction) = ctx
+    let handleTransitionAction (ctx: WorldContext) (charAction: CharacterAction) = ctx
 
     ()
