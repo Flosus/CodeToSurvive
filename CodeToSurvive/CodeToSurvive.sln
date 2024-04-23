@@ -8,7 +8,7 @@ Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "CodeToSurviveRunner", "Code
 EndProject
 Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "CodeToSurviveResource", "CodeToSurviveResource\CodeToSurviveResource.fsproj", "{6887928E-B5B1-40FD-A840-1C0691D48C5C}"
 EndProject
-Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "CodeToSurviveResource", "CodeToSurviveDiscord\CodeToSurviveDiscord.fsproj", "{6887928E-B5B1-40FD-A840-1C0691D48C5F}"
+Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "CodeToSurviveDiscord", "CodeToSurviveDiscord\CodeToSurviveDiscord.fsproj", "{6887928E-B5B1-40FD-A840-1C0691D48C5F}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
