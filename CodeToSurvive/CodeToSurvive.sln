@@ -8,6 +8,8 @@ Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "CodeToSurviveRunner", "Code
 EndProject
 Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "CodeToSurviveResource", "CodeToSurviveResource\CodeToSurviveResource.fsproj", "{6887928E-B5B1-40FD-A840-1C0691D48C5C}"
 EndProject
+Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "CodeToSurviveResource", "CodeToSurviveDiscord\CodeToSurviveDiscord.fsproj", "{6887928E-B5B1-40FD-A840-1C0691D48C5F}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -30,5 +32,6 @@ Global
 		{6887928E-B5B1-40FD-A840-1C0691D48C5C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{6887928E-B5B1-40FD-A840-1C0691D48C5C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{6887928E-B5B1-40FD-A840-1C0691D48C5C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6887928E-B5B1-40FD-A840-1C0691D48C5F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 	EndGlobalSection
 EndGlobal
