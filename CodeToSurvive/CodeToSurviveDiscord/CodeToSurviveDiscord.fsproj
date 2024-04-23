@@ -13,4 +13,9 @@
     <PackageReference Include="Discord.Net" Version="3.14.1" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\CodeToSurviveLib\CodeToSurviveLib.fsproj" />
+    <ProjectReference Include="..\CodeToSurviveResource\CodeToSurviveResource.fsproj" />
+  </ItemGroup>
+
 </Project>
