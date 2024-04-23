@@ -1,8 +1,8 @@
-name: copy schema
+name: Dev-Server update
 on: [push]
 jobs:
   build:
-    name: Copy Schema
+    name: Update Dev-Server
     runs-on: ubuntu-latest
     if: github.ref == 'refs/heads/main'
     steps:
