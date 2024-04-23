@@ -34,16 +34,17 @@ The initial release requires the implementation of most internal features.
         * getActiveAction
         * createAction
 * Finish starting World
-    * (/) A few maps
+    * ✔ A few maps
     * POIs on the map (Requires Actions)
 * New Items
     * Fish
     * Grilled Fish
+    * Berry
     * Waterskin
 * New Actions
     * Transition
     * Fish
-    * (Berry) Gather
+    * Gather
     * Drink
     * FillWithWater
     * Eat
