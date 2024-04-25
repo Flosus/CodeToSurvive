@@ -11,6 +11,7 @@ module Startup =
     let doSomething () =
         
         printfn $"Haaaa {Settings.ConfigFileName}"
+        printfn $"Haaaa {Settings.TestBool}"
 
 
     ()
