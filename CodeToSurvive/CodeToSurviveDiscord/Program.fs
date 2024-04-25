@@ -10,7 +10,10 @@ open FSharp.Configuration
 [<EntryPoint>]
 let main args =
     printfn "Starting Discord Bot"
-    Startup.doSomething ()
+    Startup.init args
+    
+    let task = Example.tryIt ()
+    task.Wait()
     0
 
 

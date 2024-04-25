@@ -8,7 +8,9 @@
   <ItemGroup>
     <Compile Include="Config.fs" />
     <Compile Include="Discord\Startup.fs" />
+    <Compile Include="Discord\Example.fs" />
     <Compile Include="Program.fs" />
+    <None Include="app.config" />
   </ItemGroup>
 
   <ItemGroup>
