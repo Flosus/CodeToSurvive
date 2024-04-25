@@ -1,5 +1,6 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
+# 
 Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "CodeToSurviveLib", "CodeToSurviveLib\CodeToSurviveLib.fsproj", "{BC539AC4-76F4-4F37-9459-C3F38DCB8740}"
 EndProject
 Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "CodeToSurviveApp", "CodeToSurviveApp\CodeToSurviveApp.fsproj", "{F47FAB4F-6DEF-4173-A482-094EA947C2CA}"
@@ -8,7 +9,7 @@ Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "CodeToSurviveRunner", "Code
 EndProject
 Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "CodeToSurviveResource", "CodeToSurviveResource\CodeToSurviveResource.fsproj", "{6887928E-B5B1-40FD-A840-1C0691D48C5C}"
 EndProject
-Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "CodeToSurviveDiscord", "CodeToSurviveDiscord\CodeToSurviveDiscord.fsproj", "{6887928E-B5B1-40FD-A840-1C0691D48C5F}"
+Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "CodeToSurviveDiscord", "CodeToSurviveDiscord\CodeToSurviveDiscord.fsproj", "{37FB04FB-50F9-4F04-9AF5-9529BDF3A27F}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -32,6 +33,9 @@ Global
 		{6887928E-B5B1-40FD-A840-1C0691D48C5C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{6887928E-B5B1-40FD-A840-1C0691D48C5C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{6887928E-B5B1-40FD-A840-1C0691D48C5C}.Release|Any CPU.Build.0 = Release|Any CPU
-		{6887928E-B5B1-40FD-A840-1C0691D48C5F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{37FB04FB-50F9-4F04-9AF5-9529BDF3A27F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{37FB04FB-50F9-4F04-9AF5-9529BDF3A27F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{37FB04FB-50F9-4F04-9AF5-9529BDF3A27F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{37FB04FB-50F9-4F04-9AF5-9529BDF3A27F}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

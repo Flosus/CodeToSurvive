@@ -9,9 +9,9 @@
             "type": "coreclr",
             "request": "launch",
             "preLaunchTask": "build",
-            "program": "${workspaceFolder}/CodeToSurvive/CodeToSurviveRunner/bin/Debug/net7.0/CodeToSurviveRunner.dll",
+            "program": "${workspaceFolder}/CodeToSurvive/CodeToSurviveRunner/bin/Debug/net8.0/CodeToSurviveRunner.dll",
             "args": [],
-            "cwd": "${workspaceFolder}/CodeToSurvive/CodeToSurviveRunner",
+            "cwd": "${workspaceFolder}/CodeToSurvive/CodeToSurviveRunner/bin/Debug/net8.0",
             "stopAtEntry": false,
             "console": "internalConsole",
             "logging": {
@@ -23,9 +23,23 @@
             "type": "coreclr",
             "request": "launch",
             "preLaunchTask": "build",
-            "program": "${workspaceFolder}/CodeToSurvive/CodeToSurviveApp/bin/Debug/net7.0/CodeToSurviveApp.App.dll",
+            "program": "${workspaceFolder}/CodeToSurvive/CodeToSurviveApp/bin/Debug/net8.0/CodeToSurviveApp.App.dll",
             "args": [],
-            "cwd": "${workspaceFolder}/CodeToSurvive/CodeToSurviveApp",
+            "cwd": "${workspaceFolder}/CodeToSurvive/CodeToSurviveApp/bin/Debug/net8.0",
+            "stopAtEntry": false,
+            "console": "internalConsole",
+            "logging": {
+                "moduleLoad": false
+            }
+        },
+        {
+            "name": "Launch Discord App",
+            "type": "coreclr",
+            "request": "launch",
+            "preLaunchTask": "build",
+            "program": "${workspaceFolder}/CodeToSurvive/CodeToSurviveDiscord/bin/Debug/net8.0/CodeToSurviveDiscord.dll",
+            "args": [],
+            "cwd": "${workspaceFolder}/CodeToSurvive/CodeToSurviveDiscord/bin/Debug/net8.0",
             "stopAtEntry": false,
             "console": "internalConsole",
             "logging": {
